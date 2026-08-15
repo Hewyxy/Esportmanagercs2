@@ -1,0 +1,119 @@
+:root {
+    /* Background */
+    --bg-main: #0B0F14;
+    --bg-secondary: #0F141B;
+
+    /* Panels */
+    --panel: #111821;
+    --panel-hover: #171F2A;
+    --panel-active: #1C2633;
+
+    /* Borders */
+    --border: #222D3A;
+    --border-light: #2C3948;
+
+    /* Text */
+    --text-primary: #E8EDF2;
+    --text-secondary: #8995A3;
+    --text-muted: #5D6977;
+
+    /* Accent */
+    --accent: #3B82F6;
+    --accent-hover: #60A5FA;
+    --accent-dark: #2563EB;
+
+    /* Status */
+    --success: #22C55E;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+
+    /* Player stats */
+    --rating-high: #22C55E;
+    --rating-medium: #F59E0B;
+    --rating-low: #EF4444;
+
+    /* Effects */
+    --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+    --radius: 10px;
+}
+/* Global Styles */
+ul {
+  list-style: none;
+  align-items: center;
+  font-family: "Rajdhani", sans-serif;
+}
+li {
+  margin: 0px 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-main);
+  color: var(--text-primary);
+  font-family: "Inter", sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    padding: 30px 0px;
+    box-shadow: var(--shadow);
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    font-weight: 500;
+    align-items: center;
+    color: var(--text-primary);
+}
+.nav-link {
+    position: relative;
+    align-items: center;
+    color: var(--text-primary);
+    text-decoration: none;
+    margin: 0px 5px;
+
+    transition: color 0.3s ease;
+}
+
+.nav-link::after {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    bottom: -0.35rem;
+
+    width: 0;
+    height: 2px;
+
+    background: var(--accent);
+
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--accent);
+}
+
+.nav-link:hover::after {
+    width: 100%;
+}
+
+#senter {
+    font-size: 30px;
+    margin: 0px 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
