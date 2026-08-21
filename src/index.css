@@ -57,25 +57,32 @@ body {
 
 /* Navbar */
 .navbar {
+    position: relative;
+
     background-color: var(--bg-main);
     color: var(--text-primary);
+
     display: flex;
-    justify-content: center;
     align-items: center;
-    align-content: center;
-    padding: 30px 0px;
+
+    padding: 20px 30px;
+
     box-shadow: var(--shadow);
 }
 
 .navbar ul {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+
     display: flex;
+    align-items: center;
+
     list-style: none;
     padding: 0;
     margin: 0;
-    font-weight: 500;
-    align-items: center;
-    color: var(--text-primary);
 }
+
 .nav-link {
     position: relative;
     align-items: center;
@@ -116,4 +123,91 @@ body {
     justify-content: center;
     align-items: center;
     align-content: center;
+}
+
+/* Profile */
+.profile {
+    margin-left: auto;
+
+    width: 190px;
+    height: 58px;
+    padding: 8px 12px;
+
+    display: flex;
+    align-items: center;
+
+    box-sizing: border-box;
+
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    color: var(--text-primary);
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
+}
+
+.profile:hover {
+    background: var(--panel-hover);
+    border-color: var(--accent);
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 6px 16px rgba(0, 0, 0, 0.25),
+        0 0 10px rgba(59, 130, 246, 0.12);
+}
+
+.profile:active {
+    transform: translateY(0);
+}
+
+.profile-img {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+
+    border-radius: 50%;
+    object-fit: cover;
+
+    border: 1px solid var(--border-light);
+}
+
+.profile-info {
+    min-width: 0;
+    margin-left: 10px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.profile-name {
+    margin: 0;
+
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.2;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-team {
+    margin: 3px 0 0;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    line-height: 1.2;
+    color: var(--text-secondary);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

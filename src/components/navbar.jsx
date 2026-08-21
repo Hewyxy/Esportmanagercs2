@@ -1,3 +1,6 @@
+import { useState } from "react";
+import Profile from "./smallComponents/profile.jsx";
+
 const link = [
   {name: "Ranking", href: "/ranking"},
   {name: "Contracts", href: "/contracts"},
@@ -10,6 +13,9 @@ export default function Navbar() {
     return (
         <header className="header">
             <nav className="navbar">
+                <picture>
+                    <img src="/src/assets/logo.png" alt="Logo" className="logo" />
+                </picture>
                 <ul>
                     <li>
                         <a className="nav-link" href="/">
@@ -37,6 +43,7 @@ export default function Navbar() {
                         </a>
                     </li>
                 </ul>
+                <Profile />
             </nav>
         </header>
     );
