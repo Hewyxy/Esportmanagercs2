@@ -24,7 +24,7 @@ export default function Navbar() {
                     </li>
                     <li>
                         <a className="nav-link" href="/">
-                            TRANSFERS
+                            NEWS
                         </a>
                     </li>
                     <li>
@@ -34,12 +34,12 @@ export default function Navbar() {
                     </li>
                     <li>
                         <a className="nav-link" href="/">
-                            CONTRACTS
+                            MARKET
                         </a>
                     </li>
                     <li>
                         <a className="nav-link" href="/">
-                            TEAM
+                            ROASTER
                         </a>
                     </li>
                 </ul>
