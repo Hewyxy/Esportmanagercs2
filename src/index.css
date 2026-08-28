@@ -36,59 +36,108 @@
     --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
     --radius: 10px;
 }
-/* Global Styles */
-ul {
-  list-style: none;
-  align-items: center;
-  font-family: "Rajdhani", sans-serif;
-}
-li {
-  margin: 0px 10px;
-  font-size: 20px;
-  font-weight: 600;
-}
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--bg-main);
-  color: var(--text-primary);
-  font-family: "Inter", sans-serif;
+
+
+/* =========================
+   GLOBAL
+========================= */
+
+* {
+    box-sizing: border-box;
 }
 
-/* Navbar */
-.navbar {
-    position: relative;
+html,
+body,
+#root {
+    width: 100%;
+    min-height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
 
     background-color: var(--bg-main);
     color: var(--text-primary);
 
+    font-family: "Inter", sans-serif;
+
+    overflow-x: hidden;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    font-family: "Rajdhani", sans-serif;
+}
+
+li {
+    margin: 0 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar {
+    position: relative;
+
+    width: 100%;
+    min-height: 78px;
+
     display: flex;
     align-items: center;
 
-    padding: 20px 30px;
+    padding: 15px 30px;
+
+    background-color: var(--bg-main);
+    color: var(--text-primary);
 
     box-shadow: var(--shadow);
 }
 
+
+/* Logo */
+
+.logo {
+    width: 30px;
+    height: 30px;
+
+    flex-shrink: 0;
+
+    object-fit: contain;
+}
+
+
+/* Navigation */
+
 .navbar ul {
     position: absolute;
+
     left: 50%;
     transform: translateX(-50%);
 
     display: flex;
     align-items: center;
 
-    list-style: none;
-    padding: 0;
-    margin: 0;
+    white-space: nowrap;
 }
 
 .nav-link {
     position: relative;
-    align-items: center;
+
+    display: inline-block;
+
+    margin: 0 5px;
+
     color: var(--text-primary);
+
     text-decoration: none;
-    margin: 0px 5px;
 
     transition: color 0.3s ease;
 }
@@ -97,6 +146,7 @@ body {
     content: "";
 
     position: absolute;
+
     left: 0;
     bottom: -0.35rem;
 
@@ -116,33 +166,42 @@ body {
     width: 100%;
 }
 
+
+/* Center / Play */
+
 #senter {
     font-size: 30px;
-    margin: 0px 30px;
+    margin: 0 30px;
+
     display: flex;
-    justify-content: center;
     align-items: center;
-    align-content: center;
+    justify-content: center;
 }
 
-/* Profile */
+
+/* =========================
+   PROFILE
+========================= */
+
 .profile {
     margin-left: auto;
 
     width: 190px;
+    min-width: 190px;
     height: 58px;
+
     padding: 8px 12px;
 
     display: flex;
     align-items: center;
 
-    box-sizing: border-box;
-
     background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-
     color: var(--text-primary);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
 
     transition:
         background-color 0.2s ease,
@@ -152,7 +211,7 @@ body {
 }
 
 .profile:hover {
-    background: var(--panel-hover);
+    background-color: var(--panel-hover);
     border-color: var(--accent);
 
     transform: translateY(-1px);
@@ -166,19 +225,28 @@ body {
     transform: translateY(0);
 }
 
+
+/* Profile image */
+
 .profile-img {
     width: 36px;
     height: 36px;
+
     flex-shrink: 0;
 
     border-radius: 50%;
+
     object-fit: cover;
 
     border: 1px solid var(--border-light);
 }
 
+
+/* Profile text */
+
 .profile-info {
     min-width: 0;
+
     margin-left: 10px;
 
     display: flex;
@@ -191,6 +259,7 @@ body {
 
     font-size: 15px;
     font-weight: 600;
+
     line-height: 1.2;
 
     white-space: nowrap;
@@ -205,9 +274,211 @@ body {
     font-weight: 500;
 
     line-height: 1.2;
+
     color: var(--text-secondary);
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 1000px) {
+
+    .navbar {
+        padding: 15px 20px;
+    }
+
+    .navbar ul {
+        gap: 4px;
+    }
+
+    li {
+        margin: 0 5px;
+        font-size: 18px;
+    }
+
+    #senter {
+        font-size: 26px;
+        margin: 0 15px;
+    }
+
+    .profile {
+        width: 170px;
+        min-width: 170px;
+    }
+}
+
+
+/* =========================
+   SMALL TABLET / LARGE PHONE
+========================= */
+
+@media (max-width: 768px) {
+
+    .navbar {
+        min-height: 70px;
+        padding: 12px 15px;
+    }
+
+    /*
+       Remove absolute positioning.
+       The navigation can now shrink/scroll naturally.
+    */
+
+    .navbar ul {
+        position: static;
+
+        transform: none;
+
+        margin-left: 20px;
+
+        display: flex;
+
+        max-width: calc(100% - 70px);
+
+        overflow-x: auto;
+        overflow-y: hidden;
+
+        scrollbar-width: none;
+
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .navbar ul::-webkit-scrollbar {
+        display: none;
+    }
+
+    li {
+        flex-shrink: 0;
+
+        margin: 0 5px;
+        font-size: 17px;
+    }
+
+    #senter {
+        font-size: 24px;
+        margin: 0 15px;
+    }
+
+    .profile {
+        width: 150px;
+        min-width: 150px;
+        height: 52px;
+
+        padding: 7px 10px;
+    }
+
+    .profile-img {
+        width: 32px;
+        height: 32px;
+    }
+
+    .profile-name {
+        font-size: 14px;
+    }
+
+    .profile-team {
+        font-size: 11px;
+    }
+}
+
+
+/* =========================
+   PHONE
+========================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        padding: 10px 12px;
+    }
+
+    .logo {
+        width: 28px;
+        height: 28px;
+    }
+
+    .profile {
+        width: 135px;
+        min-width: 135px;
+        height: 48px;
+
+        padding: 6px 8px;
+    }
+
+    .profile-img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .profile-info {
+        margin-left: 7px;
+    }
+
+    .profile-name {
+        font-size: 13px;
+    }
+
+    .profile-team {
+        font-size: 10px;
+    }
+
+    .navbar ul {
+        margin-left: 12px;
+
+        max-width: calc(100% - 160px);
+    }
+
+    li {
+        font-size: 15px;
+    }
+
+    #senter {
+        font-size: 21px;
+        margin: 0 10px;
+    }
+}
+
+
+/* =========================
+   SMALL PHONE
+========================= */
+
+@media (max-width: 420px) {
+
+    .navbar {
+        padding: 9px 10px;
+    }
+
+    .profile {
+        width: 115px;
+        min-width: 115px;
+    }
+
+    .profile-name {
+        font-size: 12px;
+    }
+
+    .profile-team {
+        font-size: 9px;
+    }
+
+    .navbar ul {
+        max-width: calc(100% - 135px);
+    }
+
+    li {
+        font-size: 14px;
+        margin: 0 4px;
+    }
+
+    #senter {
+        font-size: 19px;
+        margin: 0 7px;
+    }
 }
