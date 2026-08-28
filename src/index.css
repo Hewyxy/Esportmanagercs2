@@ -42,6 +42,20 @@
    GLOBAL
 ========================= */
 
+.page {
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
 * {
     box-sizing: border-box;
 }
@@ -281,6 +295,8 @@ li {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+
 
 
 /* =========================

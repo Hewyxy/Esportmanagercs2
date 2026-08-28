@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import viteLogo from './assets/vite.svg'
 import './index.css'
 import Navbar from './components/navbar.jsx'
+import Footer from './components/Footer.jsx'
 
 //Pages Import
 import Home from './pages/Home'
@@ -26,23 +27,10 @@ function App() {
         <Route path="/news" element={<News />} />
         <Route path="/roaster" element={<Roaster />} />
       </Routes>
-
+      <Footer />
     </BrowserRouter>
   );
 }
 
-
-
-/* function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <div className="App">
-      <Navbar />
-      <main>
-      </main>
-    </div>
-  );
-} */
 
 export default App
