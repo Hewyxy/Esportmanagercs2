@@ -18,12 +18,12 @@ export default function Navbar() {
                 </picture>
                 <ul>
                     <li>
-                        <a className="nav-link" href="/">
+                        <a className="nav-link" href="/ranking">
                             RANKING
                         </a>
                     </li>
                     <li>
-                        <a className="nav-link" href="/">
+                        <a className="nav-link" href="/news">
                             NEWS
                         </a>
                     </li>
@@ -33,12 +33,12 @@ export default function Navbar() {
                         </a>
                     </li>
                     <li>
-                        <a className="nav-link" href="/">
+                        <a className="nav-link" href="/market">
                             MARKET
                         </a>
                     </li>
                     <li>
-                        <a className="nav-link" href="/">
+                        <a className="nav-link" href="/roaster">
                             ROASTER
                         </a>
                     </li>
