@@ -296,7 +296,14 @@ li {
     text-overflow: ellipsis;
 }
 
+/*Market*/
 
+.market {
+    margin: 20px;
+    background-color: var(--panel);
+    border-radius: 20%;
+    
+}
 
 
 /* =========================
