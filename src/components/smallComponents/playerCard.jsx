@@ -12,27 +12,29 @@ export default function PlayerCard(){
             });
     }, []);
 
+    players.sort((a, b) => b.Firepower - a.Firepower);
+    
     return (
         <div>
             {players.map(player => (
                 <div className="PlayerCard" key={player.id}>
                 <div className="player-avatar-container">
                     <img
-                        src={player.image}
+                        src={player.Image}
                         alt="Avatar"
                         className="player-avatar"
                     />
                 </div>
 
-                <p>{player.name}</p>
+                <p>{player.Name}</p>
 
                 <img
-                    src={player.teamImage}
+                    src={player.TeamImage}
                     alt="Team"
                     className="team-logo"
                 />
 
-                <p>Rating: {player.rating}</p>
+                <p>Rating: {player.Firepower}</p>
             </div>
         ))}
         </div>

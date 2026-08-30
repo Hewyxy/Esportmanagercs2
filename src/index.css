@@ -299,11 +299,16 @@ li {
 /*Market*/
 
 .market {
-    margin: 20px;
+    margin: 40px;
     background-color: var(--panel);
-    border-radius: 20%;
-    
+    height: 600px;
+
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: none;
+    border-color: var(--accent);
 }
+
 
 
 /* =========================
