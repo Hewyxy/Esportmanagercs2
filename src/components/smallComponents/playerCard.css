@@ -118,3 +118,602 @@
 
     white-space: nowrap;
 }
+
+/* =========================
+   PLAYER POPUP OVERLAY
+========================= */
+
+.popup-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(5, 8, 12, 0.78);
+
+    backdrop-filter: blur(8px);
+}
+
+
+/* =========================
+   PLAYER POPUP
+========================= */
+
+.player-popup {
+    position: relative;
+
+    width: 900px;
+    max-width: 100%;
+    min-height: 520px;
+
+    display: flex;
+
+    overflow: hidden;
+
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+    border-radius: 14px;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.55),
+        0 0 35px rgba(59, 130, 246, 0.08);
+}
+
+
+/* =========================
+   BACKGROUND TEAM LOGO
+========================= */
+
+.popup-background-logo {
+    position: absolute;
+
+    right: -120px;
+    bottom: -120px;
+
+    width: 550px;
+    height: 550px;
+
+    object-fit: contain;
+
+    opacity: 0.055;
+
+    pointer-events: none;
+    user-select: none;
+
+    z-index: 0;
+}
+
+
+/* =========================
+   LEFT PLAYER SECTION
+========================= */
+
+.popup-player {
+    position: relative;
+    z-index: 2;
+
+    width: 45%;
+    min-height: 520px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    padding: 32px 25px 20px;
+
+    background:
+        radial-gradient(
+            circle at 50% 55%,
+            rgba(59, 130, 246, 0.12),
+            transparent 68%
+        );
+}
+
+
+/* =========================
+   PLAYER HEADER
+========================= */
+
+.popup-player-header {
+    width: 100%;
+
+    text-align: center;
+
+    z-index: 3;
+}
+
+.popup-player-header h1 {
+    margin: 0;
+
+    font-family: "Rajdhani", sans-serif;
+
+    font-size: clamp(34px, 4vw, 48px);
+    font-weight: 700;
+
+    line-height: 1;
+
+    color: var(--text-primary);
+}
+
+.popup-player-header span {
+    display: block;
+
+    margin-top: 7px;
+
+    font-family: "Inter", sans-serif;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+
+    color: var(--accent);
+}
+
+
+/* =========================
+   PLAYER IMAGE
+========================= */
+
+.popup-player-image-container {
+    width: 100%;
+    height: 350px;
+
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
+    overflow: hidden;
+
+    margin-top: 10px;
+}
+
+.popup-player-image {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: top center;
+
+    transform: scale(1.15);
+    transform-origin: top center;
+
+    filter: drop-shadow(
+        0 20px 25px rgba(0, 0, 0, 0.45)
+    );
+}
+
+
+/* =========================
+   TEAM
+========================= */
+
+.popup-team {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+    background-color: var(--bg-secondary);
+    border-radius: 10%;
+    margin-top: -5px;
+
+    font-family: "Rajdhani", sans-serif;
+
+    font-size: 19px;
+    font-weight: 600;
+
+    color: var(--text-secondary);
+
+    z-index: 3;
+}
+
+.popup-team img {
+    width: 30px;
+    height: 30px;
+    margin: 5px;
+    object-fit: contain;
+}
+
+.popup-team span {
+    margin-right: 5px;
+}
+
+
+/* =========================
+   RIGHT INFORMATION SECTION
+========================= */
+
+.popup-info {
+    position: relative;
+    z-index: 2;
+
+    flex: 1;
+
+    padding: 65px 40px 40px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+/* =========================
+   STATISTICS TITLE
+========================= */
+
+.popup-stats-title {
+    margin-bottom: 18px;
+
+    font-family: "Rajdhani", sans-serif;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    color: var(--text-muted);
+
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+}
+
+
+/* =========================
+   STATISTICS GRID
+========================= */
+
+.player-stats {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+}
+
+
+/* =========================
+   STAT
+========================= */
+
+.stat {
+    min-height: 62px;
+
+    padding: 12px 16px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background: var(--bg-secondary);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.stat:hover {
+    background: var(--panel-hover);
+
+    border-color: var(--border-light);
+
+    transform: translateY(-1px);
+}
+
+.stat span {
+    font-family: "Inter", sans-serif;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    color: var(--text-secondary);
+
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.stat strong {
+    font-family: "Rajdhani", sans-serif;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    color: var(--accent);
+}
+
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+
+.popup-close {
+    position: absolute;
+
+    top: 15px;
+    right: 15px;
+
+    z-index: 10;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    background: var(--panel);
+
+    color: var(--text-secondary);
+
+    border: 1px solid var(--border);
+    border-radius: 50%;
+
+    font-size: 24px;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.popup-close:hover {
+    background: var(--panel-hover);
+
+    color: var(--text-primary);
+
+    border-color: var(--accent);
+
+    transform: rotate(90deg);
+}
+
+
+/* =========================
+   TABLET
+========================= */
+
+@media (max-width: 800px) {
+
+    .player-popup {
+        width: 95%;
+        min-height: 480px;
+    }
+
+    .popup-player {
+        width: 42%;
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .popup-player-image-container {
+        height: 300px;
+    }
+
+    .popup-info {
+        padding: 60px 25px 30px;
+    }
+
+    .player-stats {
+        gap: 9px;
+    }
+
+    .stat {
+        padding: 10px 12px;
+    }
+
+    .stat strong {
+        font-size: 22px;
+    }
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 650px) {
+
+    .popup-overlay {
+        align-items: center;
+
+        padding: 12px;
+    }
+
+    .player-popup {
+        width: 100%;
+        max-height: 90vh;
+
+        min-height: 0;
+
+        flex-direction: column;
+
+        overflow-y: auto;
+    }
+
+    .popup-player {
+        width: 100%;
+        min-height: 320px;
+
+        padding: 30px 20px 15px;
+    }
+
+    .popup-player-header h1 {
+        font-size: 36px;
+    }
+
+    .popup-player-image-container {
+        height: 210px;
+    }
+
+    .popup-player-image {
+        transform: scale(1.2);
+    }
+
+    .popup-team {
+        margin-top: 0;
+
+        font-size: 17px;
+    }
+
+    .popup-team img {
+        width: 26px;
+        height: 26px;
+    }
+
+    .popup-info {
+        width: 100%;
+
+        padding: 20px;
+    }
+
+    .popup-stats-title {
+        margin-bottom: 12px;
+    }
+
+    .player-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+
+        gap: 8px;
+    }
+
+    .stat {
+        min-height: 52px;
+
+        padding: 9px 11px;
+    }
+
+    .stat span {
+        font-size: 10px;
+    }
+
+    .stat strong {
+        font-size: 20px;
+    }
+
+    .popup-background-logo {
+        width: 350px;
+        height: 350px;
+
+        right: -100px;
+        bottom: -70px;
+
+        opacity: 0.045;
+    }
+}
+
+
+/* =========================
+   SMALL PHONE
+========================= */
+
+@media (max-width: 420px) {
+
+    .popup-overlay {
+        padding: 8px;
+    }
+
+    .player-popup {
+        max-height: 94vh;
+
+        border-radius: 12px;
+    }
+
+    .popup-player {
+        min-height: 290px;
+
+        padding-top: 25px;
+    }
+
+    .popup-player-header h1 {
+        font-size: 32px;
+    }
+
+    .popup-player-header span {
+        font-size: 10px;
+    }
+
+    .popup-player-image-container {
+        height: 185px;
+    }
+
+    .popup-info {
+        padding: 17px 14px 20px;
+    }
+
+    .player-stats {
+        gap: 7px;
+    }
+
+    .stat {
+        min-height: 48px;
+
+        padding: 8px 10px;
+    }
+
+    .stat span {
+        font-size: 9px;
+    }
+
+    .stat strong {
+        font-size: 18px;
+    }
+
+    .popup-close {
+        top: 10px;
+        right: 10px;
+
+        width: 32px;
+        height: 32px;
+
+        font-size: 21px;
+    }
+}
+
+/* =========================
+   POPUP ANIMATION
+========================= */
+
+.popup-overlay {
+    animation: popupFadeIn 0.25s ease-out;
+}
+
+.player-popup {
+    animation: popupOpen 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes popupFadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes popupOpen {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}

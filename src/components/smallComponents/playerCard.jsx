@@ -1,68 +1,156 @@
 import { useEffect, useState } from "react";
 import "./playerCard.css";
 
-export default function PlayerCard(){
+export default function PlayerCard( selectedPlayer ) {
     const [players, setPlayers] = useState([]);
+    const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     useEffect(() => {
+        aborted = false;
+
         fetch("http://localhost:3000/api/players")
             .then(response => response.json())
             .then(data => {
+                if( !aborted)
                 setPlayers(data);
+            })
+            .catch(error => {
+                console.error("Error loading players:", error);
             });
-    }, []);
 
-    players.sort((a, b) => b.Firepower - a.Firepower);
-    
+        return ()=> {
+            aborted = true;
+        }
+
+    }, [selectedPlayer ]);
+
+    const sortedPlayers = [...players].sort(
+        (a, b) => b.Firepower - a.Firepower
+    );
+
     return (
         <div>
-            {players.map(player => (
-                <div className="PlayerCard" key={player.id}>
-                <div className="player-avatar-container">
+            {sortedPlayers.map(player => (
+                <div
+                    className="PlayerCard"
+                    key={player.id}
+                    onClick={() => setSelectedPlayer(player)}
+                >
+                    <div className="player-avatar-container">
+                        <img
+                            src={player.Image}
+                            alt="Avatar"
+                            className="player-avatar"
+                        />
+                    </div>
+
+                    <p>{player.Name}</p>
+
                     <img
-                        src={player.Image}
-                        alt="Avatar"
-                        className="player-avatar"
+                        src={player.TeamImage}
+                        alt="Team"
+                        className="team-logo"
                     />
+
+                    <p>Rating: {player.Firepower}</p>
                 </div>
+            ))}
 
-                <p>{player.Name}</p>
+            {selectedPlayer && (
+                <div
+                    className="popup-overlay"
+                    onClick={() => setSelectedPlayer(null)}
+                >
+                    <div
+                        className="player-popup"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <button
+                            className="popup-close"
+                            onClick={() => setSelectedPlayer(null)}
+                        >
+                            ×
+                        </button>
 
-                <img
-                    src={player.TeamImage}
-                    alt="Team"
-                    className="team-logo"
-                />
+                        {/* Background team logo */}
+                        <img
+                            src={selectedPlayer.TeamImage}
+                            alt=""
+                            className="popup-background-logo"
+                        />
 
-                <p>Rating: {player.Firepower}</p>
-            </div>
-        ))}
-        </div>
-        
-    )
-}
-/*
-export default function PlayerCard() {
-    return (
-        <div className="PlayerCard">
-            <div className="player-avatar-container">
-                <img
-                    src="https://img-cdn.hltv.org/playerbodyshot/Z1p6r4ccCtZVGSyrYhI55u.png?ixlib=java-2.1.0&w=400&s=2b339fae86806e62359925ab6e03a6db"
-                    alt="Avatar"
-                    className="player-avatar"
-                />
-            </div>
+                        {/* Left side */}
+                        <div className="popup-player">
 
-            <p>Nickname</p>
+                            <div className="popup-player-header">
+                                <h1>{selectedPlayer.Name}</h1>
+                                <span>{selectedPlayer.Role}</span>
+                            </div>
 
-            <img
-                src="https://img-cdn.hltv.org/teamlogo/ywdn4tmAvXfllLeV2SkkvF.png?ixlib=java-2.1.0&w=100&s=e441b77b1cafbca20ba9f667caca56f4"
-                alt="Team"
-                className="team-logo"
-            />
+                            <div className="popup-player-image-container">
+                                <img
+                                    src={selectedPlayer.Image}
+                                    alt={selectedPlayer.Name}
+                                    className="popup-player-image"
+                                />
+                            </div>
 
-            <p>Rating: 0.00</p>
+                            <div className="popup-team">
+                                <img
+                                    src={selectedPlayer.TeamImage}
+                                    alt={selectedPlayer.Team}
+                                />
+
+                                <span>{selectedPlayer.Team}</span>
+                            </div>
+
+                        </div>
+
+                        {/* Right side */}
+                        <div className="popup-info">
+
+                            <div className="popup-stats-title">
+                                PLAYER STATISTICS
+                            </div>
+
+                            <div className="player-stats">
+
+                                <div className="stat">
+                                    <span>Firepower</span>
+                                    <strong>{selectedPlayer.Firepower}</strong>
+                                </div>
+
+                                <div className="stat">
+                                    <span>Entrying</span>
+                                    <strong>{selectedPlayer.Entrying}</strong>
+                                </div>
+
+                                <div className="stat">
+                                    <span>Trading</span>
+                                    <strong>{selectedPlayer.Trading}</strong>
+                                </div>
+
+                                <div className="stat">
+                                    <span>Opening</span>
+                                    <strong>{selectedPlayer.Opening}</strong>
+                                </div>
+
+                                <div className="stat">
+                                    <span>Snipping</span>
+                                    <strong>{selectedPlayer.Snipping}</strong>
+                                </div>
+
+                                <div className="stat">
+                                    <span>Utility</span>
+                                    <strong>{selectedPlayer.Utill}</strong>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
-*/
