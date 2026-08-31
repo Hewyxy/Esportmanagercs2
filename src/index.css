@@ -180,7 +180,10 @@ li {
     width: 100%;
 }
 
-
+.logo{
+    transform: scale(5);
+    margin-left: 50px;
+}
 /* Center / Play */
 
 #senter {
