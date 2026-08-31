@@ -1,28 +1,20 @@
 import { useEffect, useState } from "react";
 import "./playerCard.css";
 
-export default function PlayerCard( selectedPlayer ) {
+export default function PlayerCard() {
     const [players, setPlayers] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     useEffect(() => {
-        aborted = false;
-
         fetch("http://localhost:3000/api/players")
             .then(response => response.json())
             .then(data => {
-                if( !aborted)
                 setPlayers(data);
             })
             .catch(error => {
                 console.error("Error loading players:", error);
             });
-
-        return ()=> {
-            aborted = true;
-        }
-
-    }, [selectedPlayer ]);
+    }, []);
 
     const sortedPlayers = [...players].sort(
         (a, b) => b.Firepower - a.Firepower
