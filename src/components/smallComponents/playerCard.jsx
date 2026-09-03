@@ -23,28 +23,50 @@ export default function PlayerCard() {
     return (
         <div>
             {sortedPlayers.map(player => (
-                <div
-                    className="PlayerCard"
-                    key={player.id}
-                    onClick={() => setSelectedPlayer(player)}
+                <div 
+                    className="PlayerCard" 
+                    key={player.id} 
+                    onClick={() => setSelectedPlayer(player)} 
                 >
-                    <div className="player-avatar-container">
-                        <img
-                            src={player.Image}
-                            alt="Avatar"
-                            className="player-avatar"
-                        />
+                    <div className="player-avatar-container"> 
+                        <img 
+                            src={player.Image} 
+                            alt="Avatar" 
+                            className="player-avatar" 
+                        /> 
+                    </div> 
+
+                    <div className="player-info">
+                        <p className="player-name">{player.Name}</p>
+                        <p className="player-role">{player.Role}</p>
                     </div>
 
-                    <p>{player.Name}</p>
+                    <img 
+                        src={player.TeamImage} 
+                        alt="Team" 
+                        className="team-logo" 
+                    /> 
 
-                    <img
-                        src={player.TeamImage}
-                        alt="Team"
-                        className="team-logo"
-                    />
-
-                    <p>Rating: {player.Firepower}</p>
+                    <div className="player-rating">
+                        <span>FIREPOWER</span>
+                        <strong>{player.Firepower}</strong>
+                    </div>
+                    <div className="player-rating">
+                        <span>ENTRYING</span>
+                        <strong>{player.Entrying}</strong>
+                    </div>
+                    <div className="player-rating">
+                        <span>TRADING</span>
+                        <strong>{player.Trading}</strong>
+                    </div>
+                    <div className="player-rating">
+                        <span>OPENING</span>
+                        <strong>{player.Opening}</strong>
+                    </div>
+                    <div className="player-rating">
+                        <span>UTILLITY</span>
+                        <strong>{player.Utill}</strong>
+                    </div>
                 </div>
             ))}
 

@@ -9,6 +9,7 @@ app.use(express.json());
 
 const db = new DatabaseSync("./database.db");
 
+//Testing Api
 app.get("/api/test", (req, res) => {
     res.json({
         message: "Hello from Backend!",
@@ -16,6 +17,8 @@ app.get("/api/test", (req, res) => {
     });
 });
 
+
+//Gets all the players from the players table
 app.get("/api/players", (req, res) => {
 
     try {
@@ -39,7 +42,7 @@ app.get("/api/players", (req, res) => {
 
 
 
-
+//Backend port
 app.listen(3000, () => {
     console.log("Backend running on http://localhost:3000");
 });
