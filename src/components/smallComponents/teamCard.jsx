@@ -93,7 +93,7 @@ export default function Teams() {
                                         </span>
 
                                         <span className="roster-rating">
-                                            {player.Firepower}
+                                            {player.Rating}
                                         </span>
 
                                     </div>

@@ -17,7 +17,7 @@ export default function PlayerCard() {
     }, []);
 
     const sortedPlayers = [...players].sort(
-        (a, b) => b.Firepower - a.Firepower
+        (a, b) => b.Rating - a.Rating
     );
 
     return (
@@ -67,6 +67,10 @@ export default function PlayerCard() {
                         <span>UTILLITY</span>
                         <strong>{player.Utill}</strong>
                     </div>
+                    <div className="player-rating">
+                        <span>TOTAL</span>
+                        <strong>{player.Rating}</strong>
+                    </div>
                 </div>
             ))}
 
@@ -107,8 +111,12 @@ export default function PlayerCard() {
                                     alt={selectedPlayer.Name}
                                     className="popup-player-image"
                                 />
+                                <span className="popup-player-rating">
+                                    {selectedPlayer.Rating}
+                                </span>
                             </div>
 
+                            
                             <div className="popup-team">
                                 <img
                                     src={selectedPlayer.TeamImage}
