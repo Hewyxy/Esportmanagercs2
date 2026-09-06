@@ -41,6 +41,27 @@ app.get("/api/players", (req, res) => {
 });
 
 
+//Gets all the teams from the teams table
+app.get("/api/teams", (req, res) => {
+
+    try {
+        const teams = db
+            .prepare("SELECT * FROM Teams")
+            .all();
+
+        res.json(teams);
+
+    } catch (error) {
+
+        console.error("SQL error:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+});
+
 
 //Backend port
 app.listen(3000, () => {
