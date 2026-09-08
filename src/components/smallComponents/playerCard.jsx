@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./playerCard.css";
 
-export default function PlayerCard() {
+export default function PlayerCard({ sortBy = "Rating", sortDirection = "desc" }) {
     const [players, setPlayers] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
 
@@ -16,9 +16,15 @@ export default function PlayerCard() {
             });
     }, []);
 
-    const sortedPlayers = [...players].sort(
-        (a, b) => b.Rating - a.Rating
-    );
+    const sortedPlayers = [...players].sort((a, b) => {
+        const firstValue = a[sortBy] ?? "";
+        const secondValue = b[sortBy] ?? "";
+        const comparison = typeof firstValue === "number" && typeof secondValue === "number"
+            ? firstValue - secondValue
+            : String(firstValue).localeCompare(String(secondValue));
+
+        return sortDirection === "asc" ? comparison : -comparison;
+    });
 
     return (
         <div>
