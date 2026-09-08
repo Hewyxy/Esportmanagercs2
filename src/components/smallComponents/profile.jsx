@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+
 export default function Profile() {
   return (
     <div className="profile">

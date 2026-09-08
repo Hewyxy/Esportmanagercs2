@@ -344,23 +344,44 @@
 
 .popup-player-rating {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 12px;
+    right: 12px;
 
-    min-width: 34px;
-    padding: 4px 8px;
+    min-width: 46px;
+    padding: 6px 10px;
 
-    background: var(--accent);
-    color: #000; /* подбери контраст под свой --accent */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: linear-gradient(
+        160deg,
+        var(--accent) 0%,
+        color-mix(in srgb, var(--accent) 70%, black) 100%
+    );
+
+    color: #0a0a0a;
 
     font-family: "Rajdhani", sans-serif;
-    font-size: 18px;
-    font-weight: 700;
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: 0.02em;
 
     text-align: center;
-    border-radius: 6px;
 
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-radius: 10px;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.45),
+        inset 0 1px 0 rgba(255, 255, 255, 0.4),
+        inset 0 -2px 4px rgba(0, 0, 0, 0.25);
+
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
+
+    transform: rotate(-4deg);
+
+    z-index: 3;
 }
 
 /* =========================
