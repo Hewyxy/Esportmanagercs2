@@ -85,15 +85,15 @@ export default function Teams() {
                                         />
 
                                         <span className="roster-name">
-                                            {player.Name}
+                                            {player?.Name|| "None"}
                                         </span>
 
                                         <span className="roster-role">
-                                            {player.Role}
+                                            {player?.Role|| "Empty"}
                                         </span>
 
                                         <span className="roster-rating">
-                                            {player.Rating}
+                                            {player?.Rating|| "--"}
                                         </span>
 
                                     </div>
