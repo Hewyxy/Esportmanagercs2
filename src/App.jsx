@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import viteLogo from './assets/vite.svg'
 import './index.css'
 import Navbar from './components/navbar.jsx'
 import Footer from './components/Footer.jsx'

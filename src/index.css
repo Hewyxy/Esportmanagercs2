@@ -301,8 +301,53 @@ li {
 
 /*Market*/
 
+.market-toolbar {
+    margin: 0 40px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    font-family: "Rajdhani", sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    color: var(--text-secondary);
+}
+
+.market-toolbar select,
+.market-sort-direction {
+    min-height: 38px;
+    padding: 0 12px;
+
+    border: 1px solid var(--border-light);
+    border-radius: 6px;
+    background: var(--panel);
+    color: var(--text-primary);
+
+    font: inherit;
+    text-transform: none;
+    letter-spacing: normal;
+}
+
+.market-sort-direction {
+    cursor: pointer;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.market-toolbar select:focus,
+.market-sort-direction:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+}
+
+.market-sort-direction:hover {
+    background: var(--panel-hover);
+    border-color: var(--accent);
+}
+
 .market {
-    margin: 40px;
+    margin: 16px 40px 40px;
     background-color: var(--panel);
     height: 600px;
 
@@ -350,6 +395,15 @@ li {
 ========================= */
 
 @media (max-width: 768px) {
+
+    .market-toolbar {
+        margin: 0 20px;
+        flex-wrap: wrap;
+    }
+
+    .market {
+        margin: 16px 20px 20px;
+    }
 
     .navbar {
         min-height: 70px;
