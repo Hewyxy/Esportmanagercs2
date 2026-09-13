@@ -1,7 +1,13 @@
+
+import React from "react";
+import CurrentRoaster from "../components/CurrentRoaster";
+
 export default function Roaster() {
     return (
         <div>
-            <h1>Roaster</h1>
-        </div>
+            <CurrentRoaster
+                teamName="Spirit"
+            />
+        </div>  
     );
 }

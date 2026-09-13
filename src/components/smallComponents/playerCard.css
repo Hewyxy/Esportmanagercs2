@@ -1,556 +1,411 @@
-/* =========================
+
+/* =========================================
+   PLAYER LIST
+========================================= */
+
+.player-list {
+    width: 100%;
+}
+
+
+/* =========================================
    PLAYER CARD
-========================= */
+========================================= */
 
 .PlayerCard {
-    width: 100%;
-    min-height: 78px;
-
-    padding: 9px 18px;
-    box-sizing: border-box;
+    position: relative;
 
     display: flex;
     align-items: center;
-    gap: 0;
 
-    background: var(--panel);
-    color: var(--text-primary);
+    min-height: 88px;
 
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+    margin-bottom: 10px;
+    padding: 10px 16px;
 
-    box-shadow: var(--shadow);
+    overflow: hidden;
 
-    margin: 5px;
+    border: 1px solid #202b38;
+    border-radius: 10px;
+
+    width: 100%;
+    background:
+        linear-gradient(
+            90deg,
+            #111821 0%,
+            #101720 100%
+        );
 
     cursor: pointer;
 
     transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
         transform 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
         box-shadow 0.2s ease;
 }
 
-.PlayerCard:hover {
-    background-color: var(--panel-hover);
-    border-color: var(--accent);
+.PlayerCard::before {
+    content: "";
 
-    transform: translateY(-2px);
+    position: absolute;
+
+    left: 0;
+    top: 0;
+    bottom: 0;
+
+    width: 3px;
+
+    background: #3b82f6;
+
+    opacity: 0;
+
+    transition: opacity 0.2s ease;
+}
+
+.PlayerCard:hover {
+    transform: translateX(3px);
+
+    border-color: #344457;
+
+    background: #141d27;
 
     box-shadow:
-        0 6px 16px rgba(0, 0, 0, 0.25),
-        0 0 10px rgba(59, 130, 246, 0.12);
+        0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.PlayerCard:hover::before {
+    opacity: 1;
 }
 
 
-/* =========================
-   PLAYER IMAGE
-========================= */
+/* =========================================
+   RANK
+========================================= */
+
+.player-rank {
+    width: 40px;
+
+    color: #526174;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    text-align: center;
+}
+
+
+/* =========================================
+   AVATAR
+========================================= */
 
 .player-avatar-container {
-    width: 60px;
-    height: 60px;
+    position: relative;
+
+    width: 66px;
+    height: 66px;
 
     flex-shrink: 0;
 
     overflow: hidden;
-    position: relative;
 
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
+    border: 1px solid #293646;
+    border-radius: 8px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #18222e,
+            #0b1016
+        );
 }
 
 .player-avatar {
+    display: block;
+
     width: 100%;
     height: 100%;
 
-    object-fit: contain;
+    object-fit: cover;
 
-    transform: scale(2);
-    transform-origin: top center;
+    transition: transform 0.3s ease;
+}
+
+.PlayerCard:hover .player-avatar {
+    transform: scale(1.06);
 }
 
 
-/* =========================
+/* =========================================
    PLAYER INFO
-========================= */
+========================================= */
 
 .player-info {
+    width: 150px;
+
     margin-left: 15px;
 
-    min-width: 0;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    overflow: hidden;
 }
 
 .player-name {
-    margin: 0;
+    margin: 0 0 6px;
 
-    font-family: "Rajdhani", sans-serif;
-    font-size: 25px;
-    font-weight: 550;
+    overflow: hidden;
 
-    line-height: 1;
+    color: #ffffff;
+
+    font-size: 17px;
+    font-weight: 800;
+
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 .player-role {
-    margin: 5px 0 0;
+    display: inline-block;
 
-    font-family: "Rajdhani", sans-serif;
-    font-size: 14px;
-    font-weight: 600;
+    margin: 0;
 
-    color: var(--text-secondary);
+    padding: 3px 7px;
+
+    border: 1px solid rgba(59, 130, 246, 0.15);
+    border-radius: 4px;
+
+    background: rgba(59, 130, 246, 0.08);
+
+    color: #6fa5ff;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.7px;
 
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+}
 
+
+/* =========================================
+   TEAM
+========================================= */
+
+.player-team {
+    display: flex;
+    align-items: center;
+
+    width: 125px;
+
+    margin-left: 10px;
+
+    gap: 9px;
+}
+
+.team-logo {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+    
+    object-fit: contain;
+}
+
+.player-team span {
+    overflow: hidden;
+
+    color: #a5afbc;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 
-/* =========================
-   TEAM LOGO
-========================= */
+/* =========================================
+   STATS
+========================================= */
 
-.team-logo {
-    width: 32px;
-    height: 32px;
-
-    margin-left: auto;
-    margin-right: 20px;
-
-    object-fit: contain;
-
-    flex-shrink: 0;
-}
-
-
-/* =========================
-   FIREPOWER / RATING
-========================= */
-
-.player-rating {
-    min-width: 80px;
-
+.player-stat {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     justify-content: center;
 
-    font-family: "Rajdhani", sans-serif;
+    width: 78px;
 
-    flex-shrink: 0;
+    text-align: center;
 }
 
-.player-rating span {
-    font-size: 10px;
+.player-stat span,
+.player-total span {
+    margin-bottom: 5px;
+
+    color: #566475;
+
+    font-size: 8px;
     font-weight: 700;
 
-    color: var(--text-secondary);
-
-    letter-spacing: 1px;
+    letter-spacing: 0.7px;
 }
 
-.player-rating strong {
-    margin-top: 1px;
+.player-stat strong {
+    color: #d7dde5;
 
-    font-size: 25px;
+    font-size: 15px;
     font-weight: 700;
-
-    color: var(--accent);
-
-    line-height: 1;
 }
 
-/* =========================
-   PLAYER POPUP OVERLAY
-========================= */
 
-.popup-overlay {
+/* =========================================
+   TOTAL RATING
+========================================= */
+
+.player-total {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    width: 70px;
+
+    margin-left: 8px;
+
+    padding-left: 15px;
+
+    border-left: 1px solid #263241;
+
+    text-align: center;
+}
+
+.player-total strong {
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 900;
+}
+
+
+/* =========================================
+   ARROW
+========================================= */
+
+.player-arrow {
+    margin-left: 10px;
+
+    color: #465466;
+
+    font-size: 21px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.PlayerCard:hover .player-arrow {
+    color: #3b82f6;
+
+    transform: translateX(4px);
+}
+
+
+/* =========================================
+   POPUP OVERLAY
+========================================= */
+
+.player-popup-overlay {
     position: fixed;
+
     inset: 0;
 
-    z-index: 1000;
+    z-index: 9999;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    padding: 20px;
+    padding: 25px;
 
-    background: rgba(5, 8, 12, 0.78);
+    background: rgba(3, 6, 10, 0.82);
 
     backdrop-filter: blur(8px);
+
+    animation: popupFadeIn 0.2s ease;
 }
 
 
-/* =========================
-   PLAYER POPUP
-========================= */
+/* =========================================
+   POPUP
+========================================= */
 
 .player-popup {
     position: relative;
 
-    width: 900px;
-    max-width: 100%;
-    min-height: 520px;
+    width: min(900px, 100%);
 
-    display: flex;
+    min-height: 520px;
 
     overflow: hidden;
 
-    background: var(--panel);
-
-    border: 1px solid var(--border);
+    border: 1px solid #2a3848;
     border-radius: 14px;
 
+    background:
+        linear-gradient(
+            135deg,
+            #111821,
+            #0c1219
+        );
+
     box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.55),
-        0 0 35px rgba(59, 130, 246, 0.08);
+        0 30px 80px rgba(0, 0, 0, 0.55);
+
+    animation: popupSlideIn 0.25s ease;
 }
 
 
-/* =========================
+/* =========================================
    BACKGROUND TEAM LOGO
-========================= */
+========================================= */
 
-.popup-background-logo {
+.player-popup-background-logo {
     position: absolute;
 
-    right: -120px;
+    width: 430px;
+    height: 430px;
+
+    right: -100px;
     bottom: -120px;
 
-    width: 550px;
-    height: 550px;
-
     object-fit: contain;
 
-    opacity: 0.055;
+    opacity: 0.035;
+
+    filter: grayscale(1);
 
     pointer-events: none;
-    user-select: none;
-
-    z-index: 0;
 }
 
 
-/* =========================
-   LEFT PLAYER SECTION
-========================= */
-
-.popup-player {
-    position: relative;
-    z-index: 2;
-
-    width: 45%;
-    min-height: 520px;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    padding: 32px 25px 20px;
-
-    background:
-        radial-gradient(
-            circle at 50% 55%,
-            rgba(59, 130, 246, 0.12),
-            transparent 68%
-        );
-}
-
-
-/* =========================
-   PLAYER HEADER
-========================= */
-
-.popup-player-header {
-    width: 100%;
-
-    text-align: center;
-
-    z-index: 3;
-}
-
-.popup-player-header h1 {
-    margin: 0;
-
-    font-family: "Rajdhani", sans-serif;
-
-    font-size: clamp(34px, 4vw, 48px);
-    font-weight: 700;
-
-    line-height: 1;
-
-    color: var(--text-primary);
-}
-
-.popup-player-header span {
-    display: block;
-
-    margin-top: 7px;
-
-    font-family: "Inter", sans-serif;
-
-    font-size: 12px;
-    font-weight: 600;
-
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-
-    color: var(--accent);
-}
-
-
-/* =========================
-   PLAYER IMAGE
-========================= */
-
-.popup-player-image-container {
-    width: 100%;
-    height: 350px;
-
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-
-    overflow: hidden;
-
-    margin-top: 10px;
-
-    position: relative;
-}
-
-.popup-player-image {
-    width: 100%;
-    height: 100%;
-
-    object-fit: contain;
-    object-position: top center;
-
-    transform: scale(1.15);
-    transform-origin: top center;
-
-    filter: drop-shadow(
-        0 20px 25px rgba(0, 0, 0, 0.45)
-    );
-}
-
-.popup-player-rating {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-
-    min-width: 46px;
-    padding: 6px 10px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background: linear-gradient(
-        160deg,
-        var(--accent) 0%,
-        color-mix(in srgb, var(--accent) 70%, black) 100%
-    );
-
-    color: #0a0a0a;
-
-    font-family: "Rajdhani", sans-serif;
-    font-size: 22px;
-    font-weight: 800;
-    letter-spacing: 0.02em;
-
-    text-align: center;
-
-    border: 2px solid rgba(255, 255, 255, 0.35);
-    border-radius: 10px;
-
-    box-shadow:
-        0 4px 12px rgba(0, 0, 0, 0.45),
-        inset 0 1px 0 rgba(255, 255, 255, 0.4),
-        inset 0 -2px 4px rgba(0, 0, 0, 0.25);
-
-    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.3);
-
-    transform: rotate(-4deg);
-
-    z-index: 3;
-}
-
-/* =========================
-   TEAM
-========================= */
-
-.popup-team {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    gap: 10px;
-    background-color: var(--bg-secondary);
-    border-radius: 10%;
-    margin-top: -5px;
-
-    font-family: "Rajdhani", sans-serif;
-
-    font-size: 19px;
-    font-weight: 600;
-
-    color: var(--text-secondary);
-
-    z-index: 3;
-}
-
-.popup-team img {
-    width: 30px;
-    height: 30px;
-    margin: 5px;
-    object-fit: contain;
-}
-
-.popup-team span {
-    margin-right: 5px;
-}
-
-
-/* =========================
-   RIGHT INFORMATION SECTION
-========================= */
-
-.popup-info {
-    position: relative;
-    z-index: 2;
-
-    flex: 1;
-
-    padding: 65px 40px 40px;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-
-/* =========================
-   STATISTICS TITLE
-========================= */
-
-.popup-stats-title {
-    margin-bottom: 18px;
-
-    font-family: "Rajdhani", sans-serif;
-
-    font-size: 14px;
-    font-weight: 600;
-
-    color: var(--text-muted);
-
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
-}
-
-
-/* =========================
-   STATISTICS GRID
-========================= */
-
-.player-stats {
-    display: grid;
-
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    gap: 12px;
-}
-
-
-/* =========================
-   STAT
-========================= */
-
-.stat {
-    min-height: 62px;
-
-    padding: 12px 16px;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    background: var(--bg-secondary);
-
-    border: 1px solid var(--border);
-    border-radius: 8px;
-
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        transform 0.2s ease;
-}
-
-.stat:hover {
-    background: var(--panel-hover);
-
-    border-color: var(--border-light);
-
-    transform: translateY(-1px);
-}
-
-.stat span {
-    font-family: "Inter", sans-serif;
-
-    font-size: 12px;
-    font-weight: 600;
-
-    color: var(--text-secondary);
-
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-}
-
-.stat strong {
-    font-family: "Rajdhani", sans-serif;
-
-    font-size: 25px;
-    font-weight: 700;
-
-    color: var(--accent);
-}
-
-
-/* =========================
+/* =========================================
    CLOSE BUTTON
-========================= */
+========================================= */
 
-.popup-close {
+.player-popup-close {
     position: absolute;
 
-    top: 15px;
-    right: 15px;
+    top: 18px;
+    right: 20px;
 
-    z-index: 10;
+    z-index: 20;
 
-    width: 36px;
-    height: 36px;
+    width: 34px;
+    height: 34px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 1px solid #2a3848;
+    border-radius: 7px;
 
-    padding: 0;
+    background: #111821;
 
-    background: var(--panel);
-
-    color: var(--text-secondary);
-
-    border: 1px solid var(--border);
-    border-radius: 50%;
+    color: #8d99a8;
 
     font-size: 24px;
     line-height: 1;
@@ -558,235 +413,311 @@
     cursor: pointer;
 
     transition:
-        background-color 0.2s ease,
+        background 0.2s ease,
         color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.player-popup-close:hover {
+    border-color: #3b82f6;
+
+    background: #172131;
+
+    color: #ffffff;
+}
+
+
+/* =========================================
+   POPUP CONTENT
+========================================= */
+
+.player-popup-content {
+    position: relative;
+
+    z-index: 5;
+
+    display: grid;
+
+    grid-template-columns: 42% 58%;
+
+    min-height: 520px;
+}
+
+
+/* =========================================
+   LEFT SIDE
+========================================= */
+
+.player-popup-left {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 35px 30px 25px;
+
+    border-right: 1px solid #202b38;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(59, 130, 246, 0.05),
+            rgba(0, 0, 0, 0)
+        );
+}
+
+.player-popup-header {
+    position: relative;
+
+    z-index: 5;
+}
+
+.player-popup-label {
+    color: #3b82f6;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.player-popup-header h1 {
+    margin: 8px 0 6px;
+
+    color: #ffffff;
+
+    font-size: 38px;
+    font-weight: 900;
+
+    letter-spacing: -1px;
+}
+
+.player-popup-role {
+    color: #7f8da0;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================
+   POPUP PLAYER IMAGE
+========================================= */
+
+.player-popup-image-container {
+    position: relative;
+
+    flex: 1;
+
+    min-height: 280px;
+
+    margin-top: 10px;
+}
+
+.player-popup-image {
+    position: absolute;
+
+    left: 50%;
+    bottom: 0;
+
+    width: 280px;
+    height: 320px;
+
+    transform: translateX(-50%);
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(
+            0 15px 20px rgba(0, 0, 0, 0.5)
+        );
+}
+
+
+/* =========================================
+   POPUP RATING
+========================================= */
+
+.player-popup-rating {
+    position: absolute;
+
+    right: 0;
+    bottom: 25px;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 10px 14px;
+
+    border: 1px solid #293646;
+    border-radius: 8px;
+
+    background: rgba(17, 24, 33, 0.9);
+
+    text-align: center;
+}
+
+.player-popup-rating span {
+    color: #596777;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.player-popup-rating strong {
+    margin-top: 2px;
+
+    color: #ffffff;
+
+    font-size: 27px;
+    font-weight: 900;
+}
+
+
+/* =========================================
+   POPUP TEAM
+========================================= */
+
+.player-popup-team {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #202b38;
+}
+
+.player-popup-team img {
+    width: 40px;
+    height: 40px;
+
+    object-fit: contain;
+}
+
+.player-popup-team div {
+    display: flex;
+    flex-direction: column;
+}
+
+.player-popup-team span {
+    color: #566475;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.player-popup-team strong {
+    margin-top: 3px;
+
+    color: #ffffff;
+
+    font-size: 14px;
+}
+
+
+/* =========================================
+   RIGHT SIDE
+========================================= */
+
+.player-popup-right {
+    padding: 40px 35px;
+}
+
+.player-popup-stats-header span {
+    color: #3b82f6;
+
+    font-size: 9px;
+    font-weight: 800;
+
+    letter-spacing: 2px;
+}
+
+.player-popup-stats-header h2 {
+    margin: 6px 0 25px;
+
+    color: #ffffff;
+
+    font-size: 25px;
+    font-weight: 800;
+}
+
+
+/* =========================================
+   POPUP STATS
+========================================= */
+
+.player-popup-stats {
+    display: grid;
+
+    grid-template-columns: repeat(2, 1fr);
+
+    gap: 10px;
+}
+
+.player-popup-stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    min-height: 72px;
+
+    padding: 13px 15px;
+
+    border: 1px solid #202b38;
+    border-radius: 8px;
+
+    background: #111821;
+
+    transition:
         border-color 0.2s ease,
-        transform 0.2s ease;
+        background 0.2s ease;
 }
 
-.popup-close:hover {
-    background: var(--panel-hover);
+.player-popup-stat:hover {
+    border-color: #344457;
 
-    color: var(--text-primary);
-
-    border-color: var(--accent);
-
-    transform: rotate(90deg);
+    background: #141d27;
 }
 
+.player-popup-stat div {
+    display: flex;
+    flex-direction: column;
+}
 
-/* =========================
-   TABLET
-========================= */
+.player-popup-stat span {
+    color: #d9dee5;
 
-@media (max-width: 800px) {
+    font-size: 12px;
+    font-weight: 700;
+}
 
-    .player-popup {
-        width: 95%;
-        min-height: 480px;
-    }
+.player-popup-stat small {
+    margin-top: 4px;
 
-    .popup-player {
-        width: 42%;
-        padding-left: 15px;
-        padding-right: 15px;
-    }
+    color: #566475;
 
-    .popup-player-image-container {
-        height: 300px;
-    }
+    font-size: 8px;
+}
 
-    .popup-info {
-        padding: 60px 25px 30px;
-    }
+.player-popup-stat strong {
+    color: #ffffff;
 
-    .player-stats {
-        gap: 9px;
-    }
-
-    .stat {
-        padding: 10px 12px;
-    }
-
-    .stat strong {
-        font-size: 22px;
-    }
+    font-size: 21px;
+    font-weight: 900;
 }
 
 
-/* =========================
-   MOBILE
-========================= */
-
-@media (max-width: 650px) {
-
-    .popup-overlay {
-        align-items: center;
-
-        padding: 12px;
-    }
-
-    .player-popup {
-        width: 100%;
-        max-height: 90vh;
-
-        min-height: 0;
-
-        flex-direction: column;
-
-        overflow-y: auto;
-    }
-
-    .popup-player {
-        width: 100%;
-        min-height: 320px;
-
-        padding: 30px 20px 15px;
-    }
-
-    .popup-player-header h1 {
-        font-size: 36px;
-    }
-
-    .popup-player-image-container {
-        height: 210px;
-    }
-
-    .popup-player-image {
-        transform: scale(1.2);
-    }
-
-    .popup-team {
-        margin-top: 0;
-
-        font-size: 17px;
-    }
-
-    .popup-team img {
-        width: 26px;
-        height: 26px;
-    }
-
-    .popup-info {
-        width: 100%;
-
-        padding: 20px;
-    }
-
-    .popup-stats-title {
-        margin-bottom: 12px;
-    }
-
-    .player-stats {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-
-        gap: 8px;
-    }
-
-    .stat {
-        min-height: 52px;
-
-        padding: 9px 11px;
-    }
-
-    .stat span {
-        font-size: 10px;
-    }
-
-    .stat strong {
-        font-size: 20px;
-    }
-
-    .popup-background-logo {
-        width: 350px;
-        height: 350px;
-
-        right: -100px;
-        bottom: -70px;
-
-        opacity: 0.045;
-    }
-}
-
-
-/* =========================
-   SMALL PHONE
-========================= */
-
-@media (max-width: 420px) {
-
-    .popup-overlay {
-        padding: 8px;
-    }
-
-    .player-popup {
-        max-height: 94vh;
-
-        border-radius: 12px;
-    }
-
-    .popup-player {
-        min-height: 290px;
-
-        padding-top: 25px;
-    }
-
-    .popup-player-header h1 {
-        font-size: 32px;
-    }
-
-    .popup-player-header span {
-        font-size: 10px;
-    }
-
-    .popup-player-image-container {
-        height: 185px;
-    }
-
-    .popup-info {
-        padding: 17px 14px 20px;
-    }
-
-    .player-stats {
-        gap: 7px;
-    }
-
-    .stat {
-        min-height: 48px;
-
-        padding: 8px 10px;
-    }
-
-    .stat span {
-        font-size: 9px;
-    }
-
-    .stat strong {
-        font-size: 18px;
-    }
-
-    .popup-close {
-        top: 10px;
-        right: 10px;
-
-        width: 32px;
-        height: 32px;
-
-        font-size: 21px;
-    }
-}
-
-/* =========================
-   POPUP ANIMATION
-========================= */
-
-.popup-overlay {
-    animation: popupFadeIn 0.25s ease-out;
-}
-
-.player-popup {
-    animation: popupOpen 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
+/* =========================================
+   ANIMATIONS
+========================================= */
 
 @keyframes popupFadeIn {
     from {
@@ -798,14 +729,150 @@
     }
 }
 
-@keyframes popupOpen {
+@keyframes popupSlideIn {
     from {
         opacity: 0;
-        transform: translateY(20px) scale(0.96);
+        transform: translateY(15px) scale(0.98);
     }
 
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
+}
+
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 1100px) {
+    .player-stat {
+        width: 65px;
+    }
+
+    .player-info {
+        width: 120px;
+    }
+
+    .player-team {
+        width: 100px;
+    }
+}
+
+
+@media (max-width: 850px) {
+    .PlayerCard {
+        min-height: 78px;
+    }
+
+    .player-team {
+        display: none;
+    }
+
+    .player-stat:nth-of-type(5) {
+        display: none;
+    }
+
+    .player-total {
+        margin-left: auto;
+    }
+
+    .player-popup-content {
+        grid-template-columns: 1fr;
+    }
+
+    .player-popup-left {
+        min-height: 400px;
+
+        border-right: none;
+        border-bottom: 1px solid #202b38;
+    }
+
+    .player-popup-right {
+        padding: 25px;
+    }
+}
+
+
+@media (max-width: 600px) {
+    .PlayerCard {
+        padding: 8px 10px;
+    }
+
+    .player-rank {
+        display: none;
+    }
+
+    .player-avatar-container {
+        width: 55px;
+        height: 55px;
+    }
+
+    .player-info {
+        width: 100px;
+        margin-left: 10px;
+    }
+
+    .player-name {
+        font-size: 14px;
+    }
+
+    .player-stat {
+        display: none;
+    }
+
+    .player-total {
+        width: 55px;
+
+        padding-left: 8px;
+    }
+
+    .player-total strong {
+        font-size: 18px;
+    }
+
+    .player-popup-overlay {
+        padding: 10px;
+    }
+
+    .player-popup-header h1 {
+        font-size: 30px;
+    }
+
+    .player-popup-image {
+        width: 230px;
+        height: 270px;
+    }
+
+    .player-popup-stats {
+        grid-template-columns: 1fr;
+    }
+}
+
+.player-recruit {
+    margin-left: auto; /* прижимает кнопку к правому краю в flex-контейнере */
+    flex-shrink: 0;
+
+    width: 95px;
+    height: 38px;
+
+    border: 1px solid #3b82f6;
+    border-radius: 6px;
+
+    background: #3b82f6;
+    color: white;
+
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.player-recruit:hover {
+    background: #2563eb;
+    border-color: #60a5fa;
+    transform: translateY(-1px);
 }

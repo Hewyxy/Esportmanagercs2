@@ -62,6 +62,23 @@ app.get("/api/teams", (req, res) => {
     }
 });
 
+app.get("/api/players/sameteam/:teamId", (req, res) => {
+
+    const teamId = req.params.teamId;
+
+    try {
+        const players = db
+            .prepare("SELECT * FROM Players WHERE Team = ?")
+            .all(teamName);
+        res.json(players);
+    } catch (error) {
+        console.error("SQL error:", error);
+        res.status(500).json({
+            error: error.message
+        });
+    }
+});
+
 app.get("/api/user", (req, res) => {
 
     try {
@@ -82,7 +99,53 @@ app.get("/api/user", (req, res) => {
     }
 });
 
+app.get("/api/teams/:id", (req, res) => {
 
+    const teamId = req.params.id;
+
+    try {
+        const team = db
+            .prepare("SELECT * FROM Teams WHERE Id = ?")
+            .get(teamId);
+
+        if (!team) {
+            return res.status(404).json({
+                error: "Team not found"
+            });
+        }
+
+        res.json(team);
+
+    } catch (error) {
+
+        console.error("SQL error:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+});
+
+app.get("/api/events", (req, res) => {
+
+    try {
+        const events = db
+            .prepare("SELECT * FROM Events")
+            .all();
+
+        res.json(events);
+
+    } catch (error) {
+
+        console.error("SQL error:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+});
 
 //Backend port
 app.listen(3000, () => {
