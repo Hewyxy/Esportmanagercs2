@@ -1,0 +1,432 @@
+
+.current-roster-section {
+    width: 100%;
+    margin-top: 30px;
+}
+
+
+/* =========================
+   HEADER
+========================= */
+
+.current-roster-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.current-roster-label {
+    display: block;
+    margin-bottom: 5px;
+
+    color: #3b82f6;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.current-roster-header h2 {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.current-roster-count {
+    padding: 7px 12px;
+
+    border: 1px solid #263241;
+    border-radius: 6px;
+
+    background: #111821;
+    color: #9ca8b8;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+/* =========================
+   CONTAINER
+========================= */
+
+.current-roster-container {
+    overflow: hidden;
+
+    border: 1px solid #202b38;
+    border-radius: 12px;
+
+    background: #0f151d;
+}
+
+
+/* =========================
+   TEAM BANNER
+========================= */
+
+.current-roster-banner {
+    padding: 20px 24px;
+
+    border-bottom: 1px solid #202b38;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(59, 130, 246, 0.12),
+            rgba(59, 130, 246, 0)
+        );
+}
+
+.current-roster-banner h3 {
+    margin: 0 0 4px;
+
+    color: #ffffff;
+
+    font-size: 20px;
+}
+
+.current-roster-banner span {
+    color: #697789;
+
+    font-size: 12px;
+}
+
+
+/* =========================
+   GRID
+========================= */
+
+.current-roster-grid {
+    display: grid;
+
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 14px;
+
+    padding: 18px;
+}
+
+
+/* =========================
+   PLAYER CARD
+========================= */
+
+.current-roster-player {
+    position: relative;
+
+    height: 180px;
+
+    overflow: hidden;
+
+    border: 1px solid #263241;
+    border-radius: 10px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #151e28,
+            #0d131a
+        );
+
+    cursor: pointer;
+
+    transition:
+        transform 0.25s ease,
+        border-color 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.current-roster-player:hover {
+    transform: translateY(-5px);
+
+    border-color: #3b82f6;
+
+    box-shadow:
+        0 10px 30px rgba(0, 0, 0, 0.35),
+        0 0 20px rgba(59, 130, 246, 0.08);
+}
+
+
+/* =========================
+   TEAM LOGO BACKGROUND
+========================= */
+
+.current-roster-team-bg {
+    position: absolute;
+
+    width: 170px;
+    height: 170px;
+
+    right: -35px;
+    top: -25px;
+
+    object-fit: contain;
+
+    opacity: 0.06;
+
+    filter: grayscale(1);
+
+    transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+}
+
+.current-roster-player:hover .current-roster-team-bg {
+    transform: scale(1.08);
+
+    opacity: 0.1;
+}
+
+
+/* =========================
+   OVERLAY
+========================= */
+
+.current-roster-card-overlay {
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 1;
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(15, 21, 29, 0.15),
+            rgba(15, 21, 29, 0.65)
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================
+   PLAYER IMAGE
+========================= */
+
+.current-roster-player-image {
+    position: absolute;
+
+    left: 5px;
+    bottom: 0;
+
+    width: 150px;
+    height: 155px;
+
+    z-index: 2;
+
+    overflow: hidden;
+
+    pointer-events: none;
+}
+
+.current-roster-player-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+    object-position: bottom;
+
+    filter: drop-shadow(
+        0 5px 8px rgba(0, 0, 0, 0.45)
+    );
+
+    transition:
+        transform 0.3s ease,
+        filter 0.3s ease;
+}
+
+.current-roster-player:hover
+.current-roster-player-image img {
+    transform: scale(1.05);
+
+    filter: drop-shadow(
+        0 8px 12px rgba(0, 0, 0, 0.55)
+    );
+}
+
+
+/* =========================
+   PLAYER CONTENT
+========================= */
+
+.current-roster-player-content {
+    position: absolute;
+
+    left: 155px;
+    right: 45px;
+    bottom: 18px;
+
+    z-index: 3;
+}
+
+.current-roster-player-content h4 {
+    margin: 5px 0 0;
+
+    color: #ffffff;
+
+    font-size: 22px;
+    font-weight: 800;
+
+    letter-spacing: -0.5px;
+
+    white-space: nowrap;
+}
+
+.current-roster-player-role {
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 4px;
+
+    background: rgba(59, 130, 246, 0.12);
+
+    color: #6fa5ff;
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 0.7px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================
+   RATING
+========================= */
+
+.current-roster-rating {
+    position: absolute;
+
+    top: 14px;
+    right: 15px;
+
+    z-index: 4;
+
+    text-align: right;
+}
+
+.current-roster-rating span {
+    display: block;
+
+    margin-bottom: 1px;
+
+    color: #596777;
+
+    font-size: 8px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.current-roster-rating strong {
+    color: #ffffff;
+
+    font-size: 21px;
+    font-weight: 800;
+}
+
+
+/* =========================
+   ARROW
+========================= */
+
+.current-roster-arrow {
+    position: absolute;
+
+    right: 15px;
+    bottom: 14px;
+
+    z-index: 4;
+
+    color: #4c5a6a;
+
+    font-size: 20px;
+
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.current-roster-player:hover
+.current-roster-arrow {
+    color: #3b82f6;
+
+    transform: translateX(4px);
+}
+
+
+/* =========================
+   EMPTY
+========================= */
+
+.current-roster-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    grid-column: 1 / -1;
+
+    min-height: 140px;
+
+    color: #697789;
+
+    font-size: 14px;
+}
+
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width: 800px) {
+    .current-roster-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+@media (max-width: 500px) {
+    .current-roster-header {
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .current-roster-header h2 {
+        font-size: 23px;
+    }
+
+    .current-roster-banner {
+        padding: 18px;
+    }
+
+    .current-roster-grid {
+        padding: 12px;
+    }
+
+    .current-roster-player {
+        height: 165px;
+    }
+
+    .current-roster-player-image {
+        width: 125px;
+        height: 140px;
+    }
+
+    .current-roster-player-content {
+        left: 125px;
+        bottom: 15px;
+    }
+
+    .current-roster-player-content h4 {
+        font-size: 18px;
+    }
+}
+

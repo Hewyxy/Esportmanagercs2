@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react";
 import "./playerCard.css";
 
-export default function PlayerCard({ sortBy = "Rating", sortDirection = "desc" }) {
+export default function PlayerCard({
+    sortBy = "Rating",
+    sortDirection = "desc"
+}) {
     const [players, setPlayers] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     useEffect(() => {
         fetch("http://localhost:3000/api/players")
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Failed to load players");
+                }
+
+                return response.json();
+            })
             .then(data => {
                 setPlayers(data);
             })
@@ -19,158 +28,284 @@ export default function PlayerCard({ sortBy = "Rating", sortDirection = "desc" }
     const sortedPlayers = [...players].sort((a, b) => {
         const firstValue = a[sortBy] ?? "";
         const secondValue = b[sortBy] ?? "";
-        const comparison = typeof firstValue === "number" && typeof secondValue === "number"
-            ? firstValue - secondValue
-            : String(firstValue).localeCompare(String(secondValue));
 
-        return sortDirection === "asc" ? comparison : -comparison;
+        const comparison =
+            typeof firstValue === "number" &&
+            typeof secondValue === "number"
+                ? firstValue - secondValue
+                : String(firstValue).localeCompare(String(secondValue));
+
+        return sortDirection === "asc"
+            ? comparison
+            : -comparison;
     });
 
     return (
-        <div>
-            {sortedPlayers.map(player => (
-                <div 
-                    className="PlayerCard" 
-                    key={player.id} 
-                    onClick={() => setSelectedPlayer(player)} 
-                >
-                    <div className="player-avatar-container"> 
-                        <img 
-                            src={player.Image} 
-                            alt="Avatar" 
-                            className="player-avatar" 
-                        /> 
-                    </div> 
+        <div className="player-list">
 
-                    <div className="player-info">
-                        <p className="player-name">{player.Name}</p>
-                        <p className="player-role">{player.Role}</p>
+            {sortedPlayers.map((player, index) => (
+                <div
+                    className="PlayerCard"
+                    key={player.id}
+                    onClick={() => setSelectedPlayer(player)}
+                >
+                    {/* Rank */}
+                    <div className="player-rank">
+                        #{index + 1}
                     </div>
 
-                    <img 
-                        src={player.TeamImage} 
-                        alt="Team" 
-                        className="team-logo" 
-                    /> 
+                    {/* Player image */}
+                    <div className="player-avatar-container">
+                        <img
+                            src={player.Image}
+                            alt={player.Name}
+                            className="player-avatar"
+                        />
+                    </div>
+                    
+                    
+                    {/* Player info */}
+                    <div className="player-info">
+                        <p className="player-name">
+                            {player.Name}
+                        </p>
 
-                    <div className="player-rating">
+                        <p className="player-role">
+                            {player.Role}
+                        </p>
+                    </div>
+
+                    {/* Team */}
+                    <div className="player-team">
+                        <img
+                            src={player.TeamImage}
+                            alt={player.Team}
+                            className="team-logo"
+                        />
+
+                        <span>{player.Team}</span>
+                    </div>
+
+                    {/* Stats */}
+                    <div className="player-stat">
                         <span>FIREPOWER</span>
                         <strong>{player.Firepower}</strong>
                     </div>
-                    <div className="player-rating">
+
+                    <div className="player-stat">
                         <span>ENTRYING</span>
                         <strong>{player.Entrying}</strong>
                     </div>
-                    <div className="player-rating">
+
+                    <div className="player-stat">
                         <span>TRADING</span>
                         <strong>{player.Trading}</strong>
                     </div>
-                    <div className="player-rating">
+
+                    <div className="player-stat">
                         <span>OPENING</span>
                         <strong>{player.Opening}</strong>
                     </div>
-                    <div className="player-rating">
-                        <span>UTILLITY</span>
+
+                    <div className="player-stat">
+                        <span>UTILITY</span>
                         <strong>{player.Utill}</strong>
                     </div>
-                    <div className="player-rating">
-                        <span>TOTAL</span>
+
+                    {/* Total rating */}
+                    <div className="player-total">
+                        <span>RATING</span>
                         <strong>{player.Rating}</strong>
                     </div>
+
+                    <div className="player-arrow">
+                        →
+                    </div>
+
+                    <button
+                        className="player-recruit"
+                        onClick={(e) => {
+                            e.stopPropagation(); 
+                            handleRecruit(player);
+                        }}
+                    >
+                        Recruit
+                    </button>
+
                 </div>
             ))}
 
+
+            {/* =========================
+                PLAYER POPUP
+            ========================= */}
+
             {selectedPlayer && (
                 <div
-                    className="popup-overlay"
+                    className="player-popup-overlay"
                     onClick={() => setSelectedPlayer(null)}
                 >
                     <div
                         className="player-popup"
-                        onClick={(e) => e.stopPropagation()}
+                        onClick={e => e.stopPropagation()}
                     >
+
+                        {/* Close */}
                         <button
-                            className="popup-close"
+                            className="player-popup-close"
                             onClick={() => setSelectedPlayer(null)}
                         >
                             ×
                         </button>
 
-                        {/* Background team logo */}
+                        {/* Background logo */}
                         <img
                             src={selectedPlayer.TeamImage}
                             alt=""
-                            className="popup-background-logo"
+                            className="player-popup-background-logo"
                         />
 
-                        {/* Left side */}
-                        <div className="popup-player">
+                        <div className="player-popup-content">
 
-                            <div className="popup-player-header">
-                                <h1>{selectedPlayer.Name}</h1>
-                                <span>{selectedPlayer.Role}</span>
+                            {/* LEFT */}
+                            <div className="player-popup-left">
+
+                                <div className="player-popup-header">
+                                    <span className="player-popup-label">
+                                        PLAYER PROFILE
+                                    </span>
+
+                                    <h1>
+                                        {selectedPlayer.Name}
+                                    </h1>
+
+                                    <span className="player-popup-role">
+                                        {selectedPlayer.Role}
+                                    </span>
+                                </div>
+
+                                <div className="player-popup-image-container">
+                                    <img
+                                        src={selectedPlayer.Image}
+                                        alt={selectedPlayer.Name}
+                                        className="player-popup-image"
+                                    />
+
+                                    <div className="player-popup-rating">
+                                        <span>RATING</span>
+                                        <strong>
+                                            {selectedPlayer.Rating}
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div className="player-popup-team">
+
+                                    <img
+                                        src={selectedPlayer.TeamImage}
+                                        alt={selectedPlayer.Team}
+                                    />
+
+                                    <div>
+                                        <span>TEAM</span>
+                                        <strong>
+                                            {selectedPlayer.Team}
+                                        </strong>
+                                    </div>
+
+                                </div>
+
                             </div>
 
-                            <div className="popup-player-image-container">
-                                <img
-                                    src={selectedPlayer.Image}
-                                    alt={selectedPlayer.Name}
-                                    className="popup-player-image"
-                                />
-                                <span className="popup-player-rating">
-                                    {selectedPlayer.Rating}
-                                </span>
-                            </div>
 
-                            
-                            <div className="popup-team">
-                                <img
-                                    src={selectedPlayer.TeamImage}
-                                    alt={selectedPlayer.Team}
-                                />
+                            {/* RIGHT */}
+                            <div className="player-popup-right">
 
-                                <span>{selectedPlayer.Team}</span>
-                            </div>
-
-                        </div>
-
-                        {/* Right side */}
-                        <div className="popup-info">
-
-                            <div className="popup-stats-title">
-                                PLAYER STATISTICS
-                            </div>
-
-                            <div className="player-stats">
-
-                                <div className="stat">
-                                    <span>Firepower</span>
-                                    <strong>{selectedPlayer.Firepower}</strong>
+                                <div className="player-popup-stats-header">
+                                    <span>PERFORMANCE</span>
+                                    <h2>Player Statistics</h2>
                                 </div>
 
-                                <div className="stat">
-                                    <span>Entrying</span>
-                                    <strong>{selectedPlayer.Entrying}</strong>
-                                </div>
+                                <div className="player-popup-stats">
 
-                                <div className="stat">
-                                    <span>Trading</span>
-                                    <strong>{selectedPlayer.Trading}</strong>
-                                </div>
+                                    <div className="player-popup-stat">
+                                        <div>
+                                            <span>Firepower</span>
+                                            <small>
+                                                Combat efficiency
+                                            </small>
+                                        </div>
 
-                                <div className="stat">
-                                    <span>Opening</span>
-                                    <strong>{selectedPlayer.Opening}</strong>
-                                </div>
+                                        <strong>
+                                            {selectedPlayer.Firepower}
+                                        </strong>
+                                    </div>
 
-                                <div className="stat">
-                                    <span>Snipping</span>
-                                    <strong>{selectedPlayer.Snipping}</strong>
-                                </div>
+                                    <div className="player-popup-stat">
+                                        <div>
+                                            <span>Entrying</span>
+                                            <small>
+                                                Entry performance
+                                            </small>
+                                        </div>
 
-                                <div className="stat">
-                                    <span>Utility</span>
-                                    <strong>{selectedPlayer.Utill}</strong>
+                                        <strong>
+                                            {selectedPlayer.Entrying}
+                                        </strong>
+                                    </div>
+
+                                    <div className="player-popup-stat">
+                                        <div>
+                                            <span>Trading</span>
+                                            <small>
+                                                Trade efficiency
+                                            </small>
+                                        </div>
+
+                                        <strong>
+                                            {selectedPlayer.Trading}
+                                        </strong>
+                                    </div>
+
+                                    <div className="player-popup-stat">
+                                        <div>
+                                            <span>Opening</span>
+                                            <small>
+                                                Opening duels
+                                            </small>
+                                        </div>
+
+                                        <strong>
+                                            {selectedPlayer.Opening}
+                                        </strong>
+                                    </div>
+
+                                    <div className="player-popup-stat">
+                                        <div>
+                                            <span>Snipping</span>
+                                            <small>
+                                                AWP performance
+                                            </small>
+                                        </div>
+
+                                        <strong>
+                                            {selectedPlayer.Snipping}
+                                        </strong>
+                                    </div>
+
+                                    <div className="player-popup-stat">
+                                        <div>
+                                            <span>Utility</span>
+                                            <small>
+                                                Utility usage
+                                            </small>
+                                        </div>
+
+                                        <strong>
+                                            {selectedPlayer.Utill}
+                                        </strong>
+                                    </div>
+
                                 </div>
 
                             </div>
@@ -179,6 +314,8 @@ export default function PlayerCard({ sortBy = "Rating", sortDirection = "desc" }
                     </div>
                 </div>
             )}
+
         </div>
     );
 }
+
