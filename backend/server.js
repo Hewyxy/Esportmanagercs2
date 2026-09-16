@@ -62,17 +62,18 @@ app.get("/api/teams", (req, res) => {
     }
 });
 
-app.get("/api/players/sameteam/:teamId", (req, res) => {
-
-    const teamId = req.params.teamId;
+app.get("/api/players/sameteam/:teamName", (req, res) => {
+    const teamName = req.params.teamName;
 
     try {
         const players = db
             .prepare("SELECT * FROM Players WHERE Team = ?")
             .all(teamName);
+
         res.json(players);
     } catch (error) {
         console.error("SQL error:", error);
+
         res.status(500).json({
             error: error.message
         });
