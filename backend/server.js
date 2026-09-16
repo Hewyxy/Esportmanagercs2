@@ -1,154 +1,27 @@
 const express = require("express");
 const cors = require("cors");
-const { DatabaseSync } = require("node:sqlite");
+
+const playerRoutes = require("./routes/players");
+const teamRoutes = require("./routes/teams");
+const EventRoutes = require("./routes/Events");
+const UserRoutes = require("./routes/Users");
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 
-const db = new DatabaseSync("./database.db");
+app.use("/api/players", playerRoutes);
+app.use("/api/teams", teamRoutes);
+app.use("/api/events", EventRoutes);
+app.use("/api/user", UserRoutes);
 
-//Testing Api
-app.get("/api/test", (req, res) => {
-    res.json({
-        message: "Hello from Backend!",
-        status: "success"
+app.use((req, res) => {
+    res.status(404).json({
+        error: "Not Found"
     });
 });
 
-
-//Gets all the players from the players table
-app.get("/api/players", (req, res) => {
-
-    try {
-
-        const players = db
-            .prepare("SELECT * FROM Players")
-            .all();
-
-        res.json(players);
-
-    } catch (error) {
-
-        console.error("SQL error:", error);
-
-        res.status(500).json({
-            error: error.message
-        });
-
-    }
-});
-
-
-//Gets all the teams from the teams table
-app.get("/api/teams", (req, res) => {
-
-    try {
-        const teams = db
-            .prepare("SELECT * FROM Teams")
-            .all();
-
-        res.json(teams);
-
-    } catch (error) {
-
-        console.error("SQL error:", error);
-
-        res.status(500).json({
-            error: error.message
-        });
-
-    }
-});
-
-app.get("/api/players/sameteam/:teamName", (req, res) => {
-    const teamName = req.params.teamName;
-
-    try {
-        const players = db
-            .prepare("SELECT * FROM Players WHERE Team = ?")
-            .all(teamName);
-
-        res.json(players);
-    } catch (error) {
-        console.error("SQL error:", error);
-
-        res.status(500).json({
-            error: error.message
-        });
-    }
-});
-
-app.get("/api/user", (req, res) => {
-
-    try {
-        const teams = db
-            .prepare("SELECT * FROM User")
-            .all();
-
-        res.json(teams);
-
-    } catch (error) {
-
-        console.error("SQL error:", error);
-
-        res.status(500).json({
-            error: error.message
-        });
-
-    }
-});
-
-app.get("/api/teams/:id", (req, res) => {
-
-    const teamId = req.params.id;
-
-    try {
-        const team = db
-            .prepare("SELECT * FROM Teams WHERE Id = ?")
-            .get(teamId);
-
-        if (!team) {
-            return res.status(404).json({
-                error: "Team not found"
-            });
-        }
-
-        res.json(team);
-
-    } catch (error) {
-
-        console.error("SQL error:", error);
-
-        res.status(500).json({
-            error: error.message
-        });
-
-    }
-});
-
-app.get("/api/events", (req, res) => {
-
-    try {
-        const events = db
-            .prepare("SELECT * FROM Events")
-            .all();
-
-        res.json(events);
-
-    } catch (error) {
-
-        console.error("SQL error:", error);
-
-        res.status(500).json({
-            error: error.message
-        });
-
-    }
-});
-
-//Backend port
 app.listen(3000, () => {
-    console.log("Backend running on http://localhost:3000");
+    console.log("Server running on port 3000");
 });
