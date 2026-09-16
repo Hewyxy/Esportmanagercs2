@@ -1,0 +1,364 @@
+/* =========================
+   PROFILE NAVBAR
+========================= */
+
+.profile {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 6px 10px;
+
+    border-radius: var(--radius);
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.profile:hover {
+    background: var(--panel-hover);
+    transform: translateY(-1px);
+}
+
+.profile-img {
+    width: 38px;
+    height: 38px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 1px solid var(--border);
+}
+
+.profile-name {
+    margin: 0;
+
+    font-family: "Rajdhani", sans-serif;
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.profile-team {
+    margin: 0;
+
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+
+/* =========================
+   PROFILE OVERLAY
+========================= */
+
+.profile-overlay {
+    position: fixed;
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: rgba(0, 0, 0, 0.65);
+
+    backdrop-filter: blur(5px);
+
+    animation: profileFade 0.2s ease;
+}
+
+
+/* =========================
+   PROFILE MODAL
+========================= */
+
+.profile-modal {
+    position: relative;
+
+    width: 400px;
+    max-width: calc(100% - 30px);
+
+    padding: 30px;
+
+    box-sizing: border-box;
+
+    text-align: center;
+
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    box-shadow:
+        0 20px 60px rgba(0, 0, 0, 0.45);
+
+    animation: profileOpen 0.25s ease;
+}
+
+
+/* =========================
+   CLOSE BUTTON
+========================= */
+
+.profile-close {
+    position: absolute;
+
+    top: 12px;
+    right: 12px;
+
+    width: 32px;
+    height: 32px;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--text-secondary);
+
+    font-size: 24px;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+.profile-close:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+}
+
+
+/* =========================
+   PROFILE IMAGE
+========================= */
+
+.profile-modal-img {
+    width: 80px;
+    height: 80px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+
+    border: 2px solid var(--accent);
+
+    margin-bottom: 10px;
+}
+
+
+/* =========================
+   NAME
+========================= */
+
+.profile-modal h2 {
+    margin: 0;
+
+    font-family: "Rajdhani", sans-serif;
+    font-size: 28px;
+}
+
+.profile-modal-team {
+    margin: 3px 0 20px;
+
+    color: var(--text-secondary);
+}
+
+
+/* =========================
+   STATS
+========================= */
+
+.profile-stats {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 15px;
+}
+
+.profile-stats div {
+    padding: 12px;
+
+    background: var(--bg-secondary);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.profile-stats span {
+    display: block;
+
+    margin-bottom: 4px;
+
+    font-size: 10px;
+
+    color: var(--text-muted);
+
+    text-transform: uppercase;
+}
+
+.profile-stats strong {
+    font-family: "Rajdhani", sans-serif;
+
+    font-size: 20px;
+
+    color: var(--accent);
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+.profile-settings,
+.profile-logout {
+    width: 100%;
+
+    padding: 11px;
+
+    margin-top: 8px;
+
+    border-radius: 8px;
+
+    cursor: pointer;
+
+    font-size: 14px;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.profile-settings {
+    background: var(--bg-secondary);
+
+    color: var(--text-primary);
+
+    border: 1px solid var(--border);
+}
+
+.profile-settings:hover {
+    border-color: var(--accent);
+}
+
+.profile-logout {
+    background: transparent;
+
+    color: #ef4444;
+
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.profile-logout:hover {
+    background: rgba(239, 68, 68, 0.08);
+
+    border-color: #ef4444;
+}
+
+
+/* =========================
+   ANIMATIONS
+========================= */
+
+@keyframes profileFade {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes profileOpen {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.97);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* =========================
+   EDITABLE PROFILE INFO
+========================= */
+
+.profile-modal-user,
+.profile-modal-team {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+}
+
+.profile-modal-user h2 {
+    margin: 0;
+
+    font-family: "Rajdhani", sans-serif;
+    font-size: 28px;
+}
+
+.profile-modal-team {
+    margin-top: 2px;
+}
+
+.profile-modal-team p {
+    margin: 0;
+
+    color: var(--text-secondary);
+}
+
+
+/* =========================
+   EDIT BUTTON
+========================= */
+
+.edit-profile-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    padding: 0;
+
+    background: transparent;
+
+    border: none;
+
+    color: var(--text-muted);
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    opacity: 0.6;
+
+    transition:
+        color 0.2s ease,
+        opacity 0.2s ease,
+        transform 0.2s ease;
+}
+
+.edit-profile-btn:hover {
+    color: var(--accent);
+
+    opacity: 1;
+
+    transform: scale(1.1);
+}
