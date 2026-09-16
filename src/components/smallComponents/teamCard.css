@@ -1,12 +1,18 @@
+/* =========================
+   TEAM LIST
+========================= */
+
 .team-wrapper {
-    margin: 8px 15px;
+    margin: 10px 29px;
 }
 
 .teams-list {
     display: flex;
     flex-direction: column;
-    align-items: left; /* ← вот это может центрировать весь .team-wrapper */
+    gap: 8px;
 }
+
+
 /* =========================
    TEAM CARD
 ========================= */
@@ -19,10 +25,11 @@
     align-items: center;
 
     width: 100%;
-    min-height: 78px;
+    min-height: 72px;
 
-    margin: 0;
-    padding: 12px 18px;
+    padding: 10px 18px;
+
+    box-sizing: border-box;
 
     background: var(--panel);
     color: var(--text-primary);
@@ -30,22 +37,55 @@
     border: 1px solid var(--border);
     border-radius: var(--radius);
 
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--shadow);
 
     cursor: pointer;
 
+    overflow: hidden;
+
     transition:
+        transform 0.2s ease,
         background-color 0.2s ease,
         border-color 0.2s ease,
-        transform 0.2s ease,
         box-shadow 0.2s ease;
 }
 
+
+/* Left accent */
+
+.team-card::before {
+    content: "";
+
+    position: absolute;
+    left: 0;
+    top: 0;
+
+    width: 3px;
+    height: 100%;
+
+    background: var(--accent);
+
+    transform: scaleY(0);
+
+    transition: transform 0.2s ease;
+}
+
+
+/* Hover */
+
 .team-card:hover {
     background: var(--panel-hover);
+
     border-color: var(--accent);
 
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.25);
+}
+
+.team-card:hover::before {
+    transform: scaleY(1);
 }
 
 
@@ -54,19 +94,37 @@
 ========================= */
 
 .team-rank {
-    width: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-    margin-right: 15px;
+    width: 38px;
+    height: 38px;
+
+    margin-right: 14px;
 
     flex-shrink: 0;
 
     font-family: "Rajdhani", sans-serif;
-    font-size: 21px;
+    font-size: 20px;
     font-weight: 700;
 
     color: var(--text-secondary);
 
-    text-align: center;
+    background: var(--bg-secondary);
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background-color 0.2s ease;
+}
+
+.team-card:hover .team-rank {
+    color: var(--accent);
+    border-color: var(--accent);
 }
 
 
@@ -75,8 +133,8 @@
 ========================= */
 
 .team-logo {
-    width: 42px;
-    height: 42px;
+    width: 44px;
+    height: 44px;
 
     margin-right: 15px;
 
@@ -84,28 +142,63 @@
 
     object-fit: contain;
 
-    transition: transform 0.25s ease;
+    transition:
+        transform 0.25s ease,
+        filter 0.25s ease;
 }
 
 .team-card:hover .team-logo {
-    transform: scale(1.08);
+    transform: scale(1.1);
 }
 
 
 /* =========================
-   NAME
+   TEAM NAME
 ========================= */
 
 .team-card h3 {
     margin: 0;
 
     font-family: "Rajdhani", sans-serif;
-    font-size: 22px;
+    font-size: 21px;
     font-weight: 700;
 
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    transition: color 0.2s ease;
+}
+
+.team-card:hover h3 {
+    color: var(--accent);
+}
+
+
+/* =========================
+   TEAM INFO
+========================= */
+
+.team-info {
+    display: flex;
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+/* Optional subtitle */
+
+.team-info span {
+    margin-top: 2px;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    color: var(--text-muted);
+
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
 
@@ -114,7 +207,7 @@
 ========================= */
 
 .team-card p {
-    margin: 0 15px 0 auto;
+    margin: 0 18px 0 auto;
 
     font-family: "Rajdhani", sans-serif;
     font-size: 22px;
@@ -123,6 +216,13 @@
     color: var(--accent);
 
     white-space: nowrap;
+
+    transition:
+        transform 0.2s ease;
+}
+
+.team-card:hover p {
+    transform: translateX(-2px);
 }
 
 
@@ -131,33 +231,50 @@
 ========================= */
 
 .team-arrow {
-    width: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 28px;
+    height: 28px;
+
+    flex-shrink: 0;
 
     color: var(--text-secondary);
 
-    font-size: 12px;
+    font-size: 13px;
 
-    transition: transform 0.25s ease;
+    border-radius: 6px;
+
+    transition:
+        color 0.25s ease,
+        background-color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.team-card:hover .team-arrow {
+    color: var(--accent);
+    background: var(--bg-secondary);
 }
 
 .team-wrapper.open .team-arrow {
     color: var(--accent);
+
+    transform: rotate(90deg);
 }
 
 
 /* =========================
-   ROSTER CONTAINER
+   ROSTER
 ========================= */
 
 .team-roster {
     display: grid;
     grid-template-rows: 0fr;
 
-    transition:
-        grid-template-rows 0.35s ease,
-        opacity 0.25s ease;
-
     opacity: 0;
+
+    margin-top: -8px;
 
     background: var(--bg-secondary);
 
@@ -169,6 +286,11 @@
         0
         var(--radius)
         var(--radius);
+
+    transition:
+        grid-template-rows 0.35s ease,
+        opacity 0.25s ease,
+        border-color 0.25s ease;
 }
 
 .team-roster.show {
@@ -179,11 +301,20 @@
     border-color: var(--border);
 }
 
+
+/* =========================
+   ROSTER INNER
+========================= */
+
 .roster-inner {
     min-height: 0;
+
     overflow: hidden;
 
     padding: 0 20px;
+
+    transition:
+        padding 0.3s ease;
 }
 
 .team-roster.show .roster-inner {
@@ -197,15 +328,32 @@
 ========================= */
 
 .roster-inner h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
     margin: 0 0 10px;
 
     font-family: "Rajdhani", sans-serif;
-    font-size: 13px;
-    font-weight: 600;
+    font-size: 12px;
+    font-weight: 700;
 
     color: var(--text-muted);
 
     letter-spacing: 0.15em;
+
+    text-transform: uppercase;
+}
+
+.roster-inner h4::before {
+    content: "";
+
+    width: 18px;
+    height: 2px;
+
+    background: var(--accent);
+
+    border-radius: 2px;
 }
 
 
@@ -214,25 +362,30 @@
 ========================= */
 
 .roster-player {
-    min-height: 52px;
-
     display: flex;
     align-items: center;
+
+    min-height: 50px;
 
     padding: 6px 10px;
 
     border-radius: 8px;
 
     transition:
-        background-color 0.2s ease;
+        background-color 0.2s ease,
+        transform 0.2s ease;
 }
 
 .roster-player:hover {
     background: var(--panel-hover);
+
+    transform: translateX(3px);
 }
 
 
-/* PLAYER AVATAR */
+/* =========================
+   PLAYER AVATAR
+========================= */
 
 .roster-avatar {
     width: 38px;
@@ -243,44 +396,134 @@
     object-fit: contain;
 
     flex-shrink: 0;
+
+    transition: transform 0.2s ease;
+}
+
+.roster-player:hover .roster-avatar {
+    transform: scale(1.05);
 }
 
 
-/* PLAYER NAME */
+/* =========================
+   PLAYER NAME
+========================= */
 
 .roster-name {
     font-family: "Rajdhani", sans-serif;
     font-size: 18px;
     font-weight: 600;
+
+    color: var(--text-primary);
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 
-/* ROLE */
+/* =========================
+   ROLE
+========================= */
 
 .roster-role {
     margin-left: auto;
 
     width: 100px;
 
-    font-size: 12px;
-    font-weight: 600;
+    font-size: 11px;
+    font-weight: 700;
 
     color: var(--text-secondary);
 
     text-transform: uppercase;
+
+    letter-spacing: 0.05em;
 }
 
 
-/* RATING */
+/* =========================
+   RATING
+========================= */
 
 .roster-rating {
     width: 45px;
 
     font-family: "Rajdhani", sans-serif;
-    font-size: 20px;
+    font-size: 19px;
     font-weight: 700;
 
     color: var(--accent);
 
     text-align: right;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 700px) {
+
+    .team-wrapper {
+        margin: 10px 15px;
+    }
+
+    .team-card {
+        min-height: 68px;
+
+        padding: 9px 12px;
+    }
+
+    .team-rank {
+        width: 32px;
+        height: 32px;
+
+        margin-right: 10px;
+
+        font-size: 17px;
+    }
+
+    .team-logo {
+        width: 38px;
+        height: 38px;
+
+        margin-right: 10px;
+    }
+
+    .team-card h3 {
+        font-size: 18px;
+    }
+
+    .team-card p {
+        margin-right: 10px;
+
+        font-size: 19px;
+    }
+
+    .roster-role {
+        display: none;
+    }
+
+    .roster-rating {
+        width: 40px;
+    }
+}
+
+
+/* =========================
+   REDUCED MOTION
+========================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .team-card,
+    .team-logo,
+    .team-rank,
+    .team-arrow,
+    .team-roster,
+    .roster-player,
+    .roster-avatar {
+        transition: none;
+    }
 }
