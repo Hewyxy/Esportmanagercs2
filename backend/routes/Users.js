@@ -24,5 +24,22 @@ router.get("/", (req, res) => {
     }
 });
 
+//Get a user with a specific email from the User table      
+router.get("/:email", (req, res) => {
+    try {
+        const user = db
+            .prepare("SELECT * FROM User WHERE email = ?")
+            .get(req.params.email);
+
+        if (!user) {
+            return res.status(404).json({ error: "User not found" });
+        }
+
+        res.json(user);
+    } catch (error) {
+        console.error("SQL error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
 
 module.exports = router;

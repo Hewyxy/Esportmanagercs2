@@ -24,6 +24,7 @@ router.get("/", (req, res) => {
     }
 });
 
+//Get a team with a specific id
 router.get("/:id", (req, res) => {
 
     const teamId = req.params.id;
