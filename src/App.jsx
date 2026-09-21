@@ -10,6 +10,7 @@ import Ranking from './pages/Ranking'
 import Market from './pages/Market'
 import News from './pages/News'
 import Roaster from './pages/Roaster'
+import Test from './pages/Test'
 
 
 function App() {
@@ -25,6 +26,7 @@ function App() {
         <Route path="/market" element={<Market />} />
         <Route path="/news" element={<News />} />
         <Route path="/roaster" element={<Roaster />} />
+        <Route path="/test" element={<Test />}/>
       </Routes>
       <Footer />
     </BrowserRouter>
