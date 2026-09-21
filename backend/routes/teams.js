@@ -53,5 +53,34 @@ router.get("/:id", (req, res) => {
     }
 });
 
+//Change team name
+router.put("/:id", (req, res) => {
+
+    const teamId = req.params.id;
+    const { Name } = req.body;
+
+
+    try {
+        const result = db
+            .prepare("UPDATE Teams SET Name = ? WHERE Id = ?")
+            .run(Name, teamId);
+        
+        if (result.changes === 0) {
+            return res.status(404).json({
+                error: "Team not found"
+            });
+        }
+        res.json({ message: "Team updated successfully" });
+
+    } catch (error) {
+
+        console.error("SQL error:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
+
+    }
+});
 
 module.exports = router;
