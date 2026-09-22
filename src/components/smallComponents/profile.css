@@ -13,6 +13,11 @@
     border-radius: var(--radius);
 
     cursor: pointer;
+    color: var(--text-primary);
+    font: inherit;
+    text-align: left;
+    background: transparent;
+    border: 0;
 
     transition:
         background-color 0.2s ease,
@@ -361,4 +366,33 @@
     opacity: 1;
 
     transform: scale(1.1);
+}
+
+.profile-field {
+    display: block;
+    margin: 12px 0;
+    text-align: left;
+}
+
+.profile-field span {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.profile-field input {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 12px;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font: inherit;
+}
+
+.profile-field input:focus {
+    outline: none;
+    border-color: var(--accent);
 }
