@@ -396,9 +396,35 @@ export default function Match({ team1Id = 3, team2Id = 2 }) {
 
             {error && <p className="match-error" role="alert">{error}</p>}
             <section className="match-scoreboard">
-                <div className="match-team">{team1?.Logo ? <img className="match-team__logo" src={team1.Logo} alt={`${team1.Name} logo`} /> : <span className="match-team__logo match-team__logo--fallback">{team1?.Name?.slice(0, 2) || "T1"}</span>}<span className="match-team__label">TEAM 1 · #{team1Id}</span><strong>{team1?.Name || "Loading team…"}</strong></div>
+                <div className="match-team">
+                    {team1?.Logo ? <img className="match-team__logo" src={team1.Logo} alt={`${team1.Name} logo`} /> : <span className="match-team__logo match-team__logo--fallback">{team1?.Name?.slice(0, 2) || "T1"}</span>}
+                    <span className="match-team__label">TEAM 1 · #{team1Id}</span>
+                    <strong>{team1?.Name || "Loading team…"}</strong>
+                    <div className="match-roster" aria-label={`${team1?.Name || "Team 1"} roster`}>
+                        <span className="match-roster__title">ROSTER</span>
+                        {team1P.length ? team1P.map(player => (
+                            <div className="match-roster__player" key={player.Id ?? player.Name}>
+                                <span>{player.Name}</span>
+                                <span className="match-roster__rating">{player.Rating}</span>
+                            </div>
+                        )) : <span className="match-roster__loading">Loading players…</span>}
+                    </div>
+                </div>
                 <div className="match-scoreboard__vs">VS</div>
-                <div className="match-team match-team--right">{team2?.Logo ? <img className="match-team__logo" src={team2.Logo} alt={`${team2.Name} logo`} /> : <span className="match-team__logo match-team__logo--fallback">{team2?.Name?.slice(0, 2) || "T2"}</span>}<span className="match-team__label">TEAM 2 · #{team2Id}</span><strong>{team2?.Name || "Loading team…"}</strong></div>
+                <div className="match-team match-team--right">
+                    {team2?.Logo ? <img className="match-team__logo" src={team2.Logo} alt={`${team2.Name} logo`} /> : <span className="match-team__logo match-team__logo--fallback">{team2?.Name?.slice(0, 2) || "T2"}</span>}
+                    <span className="match-team__label">TEAM 2 · #{team2Id}</span>
+                    <strong>{team2?.Name || "Loading team…"}</strong>
+                    <div className="match-roster" aria-label={`${team2?.Name || "Team 2"} roster`}>
+                        <span className="match-roster__title">ROSTER</span>
+                        {team2P.length ? team2P.map(player => (
+                            <div className="match-roster__player" key={player.Id ?? player.Name}>
+                                <span>{player.Name}</span>
+                                <span className="match-roster__rating">{player.Rating}</span>
+                            </div>
+                        )) : <span className="match-roster__loading">Loading players…</span>}
+                    </div>
+                </div>
             </section>
 
             <button
