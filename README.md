@@ -1,21 +1,126 @@
-<<<<<<< HEAD
-# React + Vite
+<div align="center">
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+# CS2 Esports Manager
 
-Currently, two official plugins are available:
+**Build your team. Follow the scene. Compete in the world of Counter-Strike 2.**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+A browser-based esports manager simulator, built with React and Vite, with an Express and SQLite API.
 
-## React Compiler
+<br />
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+![React](https://img.shields.io/badge/React-19-149eca?logo=react&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-8-646cff?logo=vite&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-required-339933?logo=nodedotjs&logoColor=white)
+![License](https://img.shields.io/badge/License-not_specified-lightgrey)
 
-## Expanding the Oxlint configuration
+</div>
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
-=======
-# Esportmanagercs2
-Online version of CS2 esport manager simulator where everything based on a real HLTV.org numbers
->>>>>>> dbda2c24b846e808a0da512711c7149f6097cceb
+---
+
+## About
+
+CS2 Esports Manager is an in-progress Counter-Strike 2 esports manager simulator. The project brings team management and esports information together in one web app, with a React frontend and a small REST API backed by SQLite.
+
+## Features
+
+- Browse tournament listings from the API.
+- Explore ranking, news, market, and roster sections.
+- View and edit your profile name and team name; profile edits are saved in your browser.
+- Serve player, team, event, and user data through the backend API.
+
+> The project is under active development. Some pages and game features may still be incomplete.
+
+## Tech stack
+
+| Part | Technologies |
+| --- | --- |
+| Frontend | React 19, Vite 8, React Router |
+| Backend | Node.js, Express 5 |
+| Database | SQLite (`better-sqlite3`, `sqlite3`) |
+
+## Getting started
+
+### Requirements
+
+- Node.js and npm
+
+### 1. Install frontend dependencies
+
+From the project root:
+
+```bash
+npm install
+```
+
+### 2. Install backend dependencies
+
+```bash
+cd backend
+npm install
+cd ..
+```
+
+### 3. Start the API
+
+```bash
+cd backend
+node server.js
+```
+
+The API starts at `http://localhost:3000`.
+
+### 4. Start the frontend
+
+In another terminal, from the project root:
+
+```bash
+npm run dev
+```
+
+Open the local URL printed by Vite in your browser. The tournament page requests data from `http://localhost:3000/api/events`, so start the API before using it.
+
+## API routes
+
+| Route | Purpose |
+| --- | --- |
+| `GET /api/events` | List events |
+| `GET /api/teams` | Team endpoints |
+| `GET /api/players` | Player endpoints |
+| `GET /api/user` | User endpoints |
+
+See the route files in `backend/routes/` for the available methods and request details.
+
+## Project structure
+
+```text
+.
+├── backend/
+│   ├── db/             # SQLite database connection
+│   ├── gameLogic/      # Game logic
+│   ├── routes/         # Express API routes
+│   └── server.js       # API entry point
+├── public/             # Public static assets
+└── src/
+    ├── components/     # Shared UI components
+    ├── pages/          # App pages
+    └── App.jsx         # Routes and app shell
+```
+
+## Development commands
+
+Run these from the project root:
+
+```bash
+npm run dev       # Start Vite
+npm run build     # Create a production frontend build
+npm run preview   # Preview the production build
+npm run lint      # Run Oxlint
+```
+
+## Contributing
+
+Contributions and suggestions are welcome. Open an issue to discuss a change, or submit a pull request with a clear description of what you improved.
+
+## License
+
+No license has been specified yet. Until one is added, all rights are reserved by the copyright holder.
