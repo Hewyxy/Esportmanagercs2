@@ -20,26 +20,30 @@ export default function Market() {
     return (
         <div>
             <h1>Market</h1>
-            <div className="market-toolbar">
-                <label htmlFor="market-sort">Sort by</label>
-                <select
-                    id="market-sort"
-                    value={sortBy}
-                    onChange={(event) => setSortBy(event.target.value)}
-                >
+            <div className="market-toolbar" aria-label="Market sorting controls">
+                <span className="market-sort-label">Sort players</span>
+                <div className="market-sort-options" role="group" aria-label="Sort players by">
                     {sortOptions.map((option) => (
-                        <option key={option.value} value={option.value}>
+                        <button
+                            key={option.value}
+                            className={`market-sort-option${sortBy === option.value ? " is-active" : ""}`}
+                            type="button"
+                            aria-pressed={sortBy === option.value}
+                            onClick={() => setSortBy(option.value)}
+                        >
                             {option.label}
-                        </option>
+                        </button>
                     ))}
-                </select>
+                </div>
                 <button
                     className="market-sort-direction"
                     type="button"
                     onClick={() => setSortDirection((direction) => direction === "asc" ? "desc" : "asc")}
                     aria-label={`Sort ${sortDirection === "asc" ? "descending" : "ascending"}`}
+                    title={`Currently ${sortDirection === "asc" ? "ascending" : "descending"}`}
                 >
-                    {sortDirection === "asc" ? "Ascending ↑" : "Descending ↓"}
+                    <span aria-hidden="true">{sortDirection === "asc" ? "↑" : "↓"}</span>
+                    <span>{sortDirection === "asc" ? "Ascending" : "Descending"}</span>
                 </button>
             </div>
             <div className="market">
