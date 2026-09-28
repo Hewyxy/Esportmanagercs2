@@ -1,36 +1,86 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import "./profile.css";
 
-const PROFILE_KEY = "esportmanager-profile";
-const DEFAULT_PROFILE = { name: "John Doe", team: "Cool Team" };
-
-function readProfile() {
-    try {
-        return { ...DEFAULT_PROFILE, ...JSON.parse(localStorage.getItem(PROFILE_KEY) || "{}") };
-    } catch {
-        return DEFAULT_PROFILE;
-    }
-}
+const EMPTY_PROFILE = { name: "Loading…", team: "" };
+const PROFILE_URL = "http://localhost:3000/api/user/profile/0";
 
 export default function Profile() {
     const [isOpen, setIsOpen] = useState(false);
-    const [profile, setProfile] = useState(readProfile);
+    const [profile, setProfile] = useState(EMPTY_PROFILE);
     const [draft, setDraft] = useState(profile);
+    const [error, setError] = useState("");
+    const [isSaving, setIsSaving] = useState(false);
+    const lastProfileEvent = useRef(0);
+
+    useEffect(() => {
+        let cancelled = false;
+
+        fetch(PROFILE_URL)
+            .then(async response => {
+                const data = await response.json();
+                if (!response.ok) throw new Error(data.error || "Could not load profile");
+                return data;
+            })
+            .then(data => {
+                if (cancelled || lastProfileEvent.current) return;
+                const loaded = { name: data.Username || "No Name", team: data.TeamName || "No Name" };
+                setProfile(loaded);
+                setDraft(loaded);
+            })
+            .catch(fetchError => { if (!cancelled) setError(fetchError.message); });
+
+        const onProfileUpdated = event => {
+            lastProfileEvent.current = Date.now();
+            const updated = { name: event.detail.username, team: event.detail.teamName };
+            setProfile(updated);
+            setDraft(updated);
+        };
+
+        window.addEventListener("profile-updated", onProfileUpdated);
+        return () => {
+            cancelled = true;
+            window.removeEventListener("profile-updated", onProfileUpdated);
+        };
+    }, []);
 
     const openProfile = () => {
         setDraft(profile);
+        setError("");
         setIsOpen(true);
     };
 
-    const saveProfile = () => {
-        const updated = {
-            name: draft.name.trim() || DEFAULT_PROFILE.name,
-            team: draft.team.trim() || DEFAULT_PROFILE.team,
-        };
-        setProfile(updated);
-        localStorage.setItem(PROFILE_KEY, JSON.stringify(updated));
-        setIsOpen(false);
+    const saveProfile = async () => {
+        const username = draft.name.trim();
+        const teamName = draft.team.trim();
+        if (!username || !teamName) {
+            setError("Enter both your nickname and team name.");
+            return;
+        }
+
+        setIsSaving(true);
+        setError("");
+        try {
+            const response = await fetch(PROFILE_URL, {
+                method: "PUT",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ username, teamName }),
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.error || "Could not save profile");
+
+            const updated = { name: data.username, team: data.teamName };
+            setProfile(updated);
+            setDraft(updated);
+            setIsOpen(false);
+            window.dispatchEvent(new CustomEvent("profile-updated", {
+                detail: { username: data.username, teamName: data.teamName },
+            }));
+        } catch (saveError) {
+            setError(saveError.message);
+        } finally {
+            setIsSaving(false);
+        }
     };
 
     return (
@@ -50,11 +100,12 @@ export default function Profile() {
                         <img src="/src/assets/profile.png" alt="Profile" className="profile-modal-img" />
 
                         <label className="profile-field">
-                            <span>Your name</span>
+                                <span>Nickname</span>
                             <input
                                 value={draft.name}
                                 onChange={(e) => setDraft({ ...draft, name: e.target.value })}
-                                maxLength={40}
+                                maxLength={32}
+                                required
                                 autoFocus
                             />
                         </label>
@@ -63,7 +114,8 @@ export default function Profile() {
                             <input
                                 value={draft.team}
                                 onChange={(e) => setDraft({ ...draft, team: e.target.value })}
-                                maxLength={40}
+                                maxLength={48}
+                                required
                             />
                         </label>
 
@@ -71,7 +123,10 @@ export default function Profile() {
                             <div><span>Balance</span><strong>$10,000</strong></div>
                             <div><span>Reputation</span><strong>100</strong></div>
                         </div>
-                        <button className="profile-settings" onClick={saveProfile}>Save changes</button>
+                        {error && <p className="profile-error" role="alert">{error}</p>}
+                        <button className="profile-settings" onClick={saveProfile} disabled={isSaving}>
+                            {isSaving ? "Saving…" : "Save changes"}
+                        </button>
                         <button className="profile-logout" onClick={() => setIsOpen(false)}>Cancel</button>
                     </div>
                 </div>,

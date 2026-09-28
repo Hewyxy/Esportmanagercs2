@@ -6,6 +6,9 @@ const playerRoutes = require("./routes/players");
 const teamRoutes = require("./routes/teams");
 const EventRoutes = require("./routes/Events");
 const UserRoutes = require("./routes/Users");
+const MathesRoutes = require("./routes/Matches");
+const TournamnetMathesRoutes = require("./routes/TournamentMatches");
+const TournamnetTeamsRoutes = require("./routes/TournamentTeams");
 
 const app = express();
 
@@ -18,6 +21,9 @@ app.use("/api/players", playerRoutes);
 app.use("/api/teams", teamRoutes);
 app.use("/api/events", EventRoutes);
 app.use("/api/user", UserRoutes);
+app.use("/api/matches", MathesRoutes);
+app.use("/api/TournamentMatches", TournamnetMathesRoutes);
+app.use("/api/TournamentTeams", TournamnetTeamsRoutes);
 
 //404 Handler
 app.use((req, res) => {

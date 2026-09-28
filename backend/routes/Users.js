@@ -3,6 +3,53 @@ const db = require('../db/database');
 
 const router = express.Router();
 
+// The local game profile is stored in the reserved user row with id 0.
+router.get("/profile/:id", (req, res) => {
+    if (req.params.id !== "0") {
+        return res.status(404).json({ error: "Profile not found" });
+    }
+
+    try {
+        const profile = db.prepare("SELECT id, Username, TeamName FROM User WHERE id = 0").get();
+        if (!profile) return res.status(404).json({ error: "Profile not found" });
+        res.json(profile);
+    } catch (error) {
+        console.error("SQL error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+router.put("/profile/0", (req, res) => {
+    const username = typeof req.body.username === "string" ? req.body.username.trim() : "";
+    const teamName = typeof req.body.teamName === "string" ? req.body.teamName.trim() : "";
+
+    if (!username || !teamName) {
+        return res.status(400).json({ error: "Nickname and team name are required" });
+    }
+
+    try {
+        const saveProfile = db.transaction(() => {
+            const existingProfile = db.prepare("SELECT id FROM User WHERE id = 0").get();
+            if (existingProfile) {
+                db.prepare("UPDATE User SET Username = ?, TeamName = ? WHERE id = 0").run(username, teamName);
+            } else {
+                db.prepare("INSERT INTO User (id, Username, TeamName) VALUES (0, ?, ?)").run(username, teamName);
+            }
+
+            const team = db.prepare("UPDATE Teams SET Name = ? WHERE Id = 1").run(teamName);
+            if (team.changes === 0) {
+                db.prepare("INSERT INTO Teams (Id, Name, Trophy, Points, Logo) VALUES (1, ?, 0, 0, NULL)").run(teamName);
+            }
+        });
+        saveProfile();
+
+        res.json({ id: 0, username, teamName });
+    } catch (error) {
+        console.error("SQL error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 //Gets all the events from the events table
 router.get("/", (req, res) => {
 

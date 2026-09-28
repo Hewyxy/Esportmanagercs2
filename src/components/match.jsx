@@ -241,6 +241,7 @@ export default function Match({ team1Id = 3, team2Id = 2 }) {
     const [error, setError] = useState("");
     const roundFeedRefs = useRef({});
     const followRoundFeeds = useRef([]);
+    const backgroundMatchKey = useRef(null);
 
     useEffect(() => {
         Object.entries(roundFeedRefs.current).forEach(([index, element]) => {
@@ -331,7 +332,6 @@ export default function Match({ team1Id = 3, team2Id = 2 }) {
     // Start match
 
     async function startMatch() {
-
         if (
             !team1 ||
             !team2 ||
@@ -359,23 +359,51 @@ export default function Match({ team1Id = 3, team2Id = 2 }) {
             Players: team2P
         };
 
+        const isPlayerMatch = team1.Id === 1 || team2.Id === 1;
 
         setMatch(null);
 
 
         try {
-        await simulateMatch(
-            team1Stack,
-            team2Stack,
+            const result = await simulateMatch(
+                team1Stack,
+                team2Stack,
 
-            (updatedMatch) => {
-                followRoundFeeds.current = updatedMatch.maps.map((_, index) => {
-                    const feed = roundFeedRefs.current[index];
-                    return !feed || feed.scrollHeight - feed.scrollTop - feed.clientHeight < 48;
-                });
-                setMatch(updatedMatch);
-            }
+                (updatedMatch) => {
+                    // Matches without the player's team still simulate and get
+                    // saved, but their round feed stays in the background
+                    if (!isPlayerMatch) return;
+
+                    followRoundFeeds.current = updatedMatch.maps.map((_, index) => {
+                        const feed = roundFeedRefs.current[index];
+
+                        return !feed ||
+                            feed.scrollHeight - feed.scrollTop - feed.clientHeight < 48;
+                    });
+
+                    setMatch(updatedMatch);
+                }
         );
+            const response = await fetch("http://localhost:3000/api/matches/add", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    team1Id: result.team1.id,
+                    team2Id: result.team2.id,
+                    score1: result.finalScore.team1,
+                    score2: result.finalScore.team2,
+                    winnerId:
+                        result.finalScore.team1 > result.finalScore.team2
+                            ? result.team1.id
+                            : result.team2.id
+                })
+            });
+            const savedMatch = await response.json();
+            if (!response.ok) {
+                throw new Error(savedMatch.error || "The match history could not be saved.");
+            }
         } catch (error) {
             setError(error.message || "The match could not be simulated.");
         } finally {
@@ -383,6 +411,35 @@ export default function Match({ team1Id = 3, team2Id = 2 }) {
         }
     }
 
+    useEffect(() => {
+        if (
+            !team1 ||
+            !team2 ||
+            team1.Id === 1 ||
+            team2.Id === 1 ||
+            team1P.length === 0 ||
+            team2P.length === 0
+        ) {
+            return;
+        }
+
+        const key = `${team1.Id}-${team2.Id}`;
+        if (backgroundMatchKey.current === key) return;
+
+        backgroundMatchKey.current = key;
+        void startMatch();
+    }, [team1, team2, team1P, team2P]);
+
+
+    if (!team1 || !team2) {
+        return null;
+    }
+
+    // Only fixtures involving the user's team (Id 1) get a visible match page.
+    // Other fixtures are simulated automatically and saved in the background.
+    if (team1.Id !== 1 && team2.Id !== 1) {
+        return null;
+    }
 
     return (
 
