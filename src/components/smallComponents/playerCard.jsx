@@ -9,7 +9,7 @@ export default function PlayerCard({
     const [selectedPlayer, setSelectedPlayer] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/players")
+        fetch("http://localhost:3000/api/players/sameteam/None")
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Failed to load players");

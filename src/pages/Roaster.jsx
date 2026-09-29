@@ -13,12 +13,14 @@ export default function Roaster() {
             .catch(error => console.error("Error fetching team:", error));
     }, []);
 
+    
+
     const teamName = team.Name || "";
 
     return (
         <div>
             <CurrentRoaster
-                teamName="Falcons"
+                teamName={team.Name}
             />
         </div>  
     );
