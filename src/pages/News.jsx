@@ -1,7 +1,9 @@
+import NewsWindow from "../components/newsWindow.jsx"; 
+
 export default function Profile() {
     return (
         <div>
-            <h1>Profile</h1>
+            <NewsWindow />
         </div>
     );
 }

@@ -1,6 +1,16 @@
 /* =========================
    TEAM LIST
 ========================= */
+.ranikng {
+    text-align: center;
+
+    margin: 25px 0 20px;
+
+    font-size: 28px;
+    font-weight: 600;
+
+    color: var(--text-primary);
+}
 
 .team-wrapper {
     margin: 12px 29px;
