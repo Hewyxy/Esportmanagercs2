@@ -7,7 +7,7 @@ const sleep = (ms) =>
     new Promise(resolve => setTimeout(resolve, ms));
 
 
-async function simulateMatch(team1, team2, onUpdate) {
+async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
 
     const match = {
         team1,
@@ -151,7 +151,7 @@ async function simulateMatch(team1, team2, onUpdate) {
 
                 onUpdate(liveMatch);
 
-                await sleep(500);
+                if (showLiveFeed) await sleep(500);
             }
 
 
@@ -182,7 +182,7 @@ async function simulateMatch(team1, team2, onUpdate) {
 
             onUpdate(liveMatch);
 
-            await sleep(1000);
+            if (showLiveFeed) await sleep(1000);
         }
 
 
@@ -209,9 +209,8 @@ async function simulateMatch(team1, team2, onUpdate) {
             structuredClone(match)
         );
 
-        await sleep(1500);
+        if (showLiveFeed) await sleep(1500);
     }
-
 
     return match;
 }
@@ -368,22 +367,21 @@ export default function Match({ team1Id = 3, team2Id = 2 }) {
             const result = await simulateMatch(
                 team1Stack,
                 team2Stack,
-
                 (updatedMatch) => {
-                    // Matches without the player's team still simulate and get
-                    // saved, but their round feed stays in the background
+                    // Background matches skip rendering and animation delays.
                     if (!isPlayerMatch) return;
 
                     followRoundFeeds.current = updatedMatch.maps.map((_, index) => {
                         const feed = roundFeedRefs.current[index];
-
                         return !feed ||
                             feed.scrollHeight - feed.scrollTop - feed.clientHeight < 48;
                     });
 
                     setMatch(updatedMatch);
-                }
-        );
+                },
+                isPlayerMatch
+            );
+
             const response = await fetch("http://localhost:3000/api/matches/add", {
                 method: "POST",
                 headers: {
@@ -405,6 +403,7 @@ export default function Match({ team1Id = 3, team2Id = 2 }) {
                 throw new Error(savedMatch.error || "The match history could not be saved.");
             }
         } catch (error) {
+            console.error("Could not simulate or save match:", error);
             setError(error.message || "The match could not be simulated.");
         } finally {
             setIsSimulating(false);
