@@ -84,7 +84,7 @@ export default function FirstTimeLogIn() {
         />
         {profileError && <p className="profile-setup__error" role="alert">{profileError}</p>}
         <button type="submit" disabled={savingProfile}>
-          {savingProfile ? 'Сохраняем…' : 'Start'}
+          {savingProfile ? 'Saving...' : 'Start'}
         </button>
       </form>
     </div>

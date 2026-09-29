@@ -52,6 +52,17 @@
     font-weight: 600;
 }
 
+.current-roster-team-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.current-roster-team-logo {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+}
 
 /* =========================
    CONTAINER

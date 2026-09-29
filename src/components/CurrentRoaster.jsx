@@ -1,14 +1,15 @@
-
 import React, { useEffect, useState } from "react";
 import "./CurrentRoaster.css";
 
 export default function CurrentRoaster({ teamName }) {
     const [players, setPlayers] = useState([]);
+    const [teamImage, setTeamImage] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (!teamName) {
             setPlayers([]);
+            setTeamImage(null);
             setLoading(false);
             return;
         }
@@ -28,9 +29,11 @@ export default function CurrentRoaster({ teamName }) {
                 const data = await response.json();
 
                 setPlayers(data);
+                setTeamImage(data[0]?.TeamImage || null);
             } catch (error) {
                 console.error("Error loading players:", error);
                 setPlayers([]);
+                setTeamImage(null);
             } finally {
                 setLoading(false);
             }
@@ -58,15 +61,30 @@ export default function CurrentRoaster({ teamName }) {
             <div className="current-roster-container">
 
                 <div className="current-roster-banner">
-                    <div>
-                        <h3>{teamName}</h3>
-                        <span>Active Roster</span>
+
+                    <div className="current-roster-team-info">
+
+                        {teamImage && (
+                            <img
+                                className="current-roster-team-logo"
+                                src={teamImage}
+                                alt={`${teamName} logo`}
+                            />
+                        )}
+
+                        <div>
+                            <h3>{teamName}</h3>
+                            <span>Active Roster</span>
+                        </div>
+
                     </div>
+
                 </div>
 
                 <div className="current-roster-grid">
 
                     {loading ? (
+
                         <div className="current-roster-empty">
                             Loading roster...
                         </div>
@@ -78,6 +96,7 @@ export default function CurrentRoaster({ teamName }) {
                                 className="current-roster-player"
                                 key={player.id}
                             >
+
                                 {/* Team logo background */}
                                 {player.TeamImage && (
                                     <img
@@ -117,6 +136,7 @@ export default function CurrentRoaster({ teamName }) {
                                 <div className="current-roster-arrow">
                                     →
                                 </div>
+
                             </div>
                         ))
 
@@ -125,10 +145,13 @@ export default function CurrentRoaster({ teamName }) {
                         <div className="current-roster-empty">
                             No players found for {teamName}.
                         </div>
+
                     )}
 
                 </div>
+
             </div>
+
         </section>
     );
 }
