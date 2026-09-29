@@ -1,889 +1,945 @@
 :root {
-    /* Background */
-    --bg-main: #0B0F14;
-    --bg-secondary: #0F141B;
+  /* Background */
+  --bg-main: #0b0f14;
+  --bg-secondary: #0f141b;
 
-    /* Panels */
-    --panel: #111821;
-    --panel-hover: #171F2A;
-    --panel-active: #1C2633;
+  /* Panels */
+  --panel: #111821;
+  --panel-hover: #171f2a;
+  --panel-active: #1c2633;
 
-    /* Borders */
-    --border: #222D3A;
-    --border-light: #2C3948;
+  /* Borders */
+  --border: #222d3a;
+  --border-light: #2c3948;
 
-    /* Text */
-    --text-primary: #E8EDF2;
-    --text-secondary: #8995A3;
-    --text-muted: #5D6977;
+  /* Text */
+  --text-primary: #e8edf2;
+  --text-secondary: #8995a3;
+  --text-muted: #5d6977;
 
-    /* Accent */
-    --accent: #3B82F6;
-    --accent-hover: #60A5FA;
-    --accent-dark: #2563EB;
+  /* Accent */
+  --accent: #3b82f6;
+  --accent-hover: #60a5fa;
+  --accent-dark: #2563eb;
 
-    /* Status */
-    --success: #22C55E;
-    --warning: #F59E0B;
-    --danger: #EF4444;
+  /* Status */
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --danger: #ef4444;
 
-    /* Player stats */
-    --rating-high: #22C55E;
-    --rating-medium: #F59E0B;
-    --rating-low: #EF4444;
+  /* Player stats */
+  --rating-high: #22c55e;
+  --rating-medium: #f59e0b;
+  --rating-low: #ef4444;
 
-    /* Effects */
-    --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
-    --radius: 10px;
+  /* Effects */
+  --shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+  --radius: 10px;
 }
-
 
 /* =========================
    GLOBAL
 ========================= */
 
 .page {
-    animation: fadeIn 0.8s ease-out;
+  animation: fadeIn 0.8s ease-out;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
+  from {
+    opacity: 0;
+  }
 
-    to {
-        opacity: 1;
-    }
+  to {
+    opacity: 1;
+  }
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html,
 body,
 #root {
-    width: 100%;
-    min-height: 100%;
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 
-    background-color: var(--bg-main);
-    color: var(--text-primary);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
 
-    font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
 
-    overflow-x: hidden;
+  overflow-x: hidden;
 }
 
 ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 
-    font-family: "Rajdhani", sans-serif;
+  font-family: "Rajdhani", sans-serif;
 }
 
 li {
-    margin: 0 10px;
-    font-size: 20px;
-    font-weight: 600;
+  margin: 0 10px;
+  font-size: 20px;
+  font-weight: 600;
 }
-
 
 /* =========================
    NAVBAR
 ========================= */
 
 .navbar {
-    position: relative;
+  position: relative;
 
-    width: 100%;
-    min-height: 78px;
+  width: 100%;
+  min-height: 78px;
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    padding: 15px 30px;
+  padding: 15px 30px;
 
-    background-color: var(--bg-main);
-    color: var(--text-primary);
+  background-color: var(--bg-main);
+  color: var(--text-primary);
 
-    box-shadow: var(--shadow);
+  box-shadow: var(--shadow);
 }
-
 
 /* Logo */
 
 .logo {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 
-    flex-shrink: 0;
+  flex-shrink: 0;
 
-    object-fit: contain;
+  object-fit: contain;
 }
-
 
 /* =========================================
    HEADER / NAVBAR CONTAINER
 ========================================= */
 
 .header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 .navbar {
-    position: relative;
+  position: relative;
 
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    height: 90px;
-    padding: 0 20px;
+  height: 90px;
+  padding: 0 20px;
 }
-
 
 /* =========================================
    LOGO
 ========================================= */
 
 .logo {
-    transform: scale(5);
-    margin-left: 50px;
+  transform: scale(5);
+  margin-left: 50px;
 }
+
+/* ========================= NEXT EVENT ========================= */
+.next-event {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calc(100% - 58px);
+  min-height: 78px;
+  margin: 10px 29px;
+  padding: 14px 16px;
+  box-sizing: border-box;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+.next-event-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.next-event-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+}
+.next-event .NextEvent {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.PlayButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 90px;
+  height: 38px;
+  padding: 0 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: white;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 7px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.2s ease;
+}
+.PlayButton:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.25);
+}
+.PlayButton:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
 /* =========================================
    Not Found
 ========================================= */
 .not-found {
-    min-height: 70vh;
+  min-height: 70vh;
 
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    align-items: center;
-    justify-content: center;
+  align-items: center;
+  justify-content: center;
 
-    text-align: center;
+  text-align: center;
 
-    color: var(--text-primary);
+  color: var(--text-primary);
 }
 
 .not-found h1 {
-    margin: 0;
+  margin: 0;
 
-    font-size: 100px;
-    font-weight: 800;
+  font-size: 100px;
+  font-weight: 800;
 
-    color: var(--accent);
+  color: var(--accent);
 }
 
 .not-found h2 {
-    margin: 5px 0;
+  margin: 5px 0;
 
-    font-size: 28px;
+  font-size: 28px;
 }
 
 .not-found p {
-    margin-top: 10px;
+  margin-top: 10px;
 
-    color: var(--text-secondary);
+  color: var(--text-secondary);
 }
 /* =========================================
    NAVIGATION
 ========================================= */
 
 .navbar ul {
-    position: absolute;
+  position: absolute;
 
-    left: 50%;
-    transform: translateX(-50%);
+  left: 50%;
+  transform: translateX(-50%);
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .nav-link {
-    position: relative;
+  position: relative;
 
-    display: inline-block;
+  display: inline-block;
 
-    margin: 0 5px;
+  margin: 0 5px;
 
-    color: var(--text-primary);
+  color: var(--text-primary);
 
-    text-decoration: none;
+  text-decoration: none;
 
-    transition: color 0.3s ease;
+  transition: color 0.3s ease;
 }
 
 .nav-link::after {
-    content: "";
+  content: "";
 
-    position: absolute;
+  position: absolute;
 
-    left: 0;
-    bottom: -0.35rem;
+  left: 0;
+  bottom: -0.35rem;
 
-    width: 0;
-    height: 2px;
+  width: 0;
+  height: 2px;
 
-    background: var(--accent);
+  background: var(--accent);
 
-    transition: width 0.3s ease;
+  transition: width 0.3s ease;
 }
 
 .nav-link:hover {
-    color: var(--accent);
+  color: var(--accent);
 }
 
 .nav-link:hover::after {
-    width: 100%;
+  width: 100%;
 }
 
 /* Активная страница — постоянная подсветка, без наведения */
 .nav-link.active {
-    color: var(--accent);
+  color: var(--accent);
 }
 
 .nav-link.active::after {
-    width: 100%;
+  width: 100%;
 }
-
 
 /* =========================================
    CENTER / HOME (senter)
 ========================================= */
 
 #senter {
-    font-size: 30px;
-    margin: 0 30px;
+  font-size: 30px;
+  margin: 0 30px;
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-
 
 /* =========================================
    RESPONSIVE
 ========================================= */
 
 @media (max-width: 850px) {
-    .logo {
-        transform: scale(3);
-        margin-left: 20px;
-    }
+  .logo {
+    transform: scale(3);
+    margin-left: 20px;
+  }
 
-    .navbar ul {
-        gap: 0;
-    }
+  .navbar ul {
+    gap: 0;
+  }
 
-    .nav-link {
-        margin: 0 3px;
-        font-size: 13px;
-    }
+  .nav-link {
+    margin: 0 3px;
+    font-size: 13px;
+  }
 
-    #senter {
-        font-size: 22px;
-        margin: 0 15px;
-    }
+  #senter {
+    font-size: 22px;
+    margin: 0 15px;
+  }
 }
 
 @media (max-width: 600px) {
-    .navbar {
-        height: 70px;
-        padding: 0 12px;
-    }
+  .navbar {
+    height: 70px;
+    padding: 0 12px;
+  }
 
-    .logo {
-        transform: scale(2);
-        margin-left: 10px;
-    }
+  .logo {
+    transform: scale(2);
+    margin-left: 10px;
+  }
 
-    .nav-link {
-        font-size: 11px;
-        margin: 0 2px;
-    }
+  .nav-link {
+    font-size: 11px;
+    margin: 0 2px;
+  }
 
-    #senter {
-        font-size: 16px;
-        margin: 0 8px;
-    }
+  #senter {
+    font-size: 16px;
+    margin: 0 8px;
+  }
 }
-
 
 /* =========================
    PROFILE
 ========================= */
 
 .profile {
-    margin-left: auto;
+  margin-left: auto;
 
-    width: 190px;
-    min-width: 190px;
-    height: 58px;
+  width: 190px;
+  min-width: 190px;
+  height: 58px;
 
-    padding: 8px 12px;
+  padding: 8px 12px;
 
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 
-    background: var(--panel);
-    color: var(--text-primary);
+  background: var(--panel);
+  color: var(--text-primary);
 
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 
-    box-shadow: var(--shadow);
+  box-shadow: var(--shadow);
 
-    transition:
-        background-color 0.2s ease,
-        border-color 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
 .profile:hover {
-    background-color: var(--panel-hover);
-    border-color: var(--accent);
+  background-color: var(--panel-hover);
+  border-color: var(--accent);
 
-    transform: translateY(-1px);
+  transform: translateY(-1px);
 
-    box-shadow:
-        0 6px 16px rgba(0, 0, 0, 0.25),
-        0 0 10px rgba(59, 130, 246, 0.12);
+  box-shadow:
+    0 6px 16px rgba(0, 0, 0, 0.25),
+    0 0 10px rgba(59, 130, 246, 0.12);
 }
 
 .profile:active {
-    transform: translateY(0);
+  transform: translateY(0);
 }
-
 
 /* Profile image */
 
 .profile-img {
-    width: 36px;
-    height: 36px;
+  width: 36px;
+  height: 36px;
 
-    flex-shrink: 0;
+  flex-shrink: 0;
 
-    border-radius: 50%;
+  border-radius: 50%;
 
-    object-fit: cover;
+  object-fit: cover;
 
-    border: 1px solid var(--border-light);
+  border: 1px solid var(--border-light);
 }
-
 
 /* Profile text */
 
 .profile-info {
-    min-width: 0;
+  min-width: 0;
 
-    margin-left: 10px;
+  margin-left: 10px;
 
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .profile-name {
-    margin: 0;
+  margin: 0;
 
-    font-size: 15px;
-    font-weight: 600;
+  font-size: 15px;
+  font-weight: 600;
 
-    line-height: 1.2;
+  line-height: 1.2;
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .profile-team {
-    margin: 3px 0 0;
+  margin: 3px 0 0;
 
-    font-size: 12px;
-    font-weight: 500;
+  font-size: 12px;
+  font-weight: 500;
 
-    line-height: 1.2;
+  line-height: 1.2;
 
-    color: var(--text-secondary);
+  color: var(--text-secondary);
 
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /*Market*/
 
 .market-toolbar {
-    margin: 0 40px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-width: 0;
-    background: linear-gradient(135deg, rgba(17, 24, 33, 0.98), rgba(15, 20, 27, 0.92));
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    box-shadow: var(--shadow);
+  margin: 0 40px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(17, 24, 33, 0.98),
+    rgba(15, 20, 27, 0.92)
+  );
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
 }
 
 .profile-setup-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 1000;
-    display: grid;
-    place-items: center;
-    padding: 24px;
-    background: rgba(5, 8, 12, 0.88);
-    backdrop-filter: blur(8px);
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(5, 8, 12, 0.88);
+  backdrop-filter: blur(8px);
 }
 
 .profile-setup {
-    display: grid;
-    gap: 12px;
-    width: min(100%, 440px);
-    padding: 32px;
-    color: var(--text-primary);
-    background: var(--panel);
-    border: 1px solid var(--border-light);
-    border-radius: 14px;
-    box-shadow: var(--shadow);
+  display: grid;
+  gap: 12px;
+  width: min(100%, 440px);
+  padding: 32px;
+  color: var(--text-primary);
+  background: var(--panel);
+  border: 1px solid var(--border-light);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
 }
 
 .profile-setup__eyebrow {
-    margin: 0;
-    color: var(--accent-hover);
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
+  margin: 0;
+  color: var(--accent-hover);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
 }
 
 .profile-setup h1 {
-    margin: 0;
-    font-size: 28px;
+  margin: 0;
+  font-size: 28px;
 }
 
 .profile-setup > p:not(.profile-setup__eyebrow):not(.profile-setup__error) {
-    margin: 0 0 8px;
-    color: var(--text-secondary);
+  margin: 0 0 8px;
+  color: var(--text-secondary);
 }
 
 .profile-setup label {
-    color: var(--text-secondary);
-    font-size: 14px;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
 
 .profile-setup input {
-    width: 100%;
-    padding: 12px 14px;
-    color: var(--text-primary);
-    background: var(--bg-main);
-    border: 1px solid var(--border-light);
-    border-radius: 8px;
-    font: inherit;
+  width: 100%;
+  padding: 12px 14px;
+  color: var(--text-primary);
+  background: var(--bg-main);
+  border: 1px solid var(--border-light);
+  border-radius: 8px;
+  font: inherit;
 }
 
 .profile-setup input:focus {
-    outline: 2px solid var(--accent);
-    outline-offset: 1px;
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 .profile-setup button {
-    margin-top: 8px;
-    padding: 13px 16px;
-    color: white;
-    background: var(--accent-dark);
-    border: 0;
-    border-radius: 8px;
-    font: inherit;
-    font-weight: 700;
-    cursor: pointer;
+  margin-top: 8px;
+  padding: 13px 16px;
+  color: white;
+  background: var(--accent-dark);
+  border: 0;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
 }
 
 .profile-setup button:disabled {
-    opacity: 0.65;
-    cursor: wait;
+  opacity: 0.65;
+  cursor: wait;
 }
 
 .profile-setup__error {
-    margin: 0;
-    color: var(--danger);
-    font-size: 14px;
+  margin: 0;
+  color: var(--danger);
+  font-size: 14px;
 }
 
 .market-sort-label {
-    flex: 0 0 auto;
-    color: var(--text-secondary);
-    font: 700 12px/1 "Rajdhani", sans-serif;
-    letter-spacing: 1.1px;
-    text-transform: uppercase;
+  flex: 0 0 auto;
+  color: var(--text-secondary);
+  font:
+    700 12px/1 "Rajdhani",
+    sans-serif;
+  letter-spacing: 1.1px;
+  text-transform: uppercase;
 }
 
 .market-sort-options {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    min-width: 0;
-    flex: 1;
-    overflow-x: auto;
-    scrollbar-width: none;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  flex: 1;
+  overflow-x: auto;
+  scrollbar-width: none;
 }
 
 .market-sort-options::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
 
 .market-sort-option,
 .market-sort-direction {
-    min-height: 36px;
-    padding: 0 13px;
-    flex: 0 0 auto;
-    border: 1px solid transparent;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--text-primary);
-    font: 600 14px/1 "Inter", sans-serif;
-    white-space: nowrap;
-    transition: background-color 0.18s ease, border-color 0.18s ease, color 0.18s ease, transform 0.18s ease;
+  min-height: 36px;
+  padding: 0 13px;
+  flex: 0 0 auto;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--text-primary);
+  font:
+    600 14px/1 "Inter",
+    sans-serif;
+  white-space: nowrap;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    color 0.18s ease,
+    transform 0.18s ease;
 }
 
 .market-sort-option {
-    color: var(--text-secondary);
-    cursor: pointer;
+  color: var(--text-secondary);
+  cursor: pointer;
 }
 
 .market-sort-option:hover {
-    color: var(--text-primary);
-    background: var(--panel-hover);
+  color: var(--text-primary);
+  background: var(--panel-hover);
 }
 
 .market-sort-option.is-active {
-    color: #fff;
-    border-color: rgba(96, 165, 250, 0.35);
-    background: linear-gradient(135deg, var(--accent-dark), var(--accent));
-    box-shadow: 0 4px 14px rgba(37, 99, 235, 0.24);
+  color: #fff;
+  border-color: rgba(96, 165, 250, 0.35);
+  background: linear-gradient(135deg, var(--accent-dark), var(--accent));
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.24);
 }
 
 .market-sort-direction {
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    border-color: var(--border-light);
-    background: var(--panel);
-    font-size: 13px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-color: var(--border-light);
+  background: var(--panel);
+  font-size: 13px;
 }
 
 .market-sort-direction > span:first-child {
-    color: var(--accent-hover);
-    font-size: 18px;
-    font-weight: 700;
+  color: var(--accent-hover);
+  font-size: 18px;
+  font-weight: 700;
 }
 
 .market-sort-option:focus-visible,
 .market-sort-direction:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
 .market-sort-direction:hover {
-    background: var(--panel-hover);
-    border-color: var(--accent);
-    transform: translateY(-1px);
+  background: var(--panel-hover);
+  border-color: var(--accent);
+  transform: translateY(-1px);
 }
 
 .market {
-    margin: 16px 40px 40px;
-    background-color: var(--panel);
-    height: 600px;
+  margin: 16px 40px 40px;
+  background-color: var(--panel);
+  height: 600px;
 
-    overflow-y: auto;
-    overflow-x: hidden;
-    scrollbar-width: none;
-    border-color: var(--accent);
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: none;
+  border-color: var(--accent);
 }
-
-
 
 /* =========================
    TABLET
 ========================= */
 
 @media (max-width: 1000px) {
+  .navbar {
+    padding: 15px 20px;
+  }
 
-    .navbar {
-        padding: 15px 20px;
-    }
+  .navbar ul {
+    gap: 4px;
+  }
 
-    .navbar ul {
-        gap: 4px;
-    }
+  li {
+    margin: 0 5px;
+    font-size: 18px;
+  }
 
-    li {
-        margin: 0 5px;
-        font-size: 18px;
-    }
+  #senter {
+    font-size: 26px;
+    margin: 0 15px;
+  }
 
-    #senter {
-        font-size: 26px;
-        margin: 0 15px;
-    }
-
-    .profile {
-        width: 170px;
-        min-width: 170px;
-    }
+  .profile {
+    width: 170px;
+    min-width: 170px;
+  }
 }
-
 
 /* =========================
    SMALL TABLET / LARGE PHONE
 ========================= */
 
 @media (max-width: 768px) {
+  .market-toolbar {
+    margin: 0 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 
-    .market-toolbar {
-        margin: 0 20px;
-        flex-wrap: wrap;
-        gap: 10px;
-    }
+  .market-sort-options {
+    order: 3;
+    flex-basis: 100%;
+    padding-bottom: 2px;
+  }
 
-    .market-sort-options {
-        order: 3;
-        flex-basis: 100%;
-        padding-bottom: 2px;
-    }
+  .market-sort-label {
+    margin-right: auto;
+  }
 
-    .market-sort-label {
-        margin-right: auto;
-    }
+  .market {
+    margin: 16px 20px 20px;
+  }
 
-    .market {
-        margin: 16px 20px 20px;
-    }
+  .navbar {
+    min-height: 70px;
+    padding: 12px 15px;
+  }
 
-    .navbar {
-        min-height: 70px;
-        padding: 12px 15px;
-    }
-
-    /*
+  /*
        Remove absolute positioning.
        The navigation can now shrink/scroll naturally.
     */
 
-    .navbar ul {
-        position: static;
+  .navbar ul {
+    position: static;
 
-        transform: none;
+    transform: none;
 
-        margin-left: 20px;
+    margin-left: 20px;
 
-        display: flex;
+    display: flex;
 
-        max-width: calc(100% - 70px);
+    max-width: calc(100% - 70px);
 
-        overflow-x: auto;
-        overflow-y: hidden;
+    overflow-x: auto;
+    overflow-y: hidden;
 
-        scrollbar-width: none;
+    scrollbar-width: none;
 
-        -webkit-overflow-scrolling: touch;
-    }
+    -webkit-overflow-scrolling: touch;
+  }
 
-    .navbar ul::-webkit-scrollbar {
-        display: none;
-    }
+  .navbar ul::-webkit-scrollbar {
+    display: none;
+  }
 
-    li {
-        flex-shrink: 0;
+  li {
+    flex-shrink: 0;
 
-        margin: 0 5px;
-        font-size: 17px;
-    }
+    margin: 0 5px;
+    font-size: 17px;
+  }
 
-    #senter {
-        font-size: 24px;
-        margin: 0 15px;
-    }
+  #senter {
+    font-size: 24px;
+    margin: 0 15px;
+  }
 
-    .profile {
-        width: 150px;
-        min-width: 150px;
-        height: 52px;
+  .profile {
+    width: 150px;
+    min-width: 150px;
+    height: 52px;
 
-        padding: 7px 10px;
-    }
+    padding: 7px 10px;
+  }
 
-    .profile-img {
-        width: 32px;
-        height: 32px;
-    }
+  .profile-img {
+    width: 32px;
+    height: 32px;
+  }
 
-    .profile-name {
-        font-size: 14px;
-    }
+  .profile-name {
+    font-size: 14px;
+  }
 
-    .profile-team {
-        font-size: 11px;
-    }
+  .profile-team {
+    font-size: 11px;
+  }
 }
-
 
 /* =========================
    PHONE
 ========================= */
 
 @media (max-width: 600px) {
+  .market-toolbar {
+    margin: 0 12px;
+    padding: 10px;
+    gap: 8px;
+    border-radius: 10px;
+  }
 
-    .market-toolbar {
-        margin: 0 12px;
-        padding: 10px;
-        gap: 8px;
-        border-radius: 10px;
-    }
+  .market-sort-label {
+    font-size: 11px;
+    letter-spacing: 0.8px;
+  }
 
-    .market-sort-label {
-        font-size: 11px;
-        letter-spacing: 0.8px;
-    }
+  .market-sort-options {
+    margin: 0 -2px;
+    gap: 6px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 2px 2px 5px;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
 
-    .market-sort-options {
-        margin: 0 -2px;
-        gap: 6px;
-        overflow-x: auto;
-        overflow-y: hidden;
-        padding: 2px 2px 5px;
-        -webkit-overflow-scrolling: touch;
-        scroll-snap-type: x proximity;
-    }
+  .market-sort-option {
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 13px;
+    scroll-snap-align: start;
+  }
 
-    .market-sort-option {
-        min-height: 40px;
-        padding: 0 12px;
-        font-size: 13px;
-        scroll-snap-align: start;
-    }
+  .market-sort-direction {
+    min-height: 38px;
+    padding: 0 10px;
+    gap: 5px;
+    font-size: 12px;
+  }
 
-    .market-sort-direction {
-        min-height: 38px;
-        padding: 0 10px;
-        gap: 5px;
-        font-size: 12px;
-    }
+  .market-sort-direction > span:first-child {
+    font-size: 17px;
+  }
 
-    .market-sort-direction > span:first-child {
-        font-size: 17px;
-    }
+  .market {
+    margin: 12px 12px 20px;
+    height: calc(100dvh - 265px);
+    min-height: 340px;
+  }
 
-    .market {
-        margin: 12px 12px 20px;
-        height: calc(100dvh - 265px);
-        min-height: 340px;
-    }
+  .navbar {
+    padding: 10px 12px;
+  }
 
-    .navbar {
-        padding: 10px 12px;
-    }
+  .logo {
+    width: 28px;
+    height: 28px;
+  }
 
-    .logo {
-        width: 28px;
-        height: 28px;
-    }
+  .profile {
+    width: 135px;
+    min-width: 135px;
+    height: 48px;
 
-    .profile {
-        width: 135px;
-        min-width: 135px;
-        height: 48px;
+    padding: 6px 8px;
+  }
 
-        padding: 6px 8px;
-    }
+  .profile-img {
+    width: 30px;
+    height: 30px;
+  }
 
-    .profile-img {
-        width: 30px;
-        height: 30px;
-    }
+  .profile-info {
+    margin-left: 7px;
+  }
 
-    .profile-info {
-        margin-left: 7px;
-    }
+  .profile-name {
+    font-size: 13px;
+  }
 
-    .profile-name {
-        font-size: 13px;
-    }
+  .profile-team {
+    font-size: 10px;
+  }
 
-    .profile-team {
-        font-size: 10px;
-    }
+  .navbar ul {
+    margin-left: 12px;
 
-    .navbar ul {
-        margin-left: 12px;
+    max-width: calc(100% - 160px);
+  }
 
-        max-width: calc(100% - 160px);
-    }
+  li {
+    font-size: 15px;
+  }
 
-    li {
-        font-size: 15px;
-    }
-
-    #senter {
-        font-size: 21px;
-        margin: 0 10px;
-    }
+  #senter {
+    font-size: 21px;
+    margin: 0 10px;
+  }
 }
-
 
 /* =========================
    SMALL PHONE
 ========================= */
 
 @media (max-width: 420px) {
+  .navbar {
+    padding: 9px 10px;
+  }
 
-    .navbar {
-        padding: 9px 10px;
-    }
+  .profile {
+    width: 115px;
+    min-width: 115px;
+  }
 
-    .profile {
-        width: 115px;
-        min-width: 115px;
-    }
+  .profile-name {
+    font-size: 12px;
+  }
 
-    .profile-name {
-        font-size: 12px;
-    }
+  .profile-team {
+    font-size: 9px;
+  }
 
-    .profile-team {
-        font-size: 9px;
-    }
+  .navbar ul {
+    max-width: calc(100% - 135px);
+  }
 
-    .navbar ul {
-        max-width: calc(100% - 135px);
-    }
+  li {
+    font-size: 14px;
+    margin: 0 4px;
+  }
 
-    li {
-        font-size: 14px;
-        margin: 0 4px;
-    }
-
-    #senter {
-        font-size: 19px;
-        margin: 0 7px;
-    }
+  #senter {
+    font-size: 19px;
+    margin: 0 7px;
+  }
 }

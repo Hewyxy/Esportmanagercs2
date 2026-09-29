@@ -1,4 +1,4 @@
-import "./tournament.css";
+import "./tournamentCard.css";
 
 export default function Tournament({ name, image, prize, isCurrent = false, cardRef }) {
     return (

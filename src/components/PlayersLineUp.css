@@ -1,0 +1,309 @@
+/* =========================
+   LINEUP TITLE
+========================= */
+
+.LineUp-text {
+  margin: 25px 29px 16px;
+  text-align: center;
+
+  font-size: 23px;
+  font-weight: 600;
+
+  color: var(--text-primary);
+}
+
+/* =========================
+   LINEUP CONTAINER
+========================= */
+
+.LineUp-container {
+  width: calc(100% - 58px);
+
+  margin: 0 29px;
+
+  padding: 12px 20px;
+
+  box-sizing: border-box;
+
+  display: grid;
+
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+
+  gap: 10px;
+
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  box-shadow: var(--shadow);
+}
+
+/* =========================
+   PLAYER BOX
+========================= */
+
+.LineUp-Player {
+  position: relative;
+
+  min-width: 0;
+  height: 310px;
+
+  display: flex;
+  flex-direction: column;
+
+  overflow: hidden;
+
+  background: var(--panel-hover);
+
+  border: 1px solid var(--border);
+
+  border-radius: 9px;
+
+  box-sizing: border-box;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+/* =========================
+   PLAYER IMAGE
+========================= */
+
+.LineUp-Player-image {
+  position: relative;
+
+  width: 100%;
+  height: 245px;
+
+  overflow: hidden;
+
+  background: #111;
+}
+
+.LineUp-Player-image::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  height: 90px;
+
+  background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.8));
+
+  pointer-events: none;
+}
+
+.LineUp-Player-image img {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+  object-position: center top;
+
+  transition:
+    transform 0.35s ease,
+    filter 0.35s ease;
+}
+
+/* =========================
+   PLAYER INFO
+========================= */
+
+.LineUp-Player-info {
+  flex: 1;
+
+  min-width: 0;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 8px;
+
+  padding: 10px 12px;
+
+  box-sizing: border-box;
+
+  background: var(--panel-hover);
+}
+
+/* =========================
+   PLAYER NAME
+========================= */
+
+.LineUp-Player-info h3 {
+  margin: 0 0 3px;
+
+  font-size: 16px;
+  font-weight: 650;
+
+  color: var(--text-primary);
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+/* =========================
+   ROLE
+========================= */
+
+.LineUp-Player-info span {
+  display: block;
+
+  font-size: 10px;
+  font-weight: 600;
+
+  letter-spacing: 0.8px;
+
+  text-transform: uppercase;
+
+  color: var(--text-secondary);
+
+  white-space: nowrap;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+}
+
+/* =========================
+   RATING
+========================= */
+
+.LineUp-Player-info strong {
+  flex-shrink: 0;
+
+  min-width: 38px;
+  height: 32px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 8px;
+
+  box-sizing: border-box;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  color: var(--text-primary);
+
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+
+  border-radius: 6px;
+}
+
+/* =========================
+   HOVER
+========================= */
+
+.LineUp-Player:hover {
+  transform: translateY(-5px);
+
+  border-color: var(--accent);
+
+  box-shadow:
+    0 10px 24px rgba(0, 0, 0, 0.35),
+    0 0 16px rgba(59, 130, 246, 0.12);
+}
+
+.LineUp-Player:hover .LineUp-Player-image img {
+  transform: scale(1.04);
+
+  filter: brightness(1.08);
+}
+
+/* =========================
+   ACCENT LINE
+========================= */
+
+.LineUp-Player::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 0;
+  height: 3px;
+
+  background: var(--accent);
+
+  transform: translateX(-50%);
+
+  transition: width 0.25s ease;
+}
+
+.LineUp-Player:hover::after {
+  width: 65%;
+}
+
+/* =========================
+   LOADING
+========================= */
+
+.current-LineUp {
+  width: calc(100% - 78px);
+  height: 310px;
+
+  margin: 0 39px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: var(--text-secondary);
+
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+
+  box-sizing: border-box;
+}
+
+/* =========================
+   EMPTY
+========================= */
+
+.current-roster-empty {
+  width: calc(100% - 58px);
+
+  margin: 0 29px;
+
+  padding: 50px;
+
+  box-sizing: border-box;
+
+  text-align: center;
+
+  color: var(--text-secondary);
+
+  background: var(--panel);
+
+  border: 1px solid var(--border);
+
+  border-radius: 12px;
+}
