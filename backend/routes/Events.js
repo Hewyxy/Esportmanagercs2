@@ -26,7 +26,6 @@ router.get("/", (req, res) => {
 
 //Get an event with a specific id
 router.get("/:id", (req, res) => {
-
     const eventId = req.params.id;
 
     try {
@@ -39,6 +38,9 @@ router.get("/:id", (req, res) => {
                 error: "Event not found"
             });
         }
+
+        res.json(event);
+
     } catch (error) {
 
         console.error("SQL error:", error);

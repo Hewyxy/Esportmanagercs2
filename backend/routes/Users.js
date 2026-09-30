@@ -6,16 +6,38 @@ const router = express.Router();
 // The local game profile is stored in the reserved user row with id 0.
 router.get("/profile/:id", (req, res) => {
     if (req.params.id !== "0") {
-        return res.status(404).json({ error: "Profile not found" });
+        return res.status(404).json({
+            error: "Profile not found"
+        });
     }
 
     try {
-        const profile = db.prepare("SELECT id, Username, TeamName FROM User WHERE id = 0").get();
-        if (!profile) return res.status(404).json({ error: "Profile not found" });
+        const profile = db
+            .prepare(`
+                SELECT 
+                    id,
+                    Username,
+                    TeamName,
+                    CurrentEvent
+                FROM User
+                WHERE id = 0
+            `)
+            .get();
+
+        if (!profile) {
+            return res.status(404).json({
+                error: "Profile not found"
+            });
+        }
+
         res.json(profile);
+
     } catch (error) {
         console.error("SQL error:", error);
-        res.status(500).json({ error: error.message });
+
+        res.status(500).json({
+            error: error.message
+        });
     }
 });
 
