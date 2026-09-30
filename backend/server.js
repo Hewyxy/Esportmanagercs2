@@ -22,7 +22,7 @@ app.use("/api/teams", teamRoutes);
 app.use("/api/events", EventRoutes);
 app.use("/api/user", UserRoutes);
 app.use("/api/matches", MathesRoutes);
-app.use("/api/TournamentMatches", TournamnetMathesRoutes);
+app.use("/api/tournamentmatches", TournamnetMathesRoutes);
 app.use("/api/TournamentTeams", TournamnetTeamsRoutes);
 
 //404 Handler
