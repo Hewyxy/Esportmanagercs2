@@ -7,9 +7,124 @@ export default function PlayerCard({
 }) {
     const [players, setPlayers] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
+    const [playerteam, setPlayerTeam] = useState(null);
+    const [notification, setNotification] = useState(null);
+    const [notificationHiding, setNotificationHiding] = useState(false);
+    const [teamPlayers, setTeamPlayers] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/players/sameteam/None")
+        fetch("http://localhost:3000/api/teams/1")
+            .then(response => response.json())
+            .then(data => setPlayerTeam(data))
+            .catch(error => console.error("Error loading team:", error));
+    }, []);
+
+    useEffect(() => {
+        if (playerteam?.Id == null) return;
+
+        fetch(
+            `http://localhost:3000/api/players/team/${encodeURIComponent(playerteam.Id)}`
+        )
+            .then(response => response.json())
+            .then(data => setTeamPlayers(data))
+            .catch(error =>
+                console.error("Error loading team players:", error)
+            );
+    }, [playerteam]);
+
+    const changeTeam = async (playerId, teamId) => {
+        const player = players.find(player => player.id === playerId);
+        const showNotification = (message) => {
+            setNotification(null);
+            setNotificationHiding(false);
+
+            setTimeout(() => {
+                setNotification(message);
+            }, 10);
+
+            setTimeout(() => {
+                setNotificationHiding(true);
+            }, 1710);
+
+            setTimeout(() => {
+                setNotification(null);
+                setNotificationHiding(false);
+            }, 2010);
+        };
+        if (!player) return;
+
+        const riflers = teamPlayers.filter(
+            player => player.Role === "Riffler"
+        ).length;
+
+        const awpers = teamPlayers.filter(
+            player => player.Role === "AWPer"
+        ).length;
+
+        const igls = teamPlayers.filter(
+            player => player.Role === "IGL"
+        ).length;
+
+        if ((riflers+awpers+igls) == 5) {
+            showNotification("Your team is full.");
+            return;
+        }
+        // 3 Riflers maximum
+        if (player.Role === "Riffler" && riflers >= 3) {
+            showNotification("Your team already has 3 Riflers.");
+            return;
+        }
+
+        // 1 AWPer maximum
+        if (player.Role === "AWPer" && awpers >= 1) {
+            showNotification("Your team already has an AWPer.");
+            return;
+        }
+
+        // 1 IGL maximum
+        if (player.Role === "IGL" && igls >= 1) {
+            showNotification("Your team already has an IGL.");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `http://localhost:3000/api/players/${playerId}/team`,
+                {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        teamId: teamId
+                    })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error("Failed to change team");
+            }
+
+            setPlayers(prevPlayers =>
+                prevPlayers.filter(player => player.id !== playerId)
+            );
+
+            setTeamPlayers(prev => [
+                ...prev,
+                { ...player, TeamId: teamId, Team: playerteam.Name }
+            ]);
+
+            showNotification(`${player.Name} was recruited!`);
+
+        } catch (error) {
+            console.error("Error changing team:", error);
+
+            showNotification("Failed to recruit player.");
+        }
+    };
+
+    useEffect(() => {
+        fetch("http://localhost:3000/api/players/team/0")
             .then(response => {
                 if (!response.ok) {
                     throw new Error("Failed to load players");
@@ -42,7 +157,17 @@ export default function PlayerCard({
 
     return (
         <div className="player-list">
+            {notification && (
+                <div
+                    className={`recruit-notification ${
+                        notificationHiding ? "hiding" : ""
+                    }`}
+                >
+                    <span className="recruit-notification-icon">✓</span>
 
+                    <span>{notification}</span>
+                </div>
+            )}
             {sortedPlayers.map((player, index) => (
                 <div
                     className="PlayerCard"
@@ -125,8 +250,8 @@ export default function PlayerCard({
                     <button
                         className="player-recruit"
                         onClick={(e) => {
-                            e.stopPropagation(); 
-                            handleRecruit(player);
+                            e.stopPropagation();
+                            changeTeam(player.id, playerteam.Id);
                         }}
                     >
                         Recruit

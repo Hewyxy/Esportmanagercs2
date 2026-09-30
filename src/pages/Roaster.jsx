@@ -15,11 +15,10 @@ export default function Roaster() {
 
     
 
-    const teamName = team.Name || "";
-
     return (
         <div>
             <CurrentRoaster
+                teamId={team.Id}
                 teamName={team.Name}
             />
         </div>  

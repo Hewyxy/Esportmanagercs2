@@ -285,47 +285,40 @@ export default function Match({ team1Id = 3, team2Id = 2 }) {
     }, [team2Id]);
 
 
-    const team1Name =
-        team1?.Name;
-
-    const team2Name =
-        team2?.Name;
-
-
     // Team 1 players
 
     useEffect(() => {
 
-        if (!team1Name) return;
+        if (!team1?.Id) return;
 
         let cancelled = false;
         fetch(
-            `http://localhost:3000/api/players/sameteam/${encodeURIComponent(team1Name)}`
+            `http://localhost:3000/api/players/team/${encodeURIComponent(team1.Id)}`
         )
             .then(response => { if (!response.ok) throw new Error("Could not load team 1 players"); return response.json(); })
             .then(data => { if (!cancelled) setTeam1P(data); })
             .catch(error => { if (!cancelled) setError(error.message); });
         return () => { cancelled = true; };
 
-    }, [team1Name]);
+    }, [team1?.Id]);
 
 
     // Team 2 players
 
     useEffect(() => {
 
-        if (!team2Name) return;
+        if (!team2?.Id) return;
 
         let cancelled = false;
         fetch(
-            `http://localhost:3000/api/players/sameteam/${encodeURIComponent(team2Name)}`
+            `http://localhost:3000/api/players/team/${encodeURIComponent(team2.Id)}`
         )
             .then(response => { if (!response.ok) throw new Error("Could not load team 2 players"); return response.json(); })
             .then(data => { if (!cancelled) setTeam2P(data); })
             .catch(error => { if (!cancelled) setError(error.message); });
         return () => { cancelled = true; };
 
-    }, [team2Name]);
+    }, [team2?.Id]);
 
 
     // Start match

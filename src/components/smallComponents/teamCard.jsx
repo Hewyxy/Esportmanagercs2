@@ -30,7 +30,7 @@ export default function Teams() {
             {sortedTeams.map((team, index) => {
 
                 const teamPlayers = players.filter(
-                    player => player.Team === team.Name
+                    player => player.TeamId === team.Id
                 );
 
                 const isOpen = openTeam === team.Id;

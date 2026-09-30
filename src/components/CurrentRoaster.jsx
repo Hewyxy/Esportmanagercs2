@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import "./CurrentRoaster.css";
 
-export default function CurrentRoaster({ teamName }) {
+export default function CurrentRoaster({ teamId, teamName }) {
     const [players, setPlayers] = useState([]);
     const [teamImage, setTeamImage] = useState(null);
     const [loading, setLoading] = useState(true);
 
+    const [notification, setNotification] = useState(null);
+    const [notificationHiding, setNotificationHiding] = useState(false);
+
     useEffect(() => {
-        if (!teamName) {
+        if (teamId == null) {
             setPlayers([]);
             setTeamImage(null);
             setLoading(false);
@@ -19,7 +22,7 @@ export default function CurrentRoaster({ teamName }) {
                 setLoading(true);
 
                 const response = await fetch(
-                    `http://localhost:3000/api/players/sameteam/${encodeURIComponent(teamName)}`
+                    `http://localhost:3000/api/players/team/${encodeURIComponent(teamId)}`
                 );
 
                 if (!response.ok) {
@@ -30,35 +33,171 @@ export default function CurrentRoaster({ teamName }) {
 
                 setPlayers(data);
                 setTeamImage(data[0]?.TeamImage || null);
+
             } catch (error) {
                 console.error("Error loading players:", error);
                 setPlayers([]);
                 setTeamImage(null);
+
             } finally {
                 setLoading(false);
             }
         };
 
         loadPlayers();
-    }, [teamName]);
+
+    }, [teamId]);
+
+
+    /* =========================
+       NOTIFICATION
+    ========================= */
+
+    const showNotification = (message) => {
+        setNotification(null);
+        setNotificationHiding(false);
+
+        setTimeout(() => {
+            setNotification(message);
+        }, 10);
+
+        setTimeout(() => {
+            setNotificationHiding(true);
+        }, 1710);
+
+        setTimeout(() => {
+            setNotification(null);
+            setNotificationHiding(false);
+        }, 2010);
+    };
+
+
+    /* =========================
+       FIRE PLAYER
+    ========================= */
+
+    const firePlayer = async (playerId) => {
+
+        const player = players.find(
+            player => player.id === playerId
+        );
+
+        if (!player) return;
+
+        try {
+
+            const response = await fetch(
+                `http://localhost:3000/api/players/${playerId}/team`,
+                {
+                    method: "PATCH",
+
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        teamId: 0
+                    })
+                }
+            );
+
+
+            if (!response.ok) {
+                throw new Error("Failed to fire player");
+            }
+
+
+            /* =========================
+               REMOVE FROM ROSTER
+            ========================= */
+
+            setPlayers(prevPlayers =>
+                prevPlayers.filter(
+                    player => player.id !== playerId
+                )
+            );
+
+
+            /* =========================
+               NOTIFICATION
+            ========================= */
+
+            showNotification(
+                `${player.Name} was fired!`
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "Error firing player:",
+                error
+            );
+
+            showNotification(
+                "Failed to fire player."
+            );
+        }
+    };
+
 
     return (
         <section className="current-roster-section">
 
+            {/* =========================
+                HEADER
+            ========================= */}
+
             <div className="current-roster-header">
+
                 <div>
-                    <span className="current-roster-label">TEAM</span>
-                    <h2>Current Roster</h2>
+                    <span className="current-roster-label">
+                        TEAM
+                    </span>
+
+                    <h2>
+                        Current Roster
+                    </h2>
                 </div>
+
 
                 {!loading && (
                     <div className="current-roster-count">
                         {players.length} Players
                     </div>
                 )}
+
             </div>
 
+
+            {/* =========================
+                NOTIFICATION
+            ========================= */}
+
+            {notification && (
+                <div
+                    className={`recruit-notification ${
+                        notificationHiding
+                            ? "hiding"
+                            : ""
+                    }`}
+                >
+                    <span className="recruit-notification-icon">
+                        ✓
+                    </span>
+
+                    <span>
+                        {notification}
+                    </span>
+                </div>
+            )}
+
+
             <div className="current-roster-container">
+
+                {/* =========================
+                    TEAM BANNER
+                ========================= */}
 
                 <div className="current-roster-banner">
 
@@ -73,13 +212,23 @@ export default function CurrentRoaster({ teamName }) {
                         )}
 
                         <div>
-                            <h3>{teamName}</h3>
-                            <span>Active Roster</span>
+                            <h3>
+                                {teamName}
+                            </h3>
+
+                            <span>
+                                Active Roster
+                            </span>
                         </div>
 
                     </div>
 
                 </div>
+
+
+                {/* =========================
+                    PLAYERS
+                ========================= */}
 
                 <div className="current-roster-grid">
 
@@ -92,12 +241,14 @@ export default function CurrentRoaster({ teamName }) {
                     ) : players.length > 0 ? (
 
                         players.map((player) => (
+
                             <div
                                 className="current-roster-player"
                                 key={player.id}
                             >
 
                                 {/* Team logo background */}
+
                                 {player.TeamImage && (
                                     <img
                                         className="current-roster-team-bg"
@@ -106,38 +257,81 @@ export default function CurrentRoaster({ teamName }) {
                                     />
                                 )}
 
+
+                                {/* Overlay */}
+
                                 <div className="current-roster-card-overlay" />
 
+
                                 {/* Player image */}
+
                                 <div className="current-roster-player-image">
+
                                     {player.Image && (
                                         <img
                                             src={player.Image}
                                             alt={player.Name}
                                         />
                                     )}
+
                                 </div>
 
+
                                 {/* Player information */}
+
                                 <div className="current-roster-player-content">
+
                                     <span className="current-roster-player-role">
                                         {player.Role}
                                     </span>
 
-                                    <h4>{player.Name}</h4>
+                                    <h4>
+                                        {player.Name}
+                                    </h4>
+
                                 </div>
 
+
                                 {/* Rating */}
+
                                 <div className="current-roster-rating">
-                                    <span>RATING</span>
-                                    <strong>{player.Rating}</strong>
+
+                                    <span>
+                                        RATING
+                                    </span>
+
+                                    <strong>
+                                        {player.Rating}
+                                    </strong>
+
                                 </div>
+
+
+                                {/* Fire */}
+
+                                <button
+                                    type="button"
+                                    className="current-roster-fire"
+
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+
+                                        firePlayer(player.id);
+                                    }}
+                                >
+                                    Fire
+                                </button>
+
+
+                                {/* Arrow */}
 
                                 <div className="current-roster-arrow">
                                     →
                                 </div>
 
                             </div>
+
                         ))
 
                     ) : (

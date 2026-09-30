@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import "./PlayersLineUp.css";
 
-export default function PlayersLineUp({ teamName }) {
+export default function PlayersLineUp({ teamId }) {
   const [players, setPlayers] = useState([]);
   const [teamImage, setTeamImage] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!teamName) {
+    if (teamId == null) {
       setPlayers([]);
       setTeamImage(null);
       setLoading(false);
@@ -19,7 +19,7 @@ export default function PlayersLineUp({ teamName }) {
         setLoading(true);
 
         const response = await fetch(
-          `http://localhost:3000/api/players/sameteam/${encodeURIComponent(teamName)}`,
+          `http://localhost:3000/api/players/team/${encodeURIComponent(teamId)}`,
         );
 
         if (!response.ok) {
@@ -38,7 +38,7 @@ export default function PlayersLineUp({ teamName }) {
       }
     };
     loadPlayers();
-  }, [teamName]);
+  }, [teamId]);
 
   return (
     <div>

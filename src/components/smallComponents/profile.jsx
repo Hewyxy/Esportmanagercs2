@@ -12,6 +12,14 @@ export default function Profile() {
     const [error, setError] = useState("");
     const [isSaving, setIsSaving] = useState(false);
     const lastProfileEvent = useRef(0);
+    const [players, setPlayers] = useState([]);
+
+    useEffect(() => {
+        fetch("http://localhost:3000/api/teams/1")
+            .then(response => response.json())
+            .then(data => setPlayers(data))
+            .catch(error => console.error("Error loading team:", error));
+    }, []);
 
     useEffect(() => {
         let cancelled = false;
