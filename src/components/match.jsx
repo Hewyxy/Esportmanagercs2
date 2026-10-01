@@ -105,7 +105,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
 
         onUpdate(liveMatch);
 
-        if (showLiveFeed) await sleep(500);
+        if (showLiveFeed) await sleep(Math.floor(Math.random() * 2001) + 1000);
       }
 
       // Round winner
@@ -127,7 +127,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
 
       onUpdate(liveMatch);
 
-      if (showLiveFeed) await sleep(1000);
+      if (showLiveFeed) await sleep(Math.floor(Math.random() * 2001) + 1000);
     }
 
     // Map winner
@@ -144,7 +144,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
 
     onUpdate(structuredClone(match));
 
-    if (showLiveFeed) await sleep(1500);
+    if (showLiveFeed) await sleep(Math.floor(Math.random() * 2001) + 1000);
   }
 
   return match;
@@ -288,12 +288,14 @@ export default function Match({
       id: team1.Id,
       Name: team1.Name,
       Players: team1P,
+      Seed: team1.Seed,
     };
 
     const team2Stack = {
       id: team2.Id,
       Name: team2.Name,
       Players: team2P,
+      Seed: team2.Seed,
     };
 
     const isPlayerMatch = team1.Id === 1 || team2.Id === 1;
@@ -429,7 +431,7 @@ export default function Match({
               event.currentTarget.src = TEAM_PLACEHOLDER;
             }}
           />
-          <span className="match-team__label">TEAM 1 · #{team1Id}</span>
+          <span className="match-team__label">TEAM 1 · #{team1.Seed}</span>
           <strong>{team1?.Name || "Loading team…"}</strong>
           <div
             className="match-roster"
@@ -462,7 +464,7 @@ export default function Match({
               event.currentTarget.src = TEAM_PLACEHOLDER;
             }}
           />
-          <span className="match-team__label">TEAM 2 · #{team2Id}</span>
+          <span className="match-team__label">TEAM 2 · #{team2.Seed}</span>
           <strong>{team2?.Name || "Loading team…"}</strong>
           <div
             className="match-roster"

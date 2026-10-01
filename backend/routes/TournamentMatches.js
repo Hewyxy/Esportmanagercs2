@@ -144,7 +144,7 @@ router.put("/:id/result", (req, res) => {
                     WHERE id = ?
                 `);
                 const releasePlayer = db.prepare(
-                    "UPDATE Players SET TeamId = 0, Team = 'None' WHERE id = ?",
+                    "UPDATE Players SET TeamId = 0, Team = 'None', TeamImage = 'https://www.hltv.org/dynamic-svg/teamplaceholder' WHERE id = ?",
                 );
 
                 for (const team of aiTeams) {
