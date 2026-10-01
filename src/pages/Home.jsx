@@ -10,8 +10,38 @@ export default function Home() {
   const [tournamentRank, setRank] = useState(null);
   const [user, setUser] = useState(null);
   const [isTop, setIsTop] = useState(false);
+  const [rosterWarning, setRosterWarning] = useState("");
+  const [isCheckingRoster, setIsCheckingRoster] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Make sure the roster is full before opening the tournament.
+  const handlePlay = async () => {
+    setIsCheckingRoster(true);
+    setRosterWarning("");
+
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/players/team/${encodeURIComponent(team.Id)}`,
+      );
+      const players = await response.json();
+      if (!response.ok) throw new Error("Could not check the team roster.");
+
+      if (players.length < 5) {
+        setRosterWarning(
+          `Your team needs 5 players to enter. You currently have ${players.length}.`,
+        );
+        return;
+      }
+
+      navigate("/tournament");
+    } catch (error) {
+      console.error("Could not check team roster:", error);
+      setRosterWarning("Could not check your roster. Please try again.");
+    } finally {
+      setIsCheckingRoster(false);
+    }
+  };
 
 
   useEffect(() => {
@@ -91,9 +121,20 @@ export default function Home() {
           ) : (
             <p className="NextEvent">Break</p>
           )}
+          {rosterWarning && (
+            <p className="roster-warning" role="alert">
+              {rosterWarning}
+            </p>
+          )}
         </div>
         {isTop ? (
-          <button className="PlayButton" onClick={() => navigate("/tournament")}>Play</button>
+          <button
+            className="PlayButton"
+            onClick={handlePlay}
+            disabled={isCheckingRoster || !team?.Id}
+          >
+            {isCheckingRoster ? "Checking..." : "Play"}
+          </button>
         ) : (
           <button className="PlayButton" onClick={() => navigate("/tournament")}>Skip</button>
         )}
