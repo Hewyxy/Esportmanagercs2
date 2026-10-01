@@ -193,6 +193,32 @@
     text-align: left;
 }
 
+.match-roster__identity {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+.match-player-avatar {
+    display: inline-grid;
+    flex: 0 0 28px;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+    border-radius: 6px;
+    background: #182230;
+    object-fit: cover;
+}
+
+.match-player-avatar--fallback {
+    color: #a9c8f4;
+    font-size: 9px;
+    font-weight: 800;
+}
+
 .match-roster__rating {
     color: var(--text-primary);
     font-variant-numeric: tabular-nums;

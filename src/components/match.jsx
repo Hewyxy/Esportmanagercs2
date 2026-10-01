@@ -6,6 +6,18 @@ import "./match.css";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const TEAM_PLACEHOLDER = "https://www.hltv.org/dynamic-svg/teamplaceholder";
 
+function PlayerAvatar({ player, name }) {
+  const displayName = player?.Name ?? name ?? "?";
+
+  return player?.Image ? (
+    <img className="match-player-avatar" src={player.Image} alt="" />
+  ) : (
+    <span className="match-player-avatar match-player-avatar--fallback" aria-hidden="true">
+      {displayName.slice(0, 2).toUpperCase()}
+    </span>
+  );
+}
+
 // Simulate a map series and send live-feed updates as it goes.
 async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
   const match = {
@@ -105,7 +117,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
 
         onUpdate(liveMatch);
 
-        if (showLiveFeed) await sleep(Math.floor(Math.random() * 2001) + 1000);
+        if (showLiveFeed) await sleep(Math.floor(Math.random() * 1001) + 1000);
       }
 
       // Round winner
@@ -127,7 +139,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
 
       onUpdate(liveMatch);
 
-      if (showLiveFeed) await sleep(Math.floor(Math.random() * 2001) + 1000);
+      if (showLiveFeed) await sleep(Math.floor(Math.random() * 1001) + 1000);
     }
 
     // Map winner
@@ -144,7 +156,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
 
     onUpdate(structuredClone(match));
 
-    if (showLiveFeed) await sleep(Math.floor(Math.random() * 2001) + 1000);
+    if (showLiveFeed) await sleep(Math.floor(Math.random() * 1001) + 1000);
   }
 
   return match;
@@ -172,6 +184,9 @@ export default function Match({
   const roundFeedRefs = useRef({});
   const followRoundFeeds = useRef([]);
   const backgroundMatchKey = useRef(null);
+  const playersByName = new Map(
+    [...team1P, ...team2P].map((player) => [player.Name, player]),
+  );
 
   useEffect(() => {
     Object.entries(roundFeedRefs.current).forEach(([index, element]) => {
@@ -444,7 +459,10 @@ export default function Match({
                   className="match-roster__player"
                   key={player.Id ?? player.Name}
                 >
-                  <span>{player.Name}</span>
+                  <span className="match-roster__identity">
+                    <PlayerAvatar player={player} />
+                    <span>{player.Name}</span>
+                  </span>
                   <span className="match-roster__rating">{player.Rating}</span>
                 </div>
               ))
@@ -477,7 +495,10 @@ export default function Match({
                   className="match-roster__player"
                   key={player.Id ?? player.Name}
                 >
-                  <span>{player.Name}</span>
+                  <span className="match-roster__identity">
+                    <PlayerAvatar player={player} />
+                    <span>{player.Name}</span>
+                  </span>
                   <span className="match-roster__rating">{player.Rating}</span>
                 </div>
               ))
@@ -564,19 +585,23 @@ export default function Match({
                       <p
                         className={`match-event ${match.team1.Players.some((player) => player.Name === event.killer) ? "match-event--team-one" : "match-event--team-two"}`}
                         key={eventIndex}
-                      >
-                        <strong className="match-event__killer">
-                          {event.killer}
-                        </strong>
+                    >
+                        <PlayerAvatar
+                          player={playersByName.get(event.killer)}
+                          name={event.killer}
+                        />
+                        <strong className="match-event__killer">{event.killer}</strong>
                         <img
                           className="match-event__weapon"
                           src={akIcon}
                           alt=""
                           aria-hidden="true"
                         />
-                        <strong className="match-event__victim">
-                          {event.victim}
-                        </strong>
+                        <strong className="match-event__victim">{event.victim}</strong>
+                        <PlayerAvatar
+                          player={playersByName.get(event.victim)}
+                          name={event.victim}
+                        />
                         <span className="match-event__tag">ELIMINATION</span>
                       </p>
                     ))}
