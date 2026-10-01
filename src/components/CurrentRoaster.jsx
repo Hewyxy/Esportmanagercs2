@@ -209,7 +209,7 @@ export default function CurrentRoaster({ teamId, teamName }) {
                         {teamImage && (
                             <img
                                 className="current-roster-team-logo"
-                                src={teamImage}
+                                src="https://www.hltv.org/dynamic-svg/teamplaceholder"
                                 alt={`${teamName} logo`}
                             />
                         )}
@@ -255,7 +255,7 @@ export default function CurrentRoaster({ teamId, teamName }) {
                                 {player.TeamImage && (
                                     <img
                                         className="current-roster-team-bg"
-                                        src={player.TeamImage}
+                                        src="https://www.hltv.org/dynamic-svg/teamplaceholder"
                                         alt=""
                                     />
                                 )}
