@@ -3,6 +3,8 @@ const db = require('../db/database');
 
 const router = express.Router();
 
+// Handle the player profile and other user-related requests.
+
 // The local game profile is stored in the reserved user row with id 0.
 router.get("/profile/:id", (req, res) => {
     if (req.params.id !== "0") {

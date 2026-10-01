@@ -10,6 +10,7 @@ const link = [
 ];
 
 export default function Navbar() {
+    // Top navigation bar, with the profile on the right.
     return (
         <header className="header">
             <nav className="navbar">

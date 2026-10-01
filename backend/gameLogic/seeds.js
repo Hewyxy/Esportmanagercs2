@@ -2,6 +2,7 @@ const db = require("../db/database");
 
 
 function getTeamsByPoints() {
+    // Overall ranking: more points means a higher spot.
     return db
         .prepare(`
             SELECT Id, Name, Points
@@ -12,6 +13,7 @@ function getTeamsByPoints() {
 }
 
 function getTopTeams(count) {
+    // Grab the top teams for a tournament invite.
     return db
         .prepare(`
             SELECT Id, Name, Points
@@ -23,6 +25,7 @@ function getTopTeams(count) {
 }
 
 function getBottomTeams(count) {
+    // And here it is the other way around: teams with the fewest points.
     return db
         .prepare(`
             SELECT Id, Name, Points
@@ -35,6 +38,7 @@ function getBottomTeams(count) {
 
 // Seed for every teams
 function getTeamSeeds() {
+    // A seed is just the team's current spot in the ranking.
     const teams = getTeamsByPoints();
 
     return teams.map((team, index) => ({
@@ -79,6 +83,7 @@ function getBottom8() {
 }
 
 function isTeamInTop(teamId, count) {
+    // Check whether this team fits within the requested number of spots.
     const teams = db
         .prepare(`
             SELECT Id

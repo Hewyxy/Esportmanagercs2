@@ -2,6 +2,7 @@ import Tournament from "./tournamentCard";
 import { useEffect, useRef, useState } from "react";
 
 export default function Tournaments() {
+    // Load the tournament schedule and remember the current event's card.
     const [tournaments, setTournaments] = useState([]);
         const [currentEventId, setCurrentEventId] = useState(null);
         const tournamentRefs = useRef({});
@@ -31,6 +32,7 @@ export default function Tournaments() {
         }, []);
     
         useEffect(() => {
+            // Scroll the carousel to the current tournament once it is loaded.
             if (currentEventId == null) return;
             const currentCard = tournamentRefs.current[currentEventId];
             if (currentCard) {

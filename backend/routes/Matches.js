@@ -3,6 +3,8 @@ const db = require('../db/database');
 
 const router = express.Router();
 
+// Regular match history, separate from the tournament bracket.
+
 
 router.get("/", (req, res) => {
     const matches = db.prepare("SELECT * FROM Matches").all();

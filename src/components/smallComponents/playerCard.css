@@ -851,7 +851,7 @@
 }
 
 .player-recruit {
-    margin-left: auto; /* прижимает кнопку к правому краю в flex-контейнере */
+    margin-left: auto; /* Push the button to the right side of the flex container. */
     flex-shrink: 0;
 
     width: 95px;

@@ -5,6 +5,7 @@ const { updateTeamSeeds } = require('../gameLogic/seeds');
 const router = express.Router();
 
 router.get("/", (req, res) => {
+    // Return the whole bracket; the frontend will pick the current event.
     const matches = db.prepare("SELECT * FROM TournamentMatches").all();
 
     res.json(matches);
@@ -13,6 +14,7 @@ router.get("/", (req, res) => {
 // Create the first round as one atomic operation. This makes initialization
 // safe when the client requests it more than once (for example in StrictMode).
 router.post("/initialize", (req, res) => {
+    // Create round one in one transaction so duplicate matches cannot sneak in.
     const { tournamentId, teamIds } = req.body;
 
     if (tournamentId == null || !Array.isArray(teamIds) || teamIds.length < 2) {
@@ -63,6 +65,7 @@ router.post("/initialize", (req, res) => {
 
 // Save a tournament match result and place its winner into the next round.
 router.put("/:id/result", (req, res) => {
+    // Save the score, advance the winner, and wrap up the tournament at the final.
     const matchId = Number(req.params.id);
     const { score1, score2, winnerId } = req.body;
     const normalizedWinnerId = Number(winnerId);

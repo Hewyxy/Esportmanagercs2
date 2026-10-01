@@ -5,6 +5,7 @@ import Match from "../components/match.jsx";
 const API_URL = "http://localhost:3000/api";
 
 export default function Battle() {
+  // All matches in the current round are played here.
   const navigate = useNavigate();
 
   const [matches, setMatches] = useState([]);
@@ -15,6 +16,7 @@ export default function Battle() {
 
   const loadMatches = useCallback(
     async (result) => {
+      // Reload the bracket after a result; send the player home after the final.
       try {
         const response = await fetch(`${API_URL}/tournamentmatches`);
 
@@ -37,7 +39,7 @@ export default function Battle() {
           });
         }
 
-        // Запоминаем текущий раунд только один раз
+        // Remember the current round once, then leave the ref alone.
         if (currentRound.current === null) {
           const ongoing = data.filter(
             (match) =>
@@ -61,6 +63,7 @@ export default function Battle() {
   );
 
   useEffect(() => {
+    // Load the match list when this page opens.
     loadMatches();
   }, [loadMatches]);
 
@@ -72,6 +75,7 @@ export default function Battle() {
   );
 
   useEffect(() => {
+    // Once the round is done, go back and show the updated bracket.
     if (currentRound.current === null) return;
     if (hasReturnedToBracket.current) return;
 

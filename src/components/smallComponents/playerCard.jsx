@@ -5,6 +5,7 @@ export default function PlayerCard({
     sortBy = "Rating",
     sortDirection = "desc"
 }) {
+    // Player market: browse, sort, and sign someone for our team.
     const [players, setPlayers] = useState([]);
     const [selectedPlayer, setSelectedPlayer] = useState(null);
     const [playerteam, setPlayerTeam] = useState(null);
@@ -33,6 +34,7 @@ export default function PlayerCard({
     }, [playerteam]);
 
     const changeTeam = async (playerId, teamId) => {
+        // Check roster limits, then move the player to our team.
         const player = players.find(player => player.id === playerId);
         const showNotification = (message) => {
             setNotification(null);
@@ -140,6 +142,7 @@ export default function PlayerCard({
             });
     }, []);
 
+    // Sort a copy so the original state array stays put.
     const sortedPlayers = [...players].sort((a, b) => {
         const firstValue = a[sortBy] ?? "";
         const secondValue = b[sortBy] ?? "";

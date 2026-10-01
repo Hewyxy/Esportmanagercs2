@@ -4,6 +4,8 @@ const { route } = require('./Users');
 
 const router = express.Router();
 
+// This router reads the event list and individual tournaments.
+
 router.get("/", (req, res) => {
 
     try {

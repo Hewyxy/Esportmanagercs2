@@ -1,3 +1,4 @@
+/* Keep the bracket in its own panel so it does not stretch the page. */
 .tournament-view {
     width: calc(100% - 58px);
     margin: 28px auto 40px;

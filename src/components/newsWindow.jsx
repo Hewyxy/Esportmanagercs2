@@ -1,6 +1,7 @@
 import "./newsWindow.css";
 
 export default function NewsWindow() {
+    // Real news will live here later.
     return (
         <div className="news-window">
 

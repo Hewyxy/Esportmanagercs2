@@ -3,6 +3,8 @@ const db = require('../db/database');
 
 const router = express.Router();
 
+// List players, find a team's roster, or move a player to another team.
+
 // Gets all the players
 router.get("/", (req, res) => {
     try {

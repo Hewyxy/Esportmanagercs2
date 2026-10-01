@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 
 export default function FirstTimeLogIn() {
+  // Show the setup form when the profile is empty and keep the entered details.
   const [profile, setProfile] = useState(null)
   const [profileLoaded, setProfileLoaded] = useState(false)
   const [nickname, setNickname] = useState('')
@@ -9,12 +10,13 @@ export default function FirstTimeLogIn() {
   const [savingProfile, setSavingProfile] = useState(false)
 
   useEffect(() => {
+    // Check the profile when the app opens.
     let cancelled = false
 
     fetch('http://localhost:3000/api/user/profile/0')
       .then(async response => {
         const data = await response.json()
-        if (!response.ok) throw new Error(data.error || 'Не удалось загрузить профиль')
+        if (!response.ok) throw new Error(data.error || 'Could not load profile')
         return data
       })
       .then(data => {
@@ -34,6 +36,7 @@ export default function FirstTimeLogIn() {
     !profile.TeamName || profile.TeamName === 'No Name'
 
   async function saveProfile(event) {
+    // Save the nickname and team name on the server.
     event.preventDefault()
     setSavingProfile(true)
     setProfileError('')
@@ -45,7 +48,7 @@ export default function FirstTimeLogIn() {
         body: JSON.stringify({ username: nickname, teamName })
       })
       const data = await response.json()
-      if (!response.ok) throw new Error(data.error || 'Не удалось сохранить профиль')
+      if (!response.ok) throw new Error(data.error || 'Could not save profile')
       setProfile({ id: data.id, Username: data.username, TeamName: data.teamName })
       window.dispatchEvent(new CustomEvent('profile-updated', {
         detail: { username: data.username, teamName: data.teamName }

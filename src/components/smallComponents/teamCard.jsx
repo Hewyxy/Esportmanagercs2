@@ -4,6 +4,7 @@ import "./teamCard.css";
 const TEAM_PLACEHOLDER = "https://www.hltv.org/dynamic-svg/teamplaceholder";
 
 export default function Teams() {
+    // Expand a team in the ranking to see its roster.
     const [teams, setTeams] = useState([]);
     const [players, setPlayers] = useState([]);
     const [openTeam, setOpenTeam] = useState(null);
@@ -18,10 +19,12 @@ export default function Teams() {
             .then(data => setPlayers(data));
     }, []);
 
+    // Points decide the order; sort a copy to keep state untouched.
     const sortedTeams = [...teams].sort(
         (a, b) => b.Points - a.Points
     );
 
+    // Keep just one team card open at a time.
     const toggleTeam = (teamId) => {
         setOpenTeam(openTeam === teamId ? null : teamId);
     };

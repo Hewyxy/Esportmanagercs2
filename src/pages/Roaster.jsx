@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 
 export default function Roaster() {
 
+    // Load our team first, then use its ID to fetch the roster.
     const [team, setTeam] = useState([]);
 
     useEffect(() => {

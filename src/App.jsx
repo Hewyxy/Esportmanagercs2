@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound.jsx";
 import FirstTimeLogIn from './components/FirstTimeLogIn.jsx'
 
 
+// This is where the shared header, footer, and pages are wired together.
 function App() {
   return (
     <BrowserRouter>

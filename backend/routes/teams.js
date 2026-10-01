@@ -3,6 +3,8 @@ const db = require('../db/database');
 
 const router = express.Router();
 
+// Team API: rosters, points, and picking tournament teams by ranking.
+
 const {
     getTopTeams,
     getBottomTeams,

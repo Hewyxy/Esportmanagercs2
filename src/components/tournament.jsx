@@ -6,6 +6,7 @@ const API_URL = "http://localhost:3000/api";
 const TEAM_PLACEHOLDER = "https://www.hltv.org/dynamic-svg/teamplaceholder";
 
 function getRoundName(teamCount) {
+  // Turn the current bracket size into a familiar round name.
   if (teamCount === 2) return "Final";
   if (teamCount === 4) return "Semifinals";
   if (teamCount === 8) return "Quarterfinals";
@@ -15,6 +16,7 @@ function getRoundName(teamCount) {
 }
 
 export default function Tournament({ eventId }) {
+  // Build the bracket from saved matches; unfinished slots are marked TBD.
   const location = useLocation();
   const navigate = useNavigate();
   const [matches, setMatches] = useState([]);
@@ -30,6 +32,7 @@ export default function Tournament({ eventId }) {
     let cancelled = false;
 
     async function loadTournament() {
+      // Load matches and team names together.
       setError("");
 
       try {
@@ -52,6 +55,7 @@ export default function Tournament({ eventId }) {
         const eventMatches = allMatches.filter(
           (match) => Number(match.tournamentId) === Number(eventId),
         );
+        // Drop old duplicate fixtures so a team does not play twice in round one.
         const assignedTeams = new Set();
         const uniqueFirstRound = eventMatches
           .filter((match) => Number(match.round) === 0)
@@ -104,6 +108,7 @@ export default function Tournament({ eventId }) {
   const roundCount =
     initialTeamCount > 1 ? Math.ceil(Math.log2(initialTeamCount)) : 0;
 
+  // Add empty cards for the rounds that have not been played yet.
   const rounds = Array.from({ length: roundCount }, (_, roundIndex) => {
     const roundMatches = matches
       .filter((match) => Number(match.round) === roundIndex)

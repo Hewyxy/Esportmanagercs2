@@ -1,6 +1,7 @@
 import "./tournamentCard.css";
 
 export default function Tournament({ name, image, prize, isCurrent = false, cardRef }) {
+    // One tournament card. Nothing fancy going on here.
     return (
         <article
             className={`tournament${isCurrent ? " tournament--current" : ""}`}

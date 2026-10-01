@@ -3,6 +3,8 @@ const db = require('../db/database');
 
 const router = express.Router();
 
+// Legacy API for matches linked to a specific team.
+
 //get Matches of specific team
 router.get("/:id", (req, res) => {
      const teamId = req.params.id;

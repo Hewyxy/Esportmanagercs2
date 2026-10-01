@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export default function Home() {
+  // Keep the player's profile and event data for the home page here.
   const [team, setTeam] = useState(null);
   const [tournament, setTournament] = useState(null);
   const [tournamentRank, setRank] = useState(null);
@@ -14,6 +15,7 @@ export default function Home() {
 
 
   useEffect(() => {
+    // Load our profile and team.
     fetch("http://localhost:3000/api/user/profile/0")
       .then((response) => response.json())
       .then((data) => setUser(data))
@@ -26,6 +28,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    // Fetch the details for the current event.
     if (!user?.CurrentEvent) return;
 
     fetch(`http://localhost:3000/api/events/${user.CurrentEvent}`)
@@ -35,6 +38,7 @@ export default function Home() {
   }, [user]);
 
   useEffect(() => {
+    // The event format tells me how many teams qualify.
     if (!tournament) return;
 
     if (tournament.TypeOfEvent == 1) {
@@ -49,6 +53,7 @@ export default function Home() {
   }, [tournament]);
 
   useEffect(() => {
+    // Check whether our team made the tournament cutoff.
     if (!team?.Id || !tournamentRank) return;
 
     fetch(`http://localhost:3000/api/teams/top/${team.Id}/${tournamentRank}`)

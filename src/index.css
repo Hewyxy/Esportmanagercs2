@@ -311,7 +311,7 @@ li {
   width: 100%;
 }
 
-/* Активная страница — постоянная подсветка, без наведения */
+/* Keep the active page highlighted even when the mouse is away. */
 .nav-link.active {
   color: var(--accent);
 }
@@ -944,6 +944,7 @@ li {
   }
 }
 
+/* Show the champion after the final, before the player heads home. */
 .tournament-winner-notice {
   display: flex;
   flex-wrap: wrap;

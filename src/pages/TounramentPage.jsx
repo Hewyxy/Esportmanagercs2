@@ -3,6 +3,7 @@ import Tournament from "../components/tournament";
 
 const API_URL = "http://localhost:3000/api";
 
+// Work out how many teams this tournament format needs.
 const getTournamentSize = (typeOfEvent) => {
   switch (Number(typeOfEvent)) {
     case 1:
@@ -19,6 +20,7 @@ const getTournamentSize = (typeOfEvent) => {
 };
 
 const shuffleTeams = (teams) => {
+  // Fisher–Yates shuffle so the matchups do not stay the same every time.
   const shuffled = [...teams];
 
   for (let i = shuffled.length - 1; i > 0; i -= 1) {
@@ -30,6 +32,7 @@ const shuffleTeams = (teams) => {
 };
 
 async function fetchJson(url, options) {
+  // Do not pretend everything is fine when the server returns an error.
   const response = await fetch(url, options);
   if (!response.ok) {
     throw new Error(`Request failed (${response.status}): ${url}`);
@@ -38,6 +41,7 @@ async function fetchJson(url, options) {
 }
 
 export default function TournamentPage() {
+  // Load the current tournament and create round one if it is still empty.
   const [eventId, setEventId] = useState(null);
   const [isReady, setIsReady] = useState(false);
   const [error, setError] = useState("");
@@ -46,6 +50,7 @@ export default function TournamentPage() {
     let cancelled = false;
 
     async function prepareTournament() {
+      // Find the player's event, then pick the teams and save the matches.
       setIsReady(false);
       setError("");
 

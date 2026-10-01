@@ -1,4 +1,5 @@
 export default function NotFound() {
+    // Show this page when the URL is not one of our routes.
     return (
         <div className="not-found">
             <h1>404</h1>

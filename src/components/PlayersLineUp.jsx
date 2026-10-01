@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./PlayersLineUp.css";
 
 export default function PlayersLineUp({ teamId }) {
+  // This block shows the selected team's players.
   const [players, setPlayers] = useState([]);
   const [teamImage, setTeamImage] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -15,6 +16,7 @@ export default function PlayersLineUp({ teamId }) {
     }
 
     const loadPlayers = async () => {
+      // Fetch the roster by team ID; if the API hiccups, show an empty list.
       try {
         setLoading(true);
 

@@ -6,6 +6,7 @@ const EMPTY_PROFILE = { name: "Loading…", team: "" };
 const PROFILE_URL = "http://localhost:3000/api/user/profile/0";
 
 export default function Profile() {
+    // Editable profile shown in the site header.
     const [isOpen, setIsOpen] = useState(false);
     const [profile, setProfile] = useState(EMPTY_PROFILE);
     const [draft, setDraft] = useState(profile);
@@ -15,6 +16,7 @@ export default function Profile() {
     const [players, setPlayers] = useState([]);
 
     useEffect(() => {
+        // Grab our team too, for the header.
         fetch("http://localhost:3000/api/teams/1")
             .then(response => response.json())
             .then(data => setPlayers(data))
@@ -22,6 +24,7 @@ export default function Profile() {
     }, []);
 
     useEffect(() => {
+        // Load the profile and listen for edits made by other components.
         let cancelled = false;
 
         fetch(PROFILE_URL)
@@ -53,12 +56,14 @@ export default function Profile() {
     }, []);
 
     const openProfile = () => {
+        // Start edits from saved data each time, no stale draft mess.
         setDraft(profile);
         setError("");
         setIsOpen(true);
     };
 
     const saveProfile = async () => {
+        // Validate the fields, save them, and let the other components know.
         const username = draft.name.trim();
         const teamName = draft.team.trim();
         if (!username || !teamName) {

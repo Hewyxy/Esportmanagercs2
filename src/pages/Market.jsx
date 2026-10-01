@@ -14,6 +14,7 @@ const sortOptions = [
 ];
 
 export default function Market() {
+    // These two values control how the player list is sorted.
     const [sortBy, setSortBy] = useState("Rating");
     const [sortDirection, setSortDirection] = useState("desc");
 

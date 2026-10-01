@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./CurrentRoaster.css";
 
 export default function CurrentRoaster({ teamId, teamName }) {
+    // View the roster here and send a player to free agency.
     const [players, setPlayers] = useState([]);
     const [teamImage, setTeamImage] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -54,6 +55,7 @@ export default function CurrentRoaster({ teamId, teamName }) {
     ========================= */
 
     const showNotification = (message) => {
+        // The notification pops up, then disappears on its own.
         setNotification(null);
         setNotificationHiding(false);
 
@@ -77,6 +79,7 @@ export default function CurrentRoaster({ teamId, teamName }) {
     ========================= */
 
     const firePlayer = async (playerId) => {
+        // Release the player on the server and remove them from the list.
 
         const player = players.find(
             player => player.id === playerId

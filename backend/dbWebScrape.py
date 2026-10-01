@@ -1,4 +1,7 @@
+"""Fetch team rankings from HLTV."""
+
 import requests
+
 from bs4 import BeautifulSoup
 
 #Insert recent link here

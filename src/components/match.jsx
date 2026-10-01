@@ -6,6 +6,7 @@ import "./match.css";
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const TEAM_PLACEHOLDER = "https://www.hltv.org/dynamic-svg/teamplaceholder";
 
+// Simulate a map series and send live-feed updates as it goes.
 async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
   const match = {
     team1,
@@ -155,6 +156,7 @@ export default function Match({
   tournamentMatchId,
   onTournamentMatchUpdated,
 }) {
+  // One match: load both rosters, simulate the game, and save its tournament result.
   const [team1, setTeam1] = useState(null);
 
   const [team2, setTeam2] = useState(null);
@@ -274,6 +276,7 @@ export default function Match({
   // Start match
 
   async function startMatch() {
+    // Start only after both rosters have loaded.
     if (!team1 || !team2 || team1P.length === 0 || team2P.length === 0) {
       return;
     }

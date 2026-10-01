@@ -1,6 +1,7 @@
 import "./footer.css";
 
 function Footer() {
+    // Site footer: brand, links, and version.
     return (
         <footer className="footer">
             <div className="footer-container">
