@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import "./teamCard.css";
 
+const TEAM_PLACEHOLDER = "https://www.hltv.org/dynamic-svg/teamplaceholder";
+
 export default function Teams() {
     const [teams, setTeams] = useState([]);
     const [players, setPlayers] = useState([]);
@@ -51,7 +53,7 @@ export default function Teams() {
                             </span>
 
                             <img
-                                src={team.Logo}
+                                src={team.Logo || TEAM_PLACEHOLDER}
                                 alt={team.Name}
                                 className="team-logo"
                             />

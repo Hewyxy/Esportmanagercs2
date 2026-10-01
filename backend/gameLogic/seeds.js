@@ -6,7 +6,7 @@ function getTeamsByPoints() {
         .prepare(`
             SELECT Id, Name, Points
             FROM Teams
-            ORDER BY Points DESC
+            ORDER BY Points DESC, Id ASC
         `)
         .all();
 }
@@ -16,7 +16,7 @@ function getTopTeams(count) {
         .prepare(`
             SELECT Id, Name, Points
             FROM Teams
-            ORDER BY Points DESC
+            ORDER BY Points DESC, Id ASC
             LIMIT ?
         `)
         .all(count);
@@ -27,7 +27,7 @@ function getBottomTeams(count) {
         .prepare(`
             SELECT Id, Name, Points
             FROM Teams
-            ORDER BY Points ASC
+            ORDER BY Points ASC, Id ASC
             LIMIT ?
         `)
         .all(count);
@@ -40,6 +40,21 @@ function getTeamSeeds() {
     return teams.map((team, index) => ({
         ...team,
         Seed: index + 1
+    }));
+}
+
+// Persist ranking positions after points change at the end of a tournament.
+function updateTeamSeeds() {
+    const teams = getTeamsByPoints();
+    const updateSeed = db.prepare("UPDATE Teams SET Seed = ? WHERE Id = ?");
+
+    teams.forEach((team, index) => {
+        updateSeed.run(index + 1, team.Id);
+    });
+
+    return teams.map((team, index) => ({
+        ...team,
+        Seed: index + 1,
     }));
 }
 
@@ -82,6 +97,7 @@ module.exports = {
     getTopTeams,
     getBottomTeams,
     getTeamSeeds,
+    updateTeamSeeds,
     getTop8,
     getTop16,
     getTop32,

@@ -943,3 +943,50 @@ li {
     margin: 0 7px;
   }
 }
+
+.tournament-winner-notice {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 13px;
+  width: calc(100% - 58px);
+  margin: 20px 29px 14px;
+  padding: 15px 18px;
+  border: 1px solid rgba(74, 222, 128, 0.32);
+  border-left: 4px solid #4ade80;
+  border-radius: 10px;
+  background: linear-gradient(100deg, rgba(22, 101, 52, 0.22), rgba(17, 24, 33, 0.96));
+  color: #c9f5d7;
+  font-size: 14px;
+  line-height: 1.5;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  animation: tournamentNoticeIn 260ms ease-out both;
+}
+
+.tournament-winner-notice__icon {
+  flex: 0 0 auto;
+  font-size: 22px;
+}
+
+.tournament-winner-notice strong {
+  color: #86efac;
+}
+
+.tournament-winner-notice__transfers {
+  flex: 1 0 100%;
+  margin-left: 35px;
+  color: #aab9c9;
+  font-size: 12px;
+}
+
+@keyframes tournamentNoticeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 800px) {
+  .tournament-winner-notice {
+    width: calc(100% - 30px);
+    margin: 16px 15px 12px;
+  }
+}
