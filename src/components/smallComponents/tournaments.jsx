@@ -51,7 +51,7 @@ export default function Tournaments() {
                             key={tournament.id}
                             cardRef={element => { tournamentRefs.current[tournament.id] = element; }}
                             name={tournament.Name}
-                            image={tournament.BackgorundIMG}
+                            image={`http://localhost:3000${tournament.BackgorundIMG}`}
                             prize={(tournament.PrizePool ?? 0).toLocaleString()}
                             isCurrent={String(tournament.id) === String(currentEventId)}
                         />

@@ -99,7 +99,7 @@ export default function Profile() {
     return (
         <>
             <button className="profile" onClick={openProfile} aria-label="Open profile">
-                <img src="/src/assets/profile.png" alt="" className="profile-img" />
+                <img src="./profile.png" alt="" className="profile-img" />
                 <span className="profile-info">
                     <span className="profile-name">{profile.name}</span>
                     <span className="profile-team">{profile.team}</span>

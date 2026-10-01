@@ -7,7 +7,7 @@ function Footer() {
             <div className="footer-container">
 
                 <div className="footer-brand">
-                    <img src="/src/assets/log0.png" alt="Esport Manager Logo" />
+                    <img src="" alt="Esport Manager Logo" />
                     <p>
                         Build your team. Manage your players.
                         Become the best manager.

@@ -17,6 +17,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+const path = require("path");
+
+app.use("/assets", express.static(path.join(__dirname, "..", "assets")));
+
 //More Routes
 // Each part of the API gets its own router.
 app.use("/api/players", playerRoutes);

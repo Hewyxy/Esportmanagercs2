@@ -1,12 +1,25 @@
-const Database = require('better-sqlite3');
-const path = require('path');
+const Database = require("better-sqlite3");
+const path = require("path");
+const fs = require("fs");
 
-// Resolve the database next to this module so the server uses the same file
-// regardless of the directory from which `node server.js` was started.
-const db = new Database(path.join(__dirname, '..', 'database.db'));
+let dbPath;
 
-// Give older player records a numeric team ID if they do not have one yet.
-// Backfill the existing text based player assignments into the canonical team ID.
+if (process.env.DB_PATH) {
+    dbPath = process.env.DB_PATH;
+
+    const sourceDb = path.join(__dirname, "..", "database.db");
+
+    if (!fs.existsSync(dbPath) && fs.existsSync(sourceDb)) {
+        fs.copyFileSync(sourceDb, dbPath);
+    }
+} else {
+    dbPath = path.join(__dirname, "..", "database.db");
+}
+
+console.log("Database path:", dbPath);
+
+const db = new Database(dbPath);
+
 db.prepare(`
     UPDATE Players
     SET TeamId = CASE

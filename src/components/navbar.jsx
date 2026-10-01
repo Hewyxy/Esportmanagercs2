@@ -1,13 +1,5 @@
-import { useState } from "react";
+import { Link } from "react-router-dom";
 import Profile from "./smallComponents/profile.jsx";
-
-const link = [
-  {name: "Ranking", href: "/ranking"},
-  {name: "Contracts", href: "/contracts"},
-  {name: "Home", href: "/"},
-  {name: "Transfers", href: "/transfers"},
-  {name: "Team", href: "/team"},
-];
 
 export default function Navbar() {
     // Top navigation bar, with the profile on the right.
@@ -15,35 +7,41 @@ export default function Navbar() {
         <header className="header">
             <nav className="navbar">
                 <picture>
-                    <img src="/src/assets/logo.png" alt="Logo" className="logo" />
+                    <img src="./logo.png" alt="Logo" className="logo" />
                 </picture>
+
                 <ul>
                     <li>
-                        <a className="nav-link" href="/ranking">
+                        <Link className="nav-link" to="/ranking">
                             RANKING
-                        </a>
+                        </Link>
                     </li>
+
                     <li>
-                        <a className="nav-link" href="/news">
+                        <Link className="nav-link" to="/news">
                             NEWS
-                        </a>
+                        </Link>
                     </li>
+
                     <li>
-                        <a className="nav-link" id="senter" href="/">
+                        <Link className="nav-link" id="senter" to="/">
                             HOME
-                        </a>
+                        </Link>
                     </li>
+
                     <li>
-                        <a className="nav-link" href="/market">
+                        <Link className="nav-link" to="/market">
                             MARKET
-                        </a>
+                        </Link>
                     </li>
+
                     <li>
-                        <a className="nav-link" href="/roaster">
+                        <Link className="nav-link" to="/roaster">
                             ROASTER
-                        </a>
+                        </Link>
                     </li>
                 </ul>
+
                 <Profile />
             </nav>
         </header>

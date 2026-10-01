@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import './index.css'
 import Navbar from './components/navbar.jsx'
 import Footer from './components/Footer.jsx'
@@ -19,7 +19,7 @@ import FirstTimeLogIn from './components/FirstTimeLogIn.jsx'
 // This is where the shared header, footer, and pages are wired together.
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Navbar />
       <FirstTimeLogIn />
 
@@ -35,7 +35,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
       </Routes>
       <Footer />
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
