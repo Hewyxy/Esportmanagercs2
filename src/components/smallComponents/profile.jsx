@@ -110,14 +110,14 @@ export default function Profile() {
                 <div className="profile-overlay" onClick={() => setIsOpen(false)}>
                     <div className="profile-modal" onClick={(e) => e.stopPropagation()}>
                         <button className="profile-close" onClick={() => setIsOpen(false)} aria-label="Close profile">×</button>
-                        <img src="/src/assets/profile.png" alt="Profile" className="profile-modal-img" />
+                        <img src="./assets/profile.png" alt="Profile" className="profile-modal-img" />
 
                         <label className="profile-field">
                                 <span>Nickname</span>
                             <input
                                 value={draft.name}
                                 onChange={(e) => setDraft({ ...draft, name: e.target.value })}
-                                maxLength={32}
+                                maxLength={20}
                                 required
                                 autoFocus
                             />

@@ -73,7 +73,7 @@ export default function FirstTimeLogIn() {
           id="profile-nickname"
           value={nickname}
           onChange={event => setNickname(event.target.value)}
-          maxLength={32}
+          maxLength={20}
           required
           autoFocus
         />
