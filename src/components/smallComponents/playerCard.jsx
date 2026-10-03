@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import "./playerCard.css";
+import ConfirmationModal from "./confirmation";
 
 export default function PlayerCard({
     sortBy = "Rating",
@@ -12,6 +13,8 @@ export default function PlayerCard({
     const [notification, setNotification] = useState(null);
     const [notificationHiding, setNotificationHiding] = useState(false);
     const [teamPlayers, setTeamPlayers] = useState([]);
+    const [showPurchaseConfirm, setShowPurchaseConfirm] = useState(false);
+    const [playerToPurchase, setPlayerToPurchase] = useState(null);
 
     useEffect(() => {
         fetch("http://localhost:3000/api/teams/1")
@@ -67,7 +70,7 @@ export default function PlayerCard({
             player => player.Role === "IGL"
         ).length;
 
-        if ((riflers+awpers+igls) == 5) {
+        if ((riflers + awpers + igls) == 5) {
             showNotification("Your team is full.");
             return;
         }
@@ -149,7 +152,7 @@ export default function PlayerCard({
 
         const comparison =
             typeof firstValue === "number" &&
-            typeof secondValue === "number"
+                typeof secondValue === "number"
                 ? firstValue - secondValue
                 : String(firstValue).localeCompare(String(secondValue));
 
@@ -162,9 +165,8 @@ export default function PlayerCard({
         <div className="player-list">
             {notification && (
                 <div
-                    className={`recruit-notification ${
-                        notificationHiding ? "hiding" : ""
-                    }`}
+                    className={`recruit-notification ${notificationHiding ? "hiding" : ""
+                        }`}
                 >
                     <span className="recruit-notification-icon">✓</span>
 
@@ -190,8 +192,8 @@ export default function PlayerCard({
                             className="player-avatar"
                         />
                     </div>
-                    
-                    
+
+
                     {/* Player info */}
                     <div className="player-info">
                         <p className="player-name">
@@ -254,7 +256,9 @@ export default function PlayerCard({
                         className="player-recruit"
                         onClick={(e) => {
                             e.stopPropagation();
-                            changeTeam(player.id, playerteam.Id);
+
+                            setPlayerToPurchase(player);
+                            setShowPurchaseConfirm(true);
                         }}
                     >
                         Recruit
@@ -262,7 +266,32 @@ export default function PlayerCard({
 
                 </div>
             ))}
+            <ConfirmationModal
+                isOpen={showPurchaseConfirm}
+                title="Confirm Purchase"
+                message={
+                    playerToPurchase
+                        ? `Are you sure you want to recruit ${playerToPurchase.Name}?`
+                        : ""
+                }
+                confirmText="Recruit"
+                cancelText="Cancel"
+                onConfirm={async () => {
+                    if (!playerToPurchase || !playerteam) return;
 
+                    await changeTeam(
+                        playerToPurchase.id,
+                        playerteam.Id
+                    );
+
+                    setShowPurchaseConfirm(false);
+                    setPlayerToPurchase(null);
+                }}
+                onCancel={() => {
+                    setShowPurchaseConfirm(false);
+                    setPlayerToPurchase(null);
+                }}
+            />
 
             {/* =========================
                 PLAYER POPUP

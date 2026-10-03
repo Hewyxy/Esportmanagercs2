@@ -496,8 +496,8 @@ export default function Match({
                   key={player.Id ?? player.Name}
                 >
                   <span className="match-roster__identity">
-                    <PlayerAvatar player={player} />
                     <span>{player.Name}</span>
+                    <PlayerAvatar player={player} />
                   </span>
                   <span className="match-roster__rating">{player.Rating}</span>
                 </div>

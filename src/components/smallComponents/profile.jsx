@@ -132,10 +132,10 @@ export default function Profile() {
                             />
                         </label>
 
-                        <div className="profile-stats">
+                        {/* <div className="profile-stats">
                             <div><span>Balance</span><strong>$10,000</strong></div>
                             <div><span>Reputation</span><strong>100</strong></div>
-                        </div>
+                        </div> tempotatile remove, add back later whith an update*/}
                         {error && <p className="profile-error" role="alert">{error}</p>}
                         <button className="profile-settings" onClick={saveProfile} disabled={isSaving}>
                             {isSaving ? "Saving…" : "Save changes"}

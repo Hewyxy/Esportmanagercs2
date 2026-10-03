@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./CurrentRoaster.css";
+import ConfirmationModal from "./smallComponents/confirmation.jsx";
 
 export default function CurrentRoaster({ teamId, teamName }) {
     // View the roster here and send a player to free agency.
@@ -9,6 +10,8 @@ export default function CurrentRoaster({ teamId, teamName }) {
 
     const [notification, setNotification] = useState(null);
     const [notificationHiding, setNotificationHiding] = useState(false);
+    const [showFireConfirm, setShowFireConfirm] = useState(false);
+    const [playerToFire, setPlayerToFire] = useState(null);
 
     useEffect(() => {
         if (teamId == null) {
@@ -179,11 +182,10 @@ export default function CurrentRoaster({ teamId, teamName }) {
 
             {notification && (
                 <div
-                    className={`recruit-notification ${
-                        notificationHiding
-                            ? "hiding"
-                            : ""
-                    }`}
+                    className={`recruit-notification ${notificationHiding
+                        ? "hiding"
+                        : ""
+                        }`}
                 >
                     <span className="recruit-notification-icon">
                         ✓
@@ -315,12 +317,12 @@ export default function CurrentRoaster({ teamId, teamName }) {
                                 <button
                                     type="button"
                                     className="current-roster-fire"
-
                                     onClick={(e) => {
                                         e.preventDefault();
                                         e.stopPropagation();
 
-                                        firePlayer(player.id);
+                                        setPlayerToFire(player);
+                                        setShowFireConfirm(true);
                                     }}
                                 >
                                     Fire
@@ -348,6 +350,30 @@ export default function CurrentRoaster({ teamId, teamName }) {
                 </div>
 
             </div>
+            <ConfirmationModal
+                isOpen={showFireConfirm}
+                title="Fire Player"
+                message={
+                    playerToFire
+                        ? `Are you sure you want to fire ${playerToFire.Name}?`
+                        : ""
+                }
+                confirmText="Fire"
+                cancelText="Cancel"
+                danger={true}
+                onConfirm={async () => {
+                    if (!playerToFire) return;
+
+                    await firePlayer(playerToFire.id);
+
+                    setShowFireConfirm(false);
+                    setPlayerToFire(null);
+                }}
+                onCancel={() => {
+                    setShowFireConfirm(false);
+                    setPlayerToFire(null);
+                }}
+            />
 
         </section>
     );
