@@ -728,6 +728,38 @@ li {
   }
 }
 
+.battle-finished {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    margin: 40px 0;
+    padding: 30px;
+    background: #111821;
+    border: 1px solid #293442;
+    border-radius: 12px;
+}
+
+.battle-finished h2 {
+    margin: 0;
+    color: #f3f6fa;
+}
+
+.battle-return-button {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 7px;
+    background: #3b82f6;
+    color: white;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.battle-return-button:hover {
+    background: #2563eb;
+}
 /* =========================
    SMALL TABLET / LARGE PHONE
 ========================= */

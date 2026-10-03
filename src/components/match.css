@@ -808,6 +808,76 @@
     outline: 2px solid #ffffff;
     outline-offset: 4px;
 }
+
+.match-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+
+    margin: 24px 0;
+}
+
+.match-start-button,
+.match-skip-button {
+    min-width: 180px;
+    padding: 12px 22px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease,
+        opacity 0.15s ease;
+}
+
+.match-start-button {
+    background: #3b82f6;
+    border: 1px solid #3b82f6;
+    color: white;
+}
+
+.match-start-button:hover:not(:disabled) {
+    background: #2563eb;
+    transform: translateY(-1px);
+}
+
+.match-skip-button {
+    background: #111821;
+    border: 1px solid #303b4a;
+    color: #b8c2cf;
+}
+
+.match-skip-button:hover:not(:disabled) {
+    background: #1a2330;
+    border-color: #465365;
+    color: white;
+    transform: translateY(-1px);
+}
+
+.match-start-button:disabled,
+.match-skip-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+@media (max-width: 600px) {
+    .match-actions {
+        flex-direction: column;
+    }
+
+    .match-start-button,
+    .match-skip-button {
+        width: 100%;
+    }
+}
 /* =========================
    MOBILE
 ========================= */
