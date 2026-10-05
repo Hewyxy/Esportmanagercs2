@@ -9,6 +9,7 @@ const UserRoutes = require("./routes/Users");
 const MathesRoutes = require("./routes/Matches");
 const TournamnetMathesRoutes = require("./routes/TournamentMatches");
 const TournamnetTeamsRoutes = require("./routes/TournamentTeams");
+const NewsRoutes = require("./routes/News"); 
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use("/api/user", UserRoutes);
 app.use("/api/matches", MathesRoutes);
 app.use("/api/tournamentmatches", TournamnetMathesRoutes);
 app.use("/api/TournamentTeams", TournamnetTeamsRoutes);
+app.use("/api/news", NewsRoutes);
 
 //404 Handler
 // If nothing matched the URL, say so plainly.

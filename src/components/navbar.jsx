@@ -37,7 +37,7 @@ export default function Navbar() {
 
                     <li>
                         <Link className="nav-link" to="/roaster">
-                            ROASTER
+                            TEAM
                         </Link>
                     </li>
                 </ul>
