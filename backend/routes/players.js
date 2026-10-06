@@ -62,9 +62,52 @@ router.patch("/:id/team", (req, res) => {
         if (teamId !== 0 && !db.prepare("SELECT Id FROM Teams WHERE Id = ?").get(teamId)) {
             return res.status(404).json({ error: "Team not found" });
         }
-        const result = db
-            .prepare("UPDATE Players SET TeamId = ? WHERE id = ?")
-            .run(teamId, playerId);
+        const movePlayer = db.transaction(() => {
+            const previous = db.prepare(`
+                SELECT Players.id, Players.Name AS playerName, Players.Image AS playerImage, Players.TeamId,
+                       Players.TeamImage, Teams.Name AS teamName, Teams.Logo AS teamLogo
+                FROM Players LEFT JOIN Teams ON Teams.Id = Players.TeamId
+                WHERE Players.id = ?
+            `).get(playerId);
+            if (!previous) return { changes: 0 };
+
+            const destination = teamId === 0 ? null : db.prepare(
+                "SELECT Name, Logo FROM Teams WHERE Id = ?"
+            ).get(teamId);
+            db.prepare(`
+                UPDATE Players
+                SET TeamId = ?, Team = COALESCE((SELECT Name FROM Teams WHERE Id = ?), 'None')
+                WHERE id = ?
+            `).run(teamId, teamId, playerId);
+
+            if (Number(previous.TeamId) !== teamId) {
+                const isRelease = teamId === 0;
+                const fromName = previous.teamName || "Free Agent";
+                const toName = destination?.Name || "Free Agent";
+                const newsType = isRelease ? "Release" : "Transfer";
+                const message = isRelease
+                    ? `${previous.playerName} was released by ${fromName}`
+                    : `${previous.playerName} joined ${toName}${previous.teamName ? ` from ${fromName}` : ""}`;
+                db.prepare(`
+                    INSERT INTO News
+                        (type, team1Logo, team2Logo, playerId, playerName, playerImage, team1Name, team2Name, message)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+                `).run(
+                    newsType,
+                    previous.teamLogo || previous.TeamImage || null,
+                    destination?.Logo || null,
+                    previous.id,
+                    previous.playerName,
+                    previous.playerImage || null,
+                    fromName,
+                    toName,
+                    message
+                );
+            }
+
+            return { changes: 1 };
+        });
+        const result = movePlayer();
 
         if (result.changes === 0) {
             return res.status(404).json({

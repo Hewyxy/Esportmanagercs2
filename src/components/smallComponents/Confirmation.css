@@ -9,10 +9,8 @@
 
     padding: 20px;
 
-    background: rgba(5, 8, 12, 0.72);
-    backdrop-filter: blur(6px);
-
-    animation: confirmation-overlay-in 0.18s ease-out;
+    background: rgba(5, 8, 12, 0.78);
+    animation: confirmation-overlay-in 150ms ease-out both;
 }
 
 .confirmation-modal {
@@ -31,7 +29,8 @@
         0 24px 70px rgba(0, 0, 0, 0.55),
         0 0 0 1px rgba(255, 255, 255, 0.02);
 
-    animation: confirmation-modal-in 0.2s ease-out;
+    transform-origin: center;
+    animation: confirmation-modal-in 190ms ease-out both;
 }
 
 /* Top accent line */
@@ -49,6 +48,9 @@
     border-radius: 0 0 4px 4px;
 
     opacity: 0.9;
+    transform: scaleX(0);
+    transform-origin: left center;
+    animation: confirmation-accent-in 220ms 70ms ease-out both;
 }
 
 /* Title */
@@ -182,12 +184,31 @@
 @keyframes confirmation-modal-in {
     from {
         opacity: 0;
-        transform: translateY(8px) scale(0.98);
+        transform: translateY(8px) scale(0.985);
     }
 
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes confirmation-accent-in {
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .confirmation-overlay,
+    .confirmation-modal,
+    .confirmation-modal::before {
+        animation: none;
+        transform: none;
+    }
+
+    .confirmation-buttons button {
+        transition: none;
     }
 }
 

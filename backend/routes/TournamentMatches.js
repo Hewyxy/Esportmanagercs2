@@ -30,15 +30,28 @@ router.post("/finish", (req, res) => {
 
             const champion = db.prepare("SELECT Name FROM Teams WHERE Id = ?")
                 .get(finalMatch.winnerId);
-            const aiTeams = db.prepare("SELECT Id, Name FROM Teams WHERE Id != 1").all();
+            const championDetails = db.prepare("SELECT Name, Logo FROM Teams WHERE Id = ?")
+                .get(finalMatch.winnerId);
+            const tournament = db.prepare("SELECT Name FROM Events WHERE Id = ?")
+                .get(tournamentId);
+            db.prepare(`
+                INSERT INTO News (type, team1Logo, team1Name, tournamentName, message)
+                VALUES ('Winner', ?, ?, ?, ?)
+            `).run(
+                championDetails?.Logo ?? null,
+                championDetails?.Name ?? "Unknown team",
+                tournament?.Name ?? "Tournament",
+                `${championDetails?.Name ?? "Unknown team"} won ${tournament?.Name ?? "the tournament"}`
+            );
+            const aiTeams = db.prepare("SELECT Id, Name, Logo FROM Teams WHERE Id != 1").all();
             const freeAgents = db.prepare(`
-                SELECT id, Name, Role FROM Players
+                SELECT id, Name, Role, Image FROM Players
                 WHERE TeamId = 0
                 ORDER BY RANDOM()
             `).all();
             const transfers = [];
             const getOutgoingPlayer = db.prepare(`
-                SELECT id, Name, Role FROM Players
+                SELECT id, Name, Role, Image FROM Players
                 WHERE TeamId = ?
                 ORDER BY RANDOM()
                 LIMIT 1
@@ -51,6 +64,16 @@ router.post("/finish", (req, res) => {
             const releasePlayer = db.prepare(
                 "UPDATE Players SET TeamId = 0, Team = 'None', TeamImage = 'https://www.hltv.org/dynamic-svg/teamplaceholder' WHERE id = ?",
             );
+            const addTransferNews = db.prepare(`
+                INSERT INTO News
+                    (type, team1Logo, team2Logo, playerId, playerName, playerImage, team1Name, team2Name, message)
+                VALUES ('Transfer', ?, ?, ?, ?, ?, ?, ?, ?)
+            `);
+            const addReleaseNews = db.prepare(`
+                INSERT INTO News
+                    (type, team1Logo, playerId, playerName, playerImage, team1Name, team2Name, message)
+                VALUES ('Release', ?, ?, ?, ?, ?, 'Free Agent', ?)
+            `);
 
             for (const team of aiTeams) {
                 if (Math.random() >= 0.05 || freeAgents.length === 0) continue;
@@ -72,6 +95,24 @@ router.post("/finish", (req, res) => {
                 const [incomingPlayer] = freeAgents.splice(incomingIndex, 1);
                 signFreeAgent.run(team.Id, team.Id, incomingPlayer.id);
                 releasePlayer.run(outgoingPlayer.id);
+                addTransferNews.run(
+                    null,
+                    team.Logo || null,
+                    incomingPlayer.id,
+                    incomingPlayer.Name,
+                    incomingPlayer.Image || null,
+                    "Free Agent",
+                    team.Name,
+                    `${incomingPlayer.Name} joined ${team.Name}`
+                );
+                addReleaseNews.run(
+                    team.Logo || null,
+                    outgoingPlayer.id,
+                    outgoingPlayer.Name,
+                    outgoingPlayer.Image || null,
+                    team.Name,
+                    `${outgoingPlayer.Name} was released by ${team.Name}`
+                );
                 transfers.push({
                     teamName: team.Name,
                     signedPlayer: incomingPlayer.Name,

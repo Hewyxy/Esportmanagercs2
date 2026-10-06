@@ -3,13 +3,14 @@ const router = express.Router();
 
 const db = require("../db/database");
 
-// GET all news
+// GET the latest 20 news items
 router.get("/", (req, res) => {
     try {
         const news = db.prepare(`
             SELECT *
             FROM News
             ORDER BY id DESC
+            LIMIT 20
         `).all();
 
         res.json(news);
@@ -49,7 +50,12 @@ router.post("/", (req, res) => {
             team1Logo,
             team2Logo,
             playerId,
-            tournamentName
+            tournamentName,
+            playerName,
+            playerImage,
+            team1Name,
+            team2Name,
+            message
         } = req.body;
 
         const result = db.prepare(`
@@ -58,15 +64,25 @@ router.post("/", (req, res) => {
                 team1Logo,
                 team2Logo,
                 playerId,
-                tournamentName
+                tournamentName,
+                playerName,
+                playerImage,
+                team1Name,
+                team2Name,
+                message
             )
-            VALUES (?, ?, ?, ?, ?)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         `).run(
             type,
             team1Logo,
             team2Logo,
             playerId,
-            tournamentName
+            tournamentName,
+            playerName,
+            playerImage,
+            team1Name,
+            team2Name,
+            message
         );
 
         const news = db.prepare(`
