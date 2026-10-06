@@ -3,6 +3,7 @@ import PlayersLineUp from "../components/PlayersLineUp";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+//News injection should be handled here in the future.
 export default function Home() {
   // Keep the player's profile and event data for the home page here.
   const [team, setTeam] = useState(null);
