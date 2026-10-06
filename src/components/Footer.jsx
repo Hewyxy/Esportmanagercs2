@@ -38,7 +38,7 @@ function Footer() {
                 <div className="footer-bottom-links">
                     <a href="#">Privacy Policy</a>
                     <a href="#">Terms of Service</a>
-                    <a >1.0.1</a>
+                    <a >1.1.0</a>
                 </div>
             </div>
         </footer>
