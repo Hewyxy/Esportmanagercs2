@@ -53,7 +53,7 @@ router.post("/finish", (req, res) => {
             );
 
             for (const team of aiTeams) {
-                if (Math.random() >= 0.07 || freeAgents.length === 0) continue;
+                if (Math.random() >= 0.05 || freeAgents.length === 0) continue;
 
                 const outgoingPlayer = getOutgoingPlayer.get(team.Id);
                 if (!outgoingPlayer) continue;
