@@ -4,6 +4,112 @@ const { updateTeamSeeds } = require('../gameLogic/seeds');
 
 const router = express.Router();
 
+// Apply end-of-tournament changes only after the player chooses to finish.
+router.post("/finish", (req, res) => {
+    const tournamentId = Number(req.body?.tournamentId);
+
+    if (!Number.isInteger(tournamentId) || tournamentId <= 0) {
+        return res.status(400).json({ error: "A valid tournament ID is required" });
+    }
+
+    try {
+        const finish = db.transaction(() => {
+            const tournamentMatches = db.prepare(`
+                SELECT * FROM TournamentMatches WHERE tournamentId = ?
+            `).all(tournamentId);
+
+            if (tournamentMatches.length === 0
+                || tournamentMatches.some((match) => match.status !== "completed")) {
+                return { notFinished: true };
+            }
+
+            const finalMatch = tournamentMatches.reduce((latest, match) =>
+                Number(match.round) > Number(latest.round) ? match : latest,
+            );
+            if (!finalMatch.winnerId) return { notFinished: true };
+
+            const champion = db.prepare("SELECT Name FROM Teams WHERE Id = ?")
+                .get(finalMatch.winnerId);
+            const aiTeams = db.prepare("SELECT Id, Name FROM Teams WHERE Id != 1").all();
+            const freeAgents = db.prepare(`
+                SELECT id, Name, Role FROM Players
+                WHERE TeamId = 0
+                ORDER BY RANDOM()
+            `).all();
+            const transfers = [];
+            const getOutgoingPlayer = db.prepare(`
+                SELECT id, Name, Role FROM Players
+                WHERE TeamId = ?
+                ORDER BY RANDOM()
+                LIMIT 1
+            `);
+            const signFreeAgent = db.prepare(`
+                UPDATE Players
+                SET TeamId = ?, Team = (SELECT Name FROM Teams WHERE Id = ?)
+                WHERE id = ?
+            `);
+            const releasePlayer = db.prepare(
+                "UPDATE Players SET TeamId = 0, Team = 'None', TeamImage = 'https://www.hltv.org/dynamic-svg/teamplaceholder' WHERE id = ?",
+            );
+
+            for (const team of aiTeams) {
+                if (Math.random() >= 0.07 || freeAgents.length === 0) continue;
+
+                const outgoingPlayer = getOutgoingPlayer.get(team.Id);
+                if (!outgoingPlayer) continue;
+
+                const outgoingRole = outgoingPlayer.Role?.trim().toLowerCase();
+                if (!outgoingRole) continue;
+
+                const matchingFreeAgentIndexes = freeAgents
+                    .map((player, index) => ({ player, index }))
+                    .filter(({ player }) => player.Role?.trim().toLowerCase() === outgoingRole)
+                    .map(({ index }) => index);
+                if (matchingFreeAgentIndexes.length === 0) continue;
+
+                const roleCandidateIndex = Math.floor(Math.random() * matchingFreeAgentIndexes.length);
+                const incomingIndex = matchingFreeAgentIndexes[roleCandidateIndex];
+                const [incomingPlayer] = freeAgents.splice(incomingIndex, 1);
+                signFreeAgent.run(team.Id, team.Id, incomingPlayer.id);
+                releasePlayer.run(outgoingPlayer.id);
+                transfers.push({
+                    teamName: team.Name,
+                    signedPlayer: incomingPlayer.Name,
+                    releasedPlayer: outgoingPlayer.Name,
+                });
+            }
+
+            updateTeamSeeds();
+
+            const nextEvent = db.prepare(`
+                SELECT id FROM Events WHERE id > ? ORDER BY id ASC LIMIT 1
+            `).get(tournamentId)
+                ?? db.prepare("SELECT id FROM Events ORDER BY id ASC LIMIT 1").get();
+            const nextEventId = nextEvent?.id ?? tournamentId + 1;
+
+            db.prepare("UPDATE User SET CurrentEvent = ? WHERE id = 0")
+                .run(nextEventId);
+            db.prepare("DELETE FROM TournamentMatches WHERE tournamentId = ?")
+                .run(tournamentId);
+
+            return {
+                winnerName: champion?.Name ?? "Unknown team",
+                transfers,
+                nextEventId,
+            };
+        });
+
+        const result = finish();
+        if (result.notFinished) {
+            return res.status(409).json({ error: "Complete every match before finishing the tournament" });
+        }
+        return res.json(result);
+    } catch (error) {
+        console.error("Could not finish tournament:", error);
+        return res.status(500).json({ error: error.message });
+    }
+});
+
 router.get("/", (req, res) => {
     // Return the whole bracket; the frontend will pick the current event.
     const matches = db.prepare("SELECT * FROM TournamentMatches").all();
@@ -122,79 +228,7 @@ router.put("/:id/result", (req, res) => {
             }
 
             if (roundMatches.length === 1) {
-                const champion = db.prepare("SELECT Name FROM Teams WHERE Id = ?")
-                    .get(normalizedWinnerId);
-
-                const aiTeams = db.prepare("SELECT Id, Name FROM Teams WHERE Id != 1").all();
-                const freeAgents = db.prepare(`
-                    SELECT id, Name, Role FROM Players
-                    WHERE TeamId = 0
-                    ORDER BY RANDOM()
-                `).all();
-                const transfers = [];
-                const getOutgoingPlayer = db.prepare(`
-                    SELECT id, Name, Role FROM Players
-                    WHERE TeamId = ?
-                    ORDER BY RANDOM()
-                    LIMIT 1
-                `);
-                const signFreeAgent = db.prepare(`
-                    UPDATE Players
-                    SET TeamId = ?, Team = (SELECT Name FROM Teams WHERE Id = ?)
-                    WHERE id = ?
-                `);
-                const releasePlayer = db.prepare(
-                    "UPDATE Players SET TeamId = 0, Team = 'None', TeamImage = 'https://www.hltv.org/dynamic-svg/teamplaceholder' WHERE id = ?",
-                );
-
-                for (const team of aiTeams) {
-                    if (Math.random() >= 0.07 || freeAgents.length === 0) continue;
-
-                    const outgoingPlayer = getOutgoingPlayer.get(team.Id);
-                    if (!outgoingPlayer) continue;
-
-                    const outgoingRole = outgoingPlayer.Role?.trim().toLowerCase();
-                    if (!outgoingRole) continue;
-
-                    const matchingFreeAgentIndexes = freeAgents
-                        .map((player, index) => ({ player, index }))
-                        .filter(({ player }) => player.Role?.trim().toLowerCase() === outgoingRole)
-                        .map(({ index }) => index);
-                    if (matchingFreeAgentIndexes.length === 0) continue;
-
-                    const roleCandidateIndex = Math.floor(Math.random() * matchingFreeAgentIndexes.length);
-                    const incomingIndex = matchingFreeAgentIndexes[roleCandidateIndex];
-                    const [incomingPlayer] = freeAgents.splice(incomingIndex, 1);
-                    signFreeAgent.run(team.Id, team.Id, incomingPlayer.id);
-                    releasePlayer.run(outgoingPlayer.id);
-                    transfers.push({
-                        teamName: team.Name,
-                        signedPlayer: incomingPlayer.Name,
-                        releasedPlayer: outgoingPlayer.Name,
-                    });
-                }
-
-                updateTeamSeeds();
-
-                const nextEvent = db.prepare(`
-                    SELECT id FROM Events WHERE id > ? ORDER BY id ASC LIMIT 1
-                `).get(currentMatch.tournamentId)
-                    ?? db.prepare("SELECT id FROM Events ORDER BY id ASC LIMIT 1").get();
-                const nextEventId = nextEvent?.id ?? Number(currentMatch.tournamentId) + 1;
-
-                db.prepare("UPDATE User SET CurrentEvent = ? WHERE id = 0")
-                    .run(nextEventId);
-                db.prepare("DELETE FROM TournamentMatches").run();
-
-                return {
-                    saved: true,
-                    tournamentFinished: true,
-                    nextEventId,
-                    winnerName: champion?.Name ?? "Unknown team",
-                    transfers,
-                    seedsUpdated: true,
-                    nextMatchId: null,
-                };
+                return { saved: true, tournamentFinished: true, nextMatchId: null };
             }
 
             const currentNumber = Number(currentMatch.matchNumber) || currentIndex + 1;

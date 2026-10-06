@@ -17,7 +17,7 @@ export default function Battle() {
   const currentRound = useRef(null);
 
   const loadMatches = useCallback(
-    async (result) => {
+    async () => {
       try {
         const response = await fetch(`${API_URL}/tournamentmatches`);
 
@@ -30,19 +30,6 @@ export default function Battle() {
         setMatches(data);
         setError("");
         setMatchesLoaded(true);
-
-        // Tournament is completely finished
-        if (result?.tournamentFinished) {
-          navigate("/", {
-            replace: true,
-            state: {
-              tournamentWinner: result.winnerName,
-              tournamentTransfers: result.transfers ?? [],
-            },
-          });
-
-          return;
-        }
 
         /*
          * Find the first/current ongoing round.
@@ -154,8 +141,8 @@ export default function Battle() {
    * Reloading the matches removes the completed match from
    * backgroundMatches, which causes the next one to render.
    */
-  const handleBackgroundMatchUpdated = async (result) => {
-    await loadMatches(result);
+  const handleBackgroundMatchUpdated = async () => {
+    await loadMatches();
   };
 
   /*
