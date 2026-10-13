@@ -28,3 +28,8 @@ release/
 *.asar
 *.pdb
 
+
+#SQlite
+*.db
+*.sqlite
+*.sqlite3
