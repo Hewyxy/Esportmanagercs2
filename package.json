@@ -13,6 +13,7 @@
     "dist": "npm run build && electron-builder"
   },
   "dependencies": {
+    "cookie": "^2.0.1",
     "lucide-react": "^1.52.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",

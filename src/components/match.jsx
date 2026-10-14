@@ -69,6 +69,7 @@ async function simulateMatch(
   const roundTemp = {
     number: 0,
     winner: 0,
+    bombPlanted: false,
     events: [],
   };
 
@@ -80,7 +81,7 @@ async function simulateMatch(
 
     map.name =
       match.mapPool[
-        Math.floor(Math.random() * match.mapPool.length)
+      Math.floor(Math.random() * match.mapPool.length)
       ];
 
     // Maximum 5 rounds per map for faster simulation.
@@ -94,7 +95,8 @@ async function simulateMatch(
 
       const team1Players = [...match.team1.Players];
       const team2Players = [...match.team2.Players];
-
+      //round simulation loop
+      //Add side switch logic here if needed.
       while (
         team1Players.length !== 0 &&
         team2Players.length !== 0
@@ -108,6 +110,10 @@ async function simulateMatch(
         const total = player1.Rating + player2.Rating;
 
         const winner = Math.floor(Math.random() * total);
+
+        //Insert bomb planting logic here if needed.
+
+        //Insert bomb defusal logic here if needed.
 
         if (winner < player1.Rating) {
           round.events.push({
@@ -484,9 +490,9 @@ export default function Match({
               return (
                 !feed ||
                 feed.scrollHeight -
-                  feed.scrollTop -
-                  feed.clientHeight <
-                  48
+                feed.scrollTop -
+                feed.clientHeight <
+                48
               );
             });
 
@@ -520,7 +526,7 @@ export default function Match({
             score2: result.finalScore.team2,
             winnerId:
               result.finalScore.team1 >
-              result.finalScore.team2
+                result.finalScore.team2
                 ? result.team1.id
                 : result.team2.id,
           }),
@@ -532,7 +538,7 @@ export default function Match({
       if (!response.ok) {
         throw new Error(
           savedMatch.error ||
-            "The match history could not be saved."
+          "The match history could not be saved."
         );
       }
 
@@ -543,7 +549,7 @@ export default function Match({
       if (tournamentMatchId) {
         const winnerId =
           result.finalScore.team1 >
-          result.finalScore.team2
+            result.finalScore.team2
             ? result.team1.id
             : result.team2.id;
 
@@ -570,7 +576,7 @@ export default function Match({
         if (!tournamentResponse.ok) {
           throw new Error(
             tournamentResult.error ||
-              "The tournament bracket could not be updated."
+            "The tournament bracket could not be updated."
           );
         }
 
@@ -599,7 +605,7 @@ export default function Match({
 
       setError(
         error.message ||
-          "The match could not be simulated."
+        "The match could not be simulated."
       );
     } finally {
       /*
@@ -899,11 +905,10 @@ export default function Match({
               >
                 {map.rounds.map((round) => (
                   <div
-                    className={`match-round ${
-                      round.winner
+                    className={`match-round ${round.winner
                         ? "match-round--complete"
                         : "match-round--live"
-                    }`}
+                      }`}
                     key={round.number}
                   >
                     <h3>
@@ -914,26 +919,24 @@ export default function Match({
                       <span className="match-round__status">
                         {round.winner === 0
                           ? "LIVE"
-                          : `${
-                              round.winner === 1
-                                ? match.team1.Name
-                                : match.team2.Name
-                            } won`}
+                          : `${round.winner === 1
+                            ? match.team1.Name
+                            : match.team2.Name
+                          } won`}
                       </span>
                     </h3>
 
                     {round.events.map(
                       (event, eventIndex) => (
                         <p
-                          className={`match-event ${
-                            match.team1.Players.some(
-                              (player) =>
-                                player.Name ===
-                                event.killer
-                            )
+                          className={`match-event ${match.team1.Players.some(
+                            (player) =>
+                              player.Name ===
+                              event.killer
+                          )
                               ? "match-event--team-one"
                               : "match-event--team-two"
-                          }`}
+                            }`}
                           key={eventIndex}
                         >
                           <PlayerAvatar
