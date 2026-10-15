@@ -1,0 +1,94 @@
+.player-popup-stats {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.player-popup-stat {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 14px 8px;
+
+    min-width: 0;
+    padding: 16px;
+
+    background: #111821;
+    border: 1px solid #253140;
+    border-radius: 8px;
+
+    transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.player-popup-stat:hover {
+    background: #151f2b;
+    border-color: #3b5068;
+}
+
+.player-popup-stat > div:first-child {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 0;
+}
+
+.player-popup-stat span {
+    color: #e2e8f0;
+    font-size: 12px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.player-popup-stat small {
+    color: #718096;
+    font-size: 10px;
+}
+
+.player-popup-stat strong {
+    color: #f8fafc;
+    font-size: 24px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-bars {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: 5px;
+    width: 100%;
+}
+
+.stat-bar {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: #283341;
+    transition: background 0.2s ease;
+}
+
+.stat-bars.bad .stat-bar.active {
+    background: #ef4444;
+}
+
+.stat-bars.poor .stat-bar.active {
+    background: #f91616;
+}
+
+.stat-bars.average .stat-bar.active {
+    background: #eab308;
+}
+
+.stat-bars.good .stat-bar.active {
+    background: #3b82f6;
+}
+
+.stat-bars.excellent .stat-bar.active {
+    background: #22c55e;
+}
+
+@media (max-width: 500px) {
+    .player-popup-stats {
+        grid-template-columns: 1fr;
+    }
+}

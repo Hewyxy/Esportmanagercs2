@@ -44,7 +44,6 @@ export default function Home() {
     }
   };
 
-
   useEffect(() => {
     // Load our profile and team.
     fetch("http://localhost:3000/api/user/profile/0")
@@ -97,16 +96,23 @@ export default function Home() {
     <div>
       {location.state?.tournamentWinner && (
         <div className="tournament-winner-notice" role="status">
-          <span className="tournament-winner-notice__icon" aria-hidden="true"></span>
+          <span
+            className="tournament-winner-notice__icon"
+            aria-hidden="true"
+          ></span>
           <span>
-            <strong>{location.state.tournamentWinner}</strong> won the tournament!
-            Your next event is ready.
+            <strong>{location.state.tournamentWinner}</strong> won the
+            tournament! Your next event is ready.
           </span>
           {location.state.tournamentTransfers?.length > 0 && (
             <span className="tournament-winner-notice__transfers">
-              Roster moves: {location.state.tournamentTransfers.map((transfer) =>
-                `${transfer.teamName}: ${transfer.signedPlayer} joined, ${transfer.releasedPlayer} left`,
-              ).join(" · ")}
+              Roster moves:{" "}
+              {location.state.tournamentTransfers
+                .map(
+                  (transfer) =>
+                    `${transfer.teamName}: ${transfer.signedPlayer} joined, ${transfer.releasedPlayer} left`,
+                )
+                .join(" · ")}
             </span>
           )}
         </div>
@@ -137,7 +143,12 @@ export default function Home() {
             {isCheckingRoster ? "Checking..." : "Play"}
           </button>
         ) : (
-          <button className="PlayButton" onClick={() => navigate("/tournament")}>Skip</button>
+          <button
+            className="PlayButton"
+            onClick={() => navigate("/tournament")}
+          >
+            Skip
+          </button>
         )}
       </div>
 

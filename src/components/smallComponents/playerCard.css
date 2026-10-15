@@ -654,65 +654,36 @@
    POPUP STATS
 ========================================= */
 
-.player-popup-stats {
-    display: grid;
-
-    grid-template-columns: repeat(2, 1fr);
-
-    gap: 10px;
-}
-
 .player-popup-stat {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
 
     min-height: 72px;
-
     padding: 13px 15px;
+    gap: 8px;
 
     border: 1px solid #202b38;
-    border-radius: 8px;
+    border-radius: 10px;
+    background: linear-gradient(145deg, #141d27, #10161e);
 
-    background: #111821;
+    box-shadow: 0 2px 6px #00000020;
 
     transition:
         border-color 0.2s ease,
-        background 0.2s ease;
+        background 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.2s ease;
 }
 
 .player-popup-stat:hover {
-    border-color: #344457;
-
-    background: #141d27;
+    border-color: #3b4b60;
+    background: linear-gradient(145deg, #182331, #121a24);
+    box-shadow: 0 4px 12px #00000030;
+    transform: translateY(-1px);
 }
 
-.player-popup-stat div {
-    display: flex;
-    flex-direction: column;
-}
-
-.player-popup-stat span {
-    color: #d9dee5;
-
-    font-size: 12px;
-    font-weight: 700;
-}
-
-.player-popup-stat small {
-    margin-top: 4px;
-
-    color: #566475;
-
-    font-size: 8px;
-}
-
-.player-popup-stat strong {
-    color: #ffffff;
-
-    font-size: 21px;
-    font-weight: 900;
-}
 
 
 /* =========================================

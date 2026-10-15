@@ -564,3 +564,126 @@
     }
 }
 
+/* Keep the original blue theme and player layout */
+
+.current-roster-player {
+    height: 180px;
+    min-height: 180px;
+    padding: 0;
+    isolation: auto;
+}
+
+.current-roster-card-overlay {
+    z-index: 1;
+    pointer-events: none;
+}
+
+.current-roster-player-image {
+    z-index: 2;
+}
+
+.current-roster-player-content {
+    z-index: 3;
+}
+
+.current-roster-rating {
+    z-index: 4;
+}
+
+.current-roster-arrow {
+    z-index: 4;
+    right: 15px;
+    bottom: 14px;
+}
+
+/* Fire button: always visible */
+
+.current-roster-fire {
+    position: absolute;
+    right: 45px;
+    bottom: 14px;
+    z-index: 10;
+
+    display: block;
+    visibility: visible;
+    opacity: 1;
+    transform: none;
+
+    padding: 6px 12px;
+
+    color: #ef4444;
+    background: #ef444414;
+    border: 1px solid #ef444466;
+    border-radius: 6px;
+
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+
+    cursor: pointer;
+    pointer-events: auto;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+}
+
+.current-roster-fire:hover {
+    color: #ffffff;
+    background: #ef4444;
+    border-color: #ef4444;
+    transform: none;
+}
+
+.current-roster-fire:active {
+    transform: scale(0.96);
+}
+
+/* Blue hover, matching the original design */
+
+.current-roster-player:hover {
+    border-color: #3b82f6;
+    box-shadow:
+        0 10px 30px #00000059,
+        0 0 20px #3b82f614;
+}
+
+.current-roster-arrow {
+    color: #4c5a6a;
+}
+
+.current-roster-player:hover .current-roster-arrow {
+    color: #3b82f6;
+}
+
+/* Responsive */
+
+@media (max-width: 500px) {
+    .current-roster-player {
+        height: 165px;
+        min-height: 165px;
+    }
+
+    .current-roster-player-image {
+        width: 125px;
+        height: 140px;
+    }
+
+    .current-roster-player-content {
+        left: 125px;
+        bottom: 15px;
+    }
+
+    .current-roster-player-content h4 {
+        font-size: 18px;
+    }
+
+    .current-roster-fire {
+        right: 38px;
+        bottom: 12px;
+        padding: 6px 8px;
+    }
+}
+
