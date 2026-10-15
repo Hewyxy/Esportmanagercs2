@@ -94,29 +94,6 @@ export default function Home() {
 
   return (
     <div>
-      {location.state?.tournamentWinner && (
-        <div className="tournament-winner-notice" role="status">
-          <span
-            className="tournament-winner-notice__icon"
-            aria-hidden="true"
-          ></span>
-          <span>
-            <strong>{location.state.tournamentWinner}</strong> won the
-            tournament! Your next event is ready.
-          </span>
-          {location.state.tournamentTransfers?.length > 0 && (
-            <span className="tournament-winner-notice__transfers">
-              Roster moves:{" "}
-              {location.state.tournamentTransfers
-                .map(
-                  (transfer) =>
-                    `${transfer.teamName}: ${transfer.signedPlayer} joined, ${transfer.releasedPlayer} left`,
-                )
-                .join(" · ")}
-            </span>
-          )}
-        </div>
-      )}
       <PlayersLineUp teamId={team?.Id} />
 
       <div className="next-event">
