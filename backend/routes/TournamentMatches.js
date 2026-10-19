@@ -7,6 +7,7 @@ const router = express.Router();
 // Apply end-of-tournament changes only after the player chooses to finish.
 router.post("/finish", (req, res) => {
     const tournamentId = Number(req.body?.tournamentId);
+    const transferWindowEvents = [9, 12, 18];
 
     if (!Number.isInteger(tournamentId) || tournamentId <= 0) {
         return res.status(400).json({ error: "A valid tournament ID is required" });
@@ -74,50 +75,51 @@ router.post("/finish", (req, res) => {
                     (type, team1Logo, playerId, playerName, playerImage, team1Name, team2Name, message)
                 VALUES ('Release', ?, ?, ?, ?, ?, 'Free Agent', ?)
             `);
+            if (transferWindowEvents.includes(tournamentId)) {
+                for (const team of aiTeams) {
+                    if (Math.random() >= 0.05 || freeAgents.length === 0) continue;
 
-            for (const team of aiTeams) {
-                if (Math.random() >= 0.05 || freeAgents.length === 0) continue;
+                    const outgoingPlayer = getOutgoingPlayer.get(team.Id);
+                    if (!outgoingPlayer) continue;
 
-                const outgoingPlayer = getOutgoingPlayer.get(team.Id);
-                if (!outgoingPlayer) continue;
+                    const outgoingRole = outgoingPlayer.Role?.trim().toLowerCase();
+                    if (!outgoingRole) continue;
 
-                const outgoingRole = outgoingPlayer.Role?.trim().toLowerCase();
-                if (!outgoingRole) continue;
+                    const matchingFreeAgentIndexes = freeAgents
+                        .map((player, index) => ({ player, index }))
+                        .filter(({ player }) => player.Role?.trim().toLowerCase() === outgoingRole)
+                        .map(({ index }) => index);
+                    if (matchingFreeAgentIndexes.length === 0) continue;
 
-                const matchingFreeAgentIndexes = freeAgents
-                    .map((player, index) => ({ player, index }))
-                    .filter(({ player }) => player.Role?.trim().toLowerCase() === outgoingRole)
-                    .map(({ index }) => index);
-                if (matchingFreeAgentIndexes.length === 0) continue;
-
-                const roleCandidateIndex = Math.floor(Math.random() * matchingFreeAgentIndexes.length);
-                const incomingIndex = matchingFreeAgentIndexes[roleCandidateIndex];
-                const [incomingPlayer] = freeAgents.splice(incomingIndex, 1);
-                signFreeAgent.run(team.Id, team.Id, incomingPlayer.id);
-                releasePlayer.run(outgoingPlayer.id);
-                addTransferNews.run(
-                    null,
-                    team.Logo || null,
-                    incomingPlayer.id,
-                    incomingPlayer.Name,
-                    incomingPlayer.Image || null,
-                    "Free Agent",
-                    team.Name,
-                    `${incomingPlayer.Name} joined ${team.Name}`
-                );
-                addReleaseNews.run(
-                    team.Logo || null,
-                    outgoingPlayer.id,
-                    outgoingPlayer.Name,
-                    outgoingPlayer.Image || null,
-                    team.Name,
-                    `${outgoingPlayer.Name} was released by ${team.Name}`
-                );
-                transfers.push({
-                    teamName: team.Name,
-                    signedPlayer: incomingPlayer.Name,
-                    releasedPlayer: outgoingPlayer.Name,
-                });
+                    const roleCandidateIndex = Math.floor(Math.random() * matchingFreeAgentIndexes.length);
+                    const incomingIndex = matchingFreeAgentIndexes[roleCandidateIndex];
+                    const [incomingPlayer] = freeAgents.splice(incomingIndex, 1);
+                    signFreeAgent.run(team.Id, team.Id, incomingPlayer.id);
+                    releasePlayer.run(outgoingPlayer.id);
+                    addTransferNews.run(
+                        null,
+                        team.Logo || null,
+                        incomingPlayer.id,
+                        incomingPlayer.Name,
+                        incomingPlayer.Image || null,
+                        "Free Agent",
+                        team.Name,
+                        `${incomingPlayer.Name} joined ${team.Name}`
+                    );
+                    addReleaseNews.run(
+                        team.Logo || null,
+                        outgoingPlayer.id,
+                        outgoingPlayer.Name,
+                        outgoingPlayer.Image || null,
+                        team.Name,
+                        `${outgoingPlayer.Name} was released by ${team.Name}`
+                    );
+                    transfers.push({
+                        teamName: team.Name,
+                        signedPlayer: incomingPlayer.Name,
+                        releasedPlayer: outgoingPlayer.Name,
+                    });
+                }
             }
 
             updateTeamSeeds();
