@@ -85,13 +85,20 @@ async function simulateMatch(
       ];
 
     // Maximum 5 rounds per map for faster simulation.
+    const roundsToWin = 5;
     while (
-      map.score.team1 !== 5 &&
-      map.score.team2 !== 5
+      map.score.team1 !== roundsToWin &&
+      map.score.team2 !== roundsToWin
     ) {
       const round = structuredClone(roundTemp);
 
       round.number = map.rounds.length + 1;
+
+      /*
+      if (map.score.team1 == (roundsToWin -1) && map.score.team2 == (roundsToWin -1)){
+        roundsToWin+=3
+      }
+        */
 
       const team1Players = [...match.team1.Players];
       const team2Players = [...match.team2.Players];
