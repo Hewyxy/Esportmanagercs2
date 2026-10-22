@@ -1,21 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import shuffle from "../../backend/util/util";
 import akIcon from "../assets/ak.png";
+import Pistol from "../assets/usp.png";
 import "./match.css";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-const TEAM_PLACEHOLDER =
-  "https://www.hltv.org/dynamic-svg/teamplaceholder";
+const TEAM_PLACEHOLDER = "https://www.hltv.org/dynamic-svg/teamplaceholder";
 
 function PlayerAvatar({ player, name }) {
   const displayName = player?.Name ?? name ?? "?";
 
   return player?.Image ? (
-    <img
-      className="match-player-avatar"
-      src={player.Image}
-      alt=""
-    />
+    <img className="match-player-avatar" src={player.Image} alt="" />
   ) : (
     <span
       className="match-player-avatar match-player-avatar--fallback"
@@ -27,12 +23,7 @@ function PlayerAvatar({ player, name }) {
 }
 
 // Simulate a map series and send live-feed updates as it goes.
-async function simulateMatch(
-  team1,
-  team2,
-  onUpdate,
-  showLiveFeed = true
-) {
+async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
   const match = {
     team1,
     team2,
@@ -73,41 +64,30 @@ async function simulateMatch(
     events: [],
   };
 
-  while (
-    match.finalScore.team1 !== 2 &&
-    match.finalScore.team2 !== 2
-  ) {
+  while (match.finalScore.team1 !== 2 && match.finalScore.team2 !== 2) {
     const map = structuredClone(game);
 
-    map.name =
-      match.mapPool[
-      Math.floor(Math.random() * match.mapPool.length)
-      ];
+    map.name = match.mapPool[Math.floor(Math.random() * match.mapPool.length)];
 
     // Maximum 5 rounds per map for faster simulation.
-    const roundsToWin = 5;
-    while (
-      map.score.team1 !== roundsToWin &&
-      map.score.team2 !== roundsToWin
-    ) {
+    let roundsToWin = 5;
+    while (map.score.team1 !== roundsToWin && map.score.team2 !== roundsToWin) {
       const round = structuredClone(roundTemp);
 
       round.number = map.rounds.length + 1;
 
-      /*
-      if (map.score.team1 == (roundsToWin -1) && map.score.team2 == (roundsToWin -1)){
-        roundsToWin+=3
+      if (
+        map.score.team1 == roundsToWin - 1 &&
+        map.score.team2 == roundsToWin - 1
+      ) {
+        roundsToWin += 3;
       }
-        */
 
       const team1Players = [...match.team1.Players];
       const team2Players = [...match.team2.Players];
       //round simulation loop
       //Add side switch logic here if needed.
-      while (
-        team1Players.length !== 0 &&
-        team2Players.length !== 0
-      ) {
+      while (team1Players.length !== 0 && team2Players.length !== 0) {
         shuffle(team1Players);
         shuffle(team2Players);
 
@@ -121,23 +101,46 @@ async function simulateMatch(
         //Insert bomb planting logic here if needed.
 
         //Insert bomb defusal logic here if needed.
+        if (round.number == 1 || round.number == 4) {
+          if (winner < player1.Rating) {
+            round.events.push({
+              type: "Kill",
+              gun: "Pistol",
+              killer: player1.Name,
+              victim: player2.Name,
+            });
 
-        if (winner < player1.Rating) {
-          round.events.push({
-            type: "Kill",
-            killer: player1.Name,
-            victim: player2.Name,
-          });
+            team2Players.shift();
+          } else {
+            round.events.push({
+              type: "Kill",
+              gun: "Pistol",
+              killer: player2.Name,
+              victim: player1.Name,
+            });
 
-          team2Players.shift();
+            team1Players.shift();
+          }
         } else {
-          round.events.push({
-            type: "Kill",
-            killer: player2.Name,
-            victim: player1.Name,
-          });
+          if (winner < player1.Rating) {
+            round.events.push({
+              type: "Kill",
+              gun: "AK-47",
+              killer: player1.Name,
+              victim: player2.Name,
+            });
 
-          team1Players.shift();
+            team2Players.shift();
+          } else {
+            round.events.push({
+              type: "Kill",
+              gun: "AK-47",
+              killer: player2.Name,
+              victim: player1.Name,
+            });
+
+            team1Players.shift();
+          }
         }
 
         // Live update.
@@ -147,18 +150,13 @@ async function simulateMatch(
 
         const liveMatch = {
           ...structuredClone(match),
-          maps: [
-            ...structuredClone(match.maps),
-            liveMap,
-          ],
+          maps: [...structuredClone(match.maps), liveMap],
         };
 
         onUpdate(liveMatch);
 
         if (showLiveFeed) {
-          await sleep(
-            Math.floor(Math.random() * 1001) + 1000
-          );
+          await sleep(Math.floor(Math.random() * 1001) + 1000);
         }
       }
 
@@ -175,18 +173,13 @@ async function simulateMatch(
 
       const liveMatch = {
         ...structuredClone(match),
-        maps: [
-          ...structuredClone(match.maps),
-          structuredClone(map),
-        ],
+        maps: [...structuredClone(match.maps), structuredClone(map)],
       };
 
       onUpdate(liveMatch);
 
       if (showLiveFeed) {
-        await sleep(
-          Math.floor(Math.random() * 1001) + 1000
-        );
+        await sleep(Math.floor(Math.random() * 1001) + 1000);
       }
     }
 
@@ -203,9 +196,7 @@ async function simulateMatch(
     onUpdate(structuredClone(match));
 
     if (showLiveFeed) {
-      await sleep(
-        Math.floor(Math.random() * 1001) + 1000
-      );
+      await sleep(Math.floor(Math.random() * 1001) + 1000);
     }
   }
 
@@ -239,23 +230,15 @@ export default function Match({
   const matchRunningRef = useRef(false);
 
   const playersByName = new Map(
-    [...team1P, ...team2P].map((player) => [
-      player.Name,
-      player,
-    ])
+    [...team1P, ...team2P].map((player) => [player.Name, player]),
   );
 
   useEffect(() => {
-    Object.entries(roundFeedRefs.current).forEach(
-      ([index, element]) => {
-        if (
-          element &&
-          followRoundFeeds.current[Number(index)]
-        ) {
-          element.scrollTop = element.scrollHeight;
-        }
+    Object.entries(roundFeedRefs.current).forEach(([index, element]) => {
+      if (element && followRoundFeeds.current[Number(index)]) {
+        element.scrollTop = element.scrollHeight;
       }
-    );
+    });
   }, [match]);
 
   // =========================
@@ -268,16 +251,10 @@ export default function Match({
     setTeam1(null);
     setTeam1P([]);
 
-    fetch(
-      `http://localhost:3000/api/teams/${encodeURIComponent(
-        team1Id
-      )}`
-    )
+    fetch(`http://localhost:3000/api/teams/${encodeURIComponent(team1Id)}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            `Team ${team1Id} was not found`
-          );
+          throw new Error(`Team ${team1Id} was not found`);
         }
 
         return response.json();
@@ -308,16 +285,10 @@ export default function Match({
     setTeam2(null);
     setTeam2P([]);
 
-    fetch(
-      `http://localhost:3000/api/teams/${encodeURIComponent(
-        team2Id
-      )}`
-    )
+    fetch(`http://localhost:3000/api/teams/${encodeURIComponent(team2Id)}`)
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            `Team ${team2Id} was not found`
-          );
+          throw new Error(`Team ${team2Id} was not found`);
         }
 
         return response.json();
@@ -350,15 +321,11 @@ export default function Match({
     let cancelled = false;
 
     fetch(
-      `http://localhost:3000/api/players/team/${encodeURIComponent(
-        team1.Id
-      )}`
+      `http://localhost:3000/api/players/team/${encodeURIComponent(team1.Id)}`,
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            "Could not load team 1 players"
-          );
+          throw new Error("Could not load team 1 players");
         }
 
         return response.json();
@@ -391,15 +358,11 @@ export default function Match({
     let cancelled = false;
 
     fetch(
-      `http://localhost:3000/api/players/team/${encodeURIComponent(
-        team2.Id
-      )}`
+      `http://localhost:3000/api/players/team/${encodeURIComponent(team2.Id)}`,
     )
       .then((response) => {
         if (!response.ok) {
-          throw new Error(
-            "Could not load team 2 players"
-          );
+          throw new Error("Could not load team 2 players");
         }
 
         return response.json();
@@ -441,12 +404,7 @@ export default function Match({
     }
 
     // Wait for teams and rosters.
-    if (
-      !team1 ||
-      !team2 ||
-      team1P.length === 0 ||
-      team2P.length === 0
-    ) {
+    if (!team1 || !team2 || team1P.length === 0 || team2P.length === 0) {
       return;
     }
 
@@ -463,6 +421,7 @@ export default function Match({
       Players: team1P,
       Seed: team1.Seed,
       Logo: team1.Logo,
+      Side: "T",
     };
 
     const team2Stack = {
@@ -471,10 +430,10 @@ export default function Match({
       Players: team2P,
       Seed: team2.Seed,
       Logo: team2.Logo,
+      Side: "CT",
     };
 
-    const isPlayerMatch =
-      team1.Id === 1 || team2.Id === 1;
+    const isPlayerMatch = team1.Id === 1 || team2.Id === 1;
 
     try {
       const result = await simulateMatch(
@@ -490,22 +449,18 @@ export default function Match({
             return;
           }
 
-          followRoundFeeds.current =
-            updatedMatch.maps.map((_, index) => {
-              const feed = roundFeedRefs.current[index];
+          followRoundFeeds.current = updatedMatch.maps.map((_, index) => {
+            const feed = roundFeedRefs.current[index];
 
-              return (
-                !feed ||
-                feed.scrollHeight -
-                feed.scrollTop -
-                feed.clientHeight <
-                48
-              );
-            });
+            return (
+              !feed ||
+              feed.scrollHeight - feed.scrollTop - feed.clientHeight < 48
+            );
+          });
 
           setMatch(updatedMatch);
         },
-        !skipSimulation && isPlayerMatch
+        !skipSimulation && isPlayerMatch,
       );
 
       /*
@@ -519,33 +474,28 @@ export default function Match({
       // SAVE MATCH HISTORY
       // =========================
 
-      const response = await fetch(
-        "http://localhost:3000/api/matches/add",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            team1Id: result.team1.id,
-            team2Id: result.team2.id,
-            score1: result.finalScore.team1,
-            score2: result.finalScore.team2,
-            winnerId:
-              result.finalScore.team1 >
-                result.finalScore.team2
-                ? result.team1.id
-                : result.team2.id,
-          }),
-        }
-      );
+      const response = await fetch("http://localhost:3000/api/matches/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          team1Id: result.team1.id,
+          team2Id: result.team2.id,
+          score1: result.finalScore.team1,
+          score2: result.finalScore.team2,
+          winnerId:
+            result.finalScore.team1 > result.finalScore.team2
+              ? result.team1.id
+              : result.team2.id,
+        }),
+      });
 
       const savedMatch = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          savedMatch.error ||
-          "The match history could not be saved."
+          savedMatch.error || "The match history could not be saved.",
         );
       }
 
@@ -555,14 +505,13 @@ export default function Match({
 
       if (tournamentMatchId) {
         const winnerId =
-          result.finalScore.team1 >
-            result.finalScore.team2
+          result.finalScore.team1 > result.finalScore.team2
             ? result.team1.id
             : result.team2.id;
 
         const tournamentResponse = await fetch(
           `http://localhost:3000/api/tournamentmatches/${encodeURIComponent(
-            tournamentMatchId
+            tournamentMatchId,
           )}/result`,
           {
             method: "PUT",
@@ -574,16 +523,15 @@ export default function Match({
               score2: result.finalScore.team2,
               winnerId,
             }),
-          }
+          },
         );
 
-        const tournamentResult =
-          await tournamentResponse.json();
+        const tournamentResult = await tournamentResponse.json();
 
         if (!tournamentResponse.ok) {
           throw new Error(
             tournamentResult.error ||
-            "The tournament bracket could not be updated."
+              "The tournament bracket could not be updated.",
           );
         }
 
@@ -599,21 +547,13 @@ export default function Match({
            * Background match:
            * Battle will load the next background match.
            */
-          await onTournamentMatchUpdated?.(
-            tournamentResult
-          );
+          await onTournamentMatchUpdated?.(tournamentResult);
         }
       }
     } catch (error) {
-      console.error(
-        "Could not simulate or save match:",
-        error
-      );
+      console.error("Could not simulate or save match:", error);
 
-      setError(
-        error.message ||
-        "The match could not be simulated."
-      );
+      setError(error.message || "The match could not be simulated.");
     } finally {
       /*
        * Unlock only after the entire simulation and
@@ -670,16 +610,11 @@ export default function Match({
   return (
     <main className="match-page">
       <header className="match-page__header">
-        <p className="match-page__eyebrow">
-          COMPETITIVE SIMULATION
-        </p>
+        <p className="match-page__eyebrow">COMPETITIVE SIMULATION</p>
 
         <h1>Match Center</h1>
 
-        <p>
-          Follow every round as these teams battle for the
-          series.
-        </p>
+        <p>Follow every round as these teams battle for the series.</p>
       </header>
 
       {error && (
@@ -700,21 +635,15 @@ export default function Match({
             }}
           />
 
-          <span className="match-team__label">
-            TEAM 1 · #{team1.Seed}
-          </span>
+          <span className="match-team__label">TEAM 1 · #{team1.Seed}</span>
 
-          <strong>
-            {team1?.Name || "Loading team…"}
-          </strong>
+          <strong>{team1?.Name || "Loading team…"}</strong>
 
           <div
             className="match-roster"
             aria-label={`${team1?.Name || "Team 1"} roster`}
           >
-            <span className="match-roster__title">
-              ROSTER
-            </span>
+            <span className="match-roster__title">ROSTER</span>
 
             {team1P.length ? (
               team1P.map((player) => (
@@ -727,22 +656,16 @@ export default function Match({
                     <span>{player.Name}</span>
                   </span>
 
-                  <span className="match-roster__rating">
-                    {player.Rating}
-                  </span>
+                  <span className="match-roster__rating">{player.Rating}</span>
                 </div>
               ))
             ) : (
-              <span className="match-roster__loading">
-                Loading players…
-              </span>
+              <span className="match-roster__loading">Loading players…</span>
             )}
           </div>
         </div>
 
-        <div className="match-scoreboard__vs">
-          VS
-        </div>
+        <div className="match-scoreboard__vs">VS</div>
 
         <div className="match-team match-team--right">
           <img
@@ -755,21 +678,15 @@ export default function Match({
             }}
           />
 
-          <span className="match-team__label">
-            TEAM 2 · #{team2.Seed}
-          </span>
+          <span className="match-team__label">TEAM 2 · #{team2.Seed}</span>
 
-          <strong>
-            {team2?.Name || "Loading team…"}
-          </strong>
+          <strong>{team2?.Name || "Loading team…"}</strong>
 
           <div
             className="match-roster"
             aria-label={`${team2?.Name || "Team 2"} roster`}
           >
-            <span className="match-roster__title">
-              ROSTER
-            </span>
+            <span className="match-roster__title">ROSTER</span>
 
             {team2P.length ? (
               team2P.map((player) => (
@@ -782,15 +699,11 @@ export default function Match({
                     <PlayerAvatar player={player} />
                   </span>
 
-                  <span className="match-roster__rating">
-                    {player.Rating}
-                  </span>
+                  <span className="match-roster__rating">{player.Rating}</span>
                 </div>
               ))
             ) : (
-              <span className="match-roster__loading">
-                Loading players…
-              </span>
+              <span className="match-roster__loading">Loading players…</span>
             )}
           </div>
         </div>
@@ -846,52 +759,35 @@ export default function Match({
             <div>
               <img
                 className="match-series-score__logo"
-                src={
-                  match.team1.Logo ||
-                  TEAM_PLACEHOLDER
-                }
+                src={match.team1.Logo || TEAM_PLACEHOLDER}
                 alt=""
               />
 
               <span>{match.team1.Name}</span>
 
-              <strong>
-                {match.finalScore.team1}
-              </strong>
+              <strong>{match.finalScore.team1}</strong>
             </div>
 
-            <span className="match-series-score__divider">
-              SERIES
-            </span>
+            <span className="match-series-score__divider">SERIES</span>
 
             <div>
-              <strong>
-                {match.finalScore.team2}
-              </strong>
+              <strong>{match.finalScore.team2}</strong>
 
               <span>{match.team2.Name}</span>
 
               <img
                 className="match-series-score__logo"
-                src={
-                  match.team2.Logo ||
-                  TEAM_PLACEHOLDER
-                }
+                src={match.team2.Logo || TEAM_PLACEHOLDER}
                 alt=""
               />
             </div>
           </div>
 
           {match.maps.map((map, mapIndex) => (
-            <article
-              className="match-map"
-              key={`${map.name}-${mapIndex}`}
-            >
+            <article className="match-map" key={`${map.name}-${mapIndex}`}>
               <header className="match-map__header">
                 <div>
-                  <span className="match-map__index">
-                    MAP {mapIndex + 1}
-                  </span>
+                  <span className="match-map__index">MAP {mapIndex + 1}</span>
 
                   <h2>{map.name}</h2>
                 </div>
@@ -906,81 +802,121 @@ export default function Match({
               <div
                 className="match-rounds-scroll"
                 ref={(element) => {
-                  roundFeedRefs.current[mapIndex] =
-                    element;
+                  roundFeedRefs.current[mapIndex] = element;
                 }}
               >
                 {map.rounds.map((round) => (
                   <div
-                    className={`match-round ${round.winner
+                    className={`match-round ${
+                      round.winner
                         ? "match-round--complete"
                         : "match-round--live"
-                      }`}
+                    }`}
                     key={round.number}
                   >
                     <h3>
-                      <span>
-                        ROUND {round.number}
-                      </span>
+                      <span>ROUND {round.number}</span>
 
                       <span className="match-round__status">
                         {round.winner === 0
                           ? "LIVE"
-                          : `${round.winner === 1
-                            ? match.team1.Name
-                            : match.team2.Name
-                          } won`}
+                          : `${
+                              round.winner === 1
+                                ? match.team1.Name
+                                : match.team2.Name
+                            } won`}
                       </span>
                     </h3>
 
-                    {round.events.map(
-                      (event, eventIndex) => (
-                        <p
-                          className={`match-event ${match.team1.Players.some(
-                            (player) =>
-                              player.Name ===
-                              event.killer
-                          )
-                              ? "match-event--team-one"
-                              : "match-event--team-two"
-                            }`}
-                          key={eventIndex}
-                        >
-                          <PlayerAvatar
-                            player={playersByName.get(
-                              event.killer
-                            )}
-                            name={event.killer}
-                          />
+                    {round.events.map((event, eventIndex) => {
+                      switch (event.type) {
+                        case "Kill":
+                          return (
+                            <p
+                              className={`match-event ${
+                                match.team1.Players.some(
+                                  (player) => player.Name === event.killer,
+                                )
+                                  ? "match-event--team-one"
+                                  : "match-event--team-two"
+                              }`}
+                              key={eventIndex}
+                            >
+                              <PlayerAvatar
+                                player={playersByName.get(event.killer)}
+                                name={event.killer}
+                              />
 
-                          <strong className="match-event__killer">
-                            {event.killer}
-                          </strong>
+                              <strong className="match-event__killer">
+                                {event.killer}
+                              </strong>
 
-                          <img
-                            className="match-event__weapon"
-                            src={akIcon}
-                            alt=""
-                            aria-hidden="true"
-                          />
+                              <img
+                                className="match-event__weapon"
+                                src={event.gun === "Pistol" ? Pistol : akIcon}
+                                alt=""
+                                aria-hidden="true"
+                              />
 
-                          <strong className="match-event__victim">
-                            {event.victim}
-                          </strong>
+                              <strong className="match-event__victim">
+                                {event.victim}
+                              </strong>
 
-                          <PlayerAvatar
-                            player={playersByName.get(
-                              event.victim
-                            )}
-                            name={event.victim}
-                          />
+                              <PlayerAvatar
+                                player={playersByName.get(event.victim)}
+                                name={event.victim}
+                              />
 
-                          <span className="match-event__tag">
-                            ELIMINATION
-                          </span>
-                        </p>
-                      )
-                    )}
+                              <span className="match-event__tag">
+                                ELIMINATION
+                              </span>
+                            </p>
+                          );
+
+                        case "BombPlanted":
+                          return (
+                            <p
+                              className="match-event match-event--objective"
+                              key={eventIndex}
+                            >
+                              <strong>{event.killer}</strong>
+                              planted the bomb
+                              <span className="match-event__tag">
+                                BOMB PLANTED
+                              </span>
+                            </p>
+                          );
+
+                        case "BombDefused":
+                          return (
+                            <p
+                              className="match-event match-event--objective"
+                              key={eventIndex}
+                            >
+                              <strong>{event.killer}</strong>
+                              defused the bomb
+                              <span className="match-event__tag">
+                                BOMB DEFUSED
+                              </span>
+                            </p>
+                          );
+
+                        case "RoundEnd":
+                          return (
+                            <p
+                              className="match-event match-event--round-end"
+                              key={eventIndex}
+                            >
+                              <span className="match-event__tag">
+                                ROUND OVER
+                              </span>
+                            </p>
+                          );
+
+                        default:
+                          return null;
+                      }
+                    })}
                   </div>
                 ))}
               </div>
