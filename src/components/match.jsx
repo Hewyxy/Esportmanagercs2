@@ -101,7 +101,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
         //Insert bomb planting logic here if needed.
 
         //Insert bomb defusal logic here if needed.
-        if (round.number == 1 || round.number == 4) {
+        if (round.number == 1 || round.number == (roundsToWin + 1) / 2 + 1) {
           if (winner < player1.Rating) {
             round.events.push({
               type: "Kill",
