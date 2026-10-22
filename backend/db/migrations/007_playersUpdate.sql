@@ -29,10 +29,27 @@ WHERE Id = 150;
 
 
 --Adding new Player
-INSERT INTO Players (Name, Team, TeamId, Role, Image, TeamImage, Firepower, Entrying, Trading, Opening, Snipping, Utill)
-VALUES ('shalfey', 'None', 0, 'IGL','https://www.hltv.org/dynamic-svg/teamplaceholder','https://img-cdn.hltv.org/teamlogo/MFcDe-M8wfGOUU6x4sRELR.png?ixlib=java-2.1.0&w=100&s=dccd3a3351064dd1ab9afebbed8443a9', 91, 22, 65, 62, 18, 11);
+INSERT INTO Players (
+    Name, Team, TeamId, Role, Image, TeamImage,
+    Firepower, Entrying, Trading, Opening, Snipping, Utill
+)
+SELECT
+    'shalfey',
+    'None',
+    0,
+    'IGL',
+    'https://img-cdn.hltv.org/playerbodyshot/mKl7gAfs9r_zhwqgu1dTy-.png?ixlib=java-2.1.0&w=400&s=61f2f84221ffd94335d60c318b0c51fa',
+    'https://www.hltv.org/dynamic-svg/teamplaceholder',
+    91, 22, 65, 62, 18, 11
+WHERE NOT EXISTS (
+    SELECT 1
+    FROM Players
+    WHERE Name = 'shalfey'
+);
 
-
+Update Players
+SET Image = 'https://img-cdn.hltv.org/playerbodyshot/N5LTczzYJhM_SOoJHyODQf.png?ixlib=java-2.1.0&w=400&s=2522d65fd901be70cb1760c7dc680123'
+WHERE Name = 'FL4MUS';
 
 UPDATE Players
 SET Image = 'https://img-cdn.hltv.org/playerbodyshot/Cvsx7uyeznfZm9QKL84T_9.png?ixlib=java-2.1.0&w=400&s=ff884941d46ef84788cb09867e6d9345',
