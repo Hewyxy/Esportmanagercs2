@@ -99,6 +99,16 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
         const winner = Math.floor(Math.random() * total);
 
         //Insert bomb planting logic here if needed.
+        /*
+        
+        const bombPlanted = Math.random() < 0.5;
+        if (bombPlanted) {
+          round.events.push({
+            type: "BombPlanted",
+            killer: winner < player1.Rating ? player1.Name : player2.Name,
+          });
+        }
+        */
 
         //Insert bomb defusal logic here if needed.
         if (round.number == 1 || round.number == (roundsToWin + 1) / 2 + 1) {
