@@ -250,9 +250,9 @@ router.put("/:id/result", (req, res) => {
                 const loserId = Number(currentMatch.team1Id) === normalizedWinnerId
                     ? currentMatch.team2Id
                     : currentMatch.team1Id;
-                db.prepare("UPDATE Teams SET Points = COALESCE(Points, 0) + 30 WHERE Id = ?")
+                db.prepare("UPDATE Teams SET Points = COALESCE(Points, 0) + 10 WHERE Id = ?")
                     .run(normalizedWinnerId);
-                db.prepare("UPDATE Teams SET Points = COALESCE(Points, 0) - 10 WHERE Id = ?")
+                db.prepare("UPDATE Teams SET Points = COALESCE(Points, 0) - 7 WHERE Id = ?")
                     .run(loserId);
             }
 
