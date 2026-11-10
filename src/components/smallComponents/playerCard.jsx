@@ -171,7 +171,17 @@ export default function PlayerCard({
         <div
           className="PlayerCard"
           key={player.id}
+          role="button"
+          tabIndex={0}
+          aria-label={`View ${player.Name} statistics`}
           onClick={() => setSelectedPlayer(player)}
+          onKeyDown={(event) => {
+            if (event.target !== event.currentTarget) return;
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              setSelectedPlayer(player);
+            }
+          }}
         >
           {/* Rank */}
           <div className="player-rank">#{index + 1}</div>

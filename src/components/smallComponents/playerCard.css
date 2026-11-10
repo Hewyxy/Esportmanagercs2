@@ -39,10 +39,10 @@
     cursor: pointer;
 
     transition:
-        transform 0.2s ease,
-        border-color 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease;
+        transform 240ms cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 220ms ease,
+        background-color 220ms ease,
+        box-shadow 240ms ease;
 }
 
 .PlayerCard::before {
@@ -60,18 +60,17 @@
 
     opacity: 0;
 
-    transition: opacity 0.2s ease;
+    transition: opacity 240ms ease;
 }
 
 .PlayerCard:hover {
-    transform: translateX(3px);
+    transform: translateX(2px);
 
     border-color: #344457;
 
     background: #141d27;
 
-    box-shadow:
-        0 8px 25px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 5px 16px rgba(0, 0, 0, 0.2);
 }
 
 .PlayerCard:hover::before {
@@ -128,7 +127,7 @@
 
     object-fit: cover;
 
-    transition: transform 0.3s ease;
+    transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .PlayerCard:hover .player-avatar {
@@ -296,8 +295,8 @@
     font-size: 21px;
 
     transition:
-        color 0.2s ease,
-        transform 0.2s ease;
+        color 240ms ease,
+        transform 260ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .PlayerCard:hover .player-arrow {
@@ -322,13 +321,14 @@
     align-items: center;
     justify-content: center;
 
-    padding: 25px;
+    padding: 20px;
+    overflow-y: auto;
 
     background: rgba(3, 6, 10, 0.82);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(4px);
 
-    animation: popupFadeIn 0.2s ease;
+    animation: popupFadeIn 220ms ease-out both;
 }
 
 
@@ -341,7 +341,8 @@
 
     width: min(900px, 100%);
 
-    min-height: 520px;
+    max-height: calc(100dvh - 40px);
+    overflow-y: auto;
 
     overflow: hidden;
 
@@ -358,7 +359,7 @@
     box-shadow:
         0 30px 80px rgba(0, 0, 0, 0.55);
 
-    animation: popupSlideIn 0.25s ease;
+    animation: popupSlideIn 300ms cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 
@@ -413,9 +414,9 @@
     cursor: pointer;
 
     transition:
-        background 0.2s ease,
-        color 0.2s ease,
-        border-color 0.2s ease;
+        background 220ms ease,
+        color 220ms ease,
+        border-color 220ms ease;
 }
 
 .player-popup-close:hover {
@@ -440,7 +441,7 @@
 
     grid-template-columns: 42% 58%;
 
-    min-height: 520px;
+    min-height: 0;
 }
 
 
@@ -628,7 +629,8 @@
 ========================================= */
 
 .player-popup-right {
-    padding: 40px 35px;
+    min-width: 0;
+    padding: 32px 28px;
 }
 
 .player-popup-stats-header span {
@@ -641,7 +643,7 @@
 }
 
 .player-popup-stats-header h2 {
-    margin: 6px 0 25px;
+    margin: 6px 0 18px;
 
     color: #ffffff;
 
@@ -671,10 +673,10 @@
     box-shadow: 0 2px 6px #00000020;
 
     transition:
-        border-color 0.2s ease,
-        background 0.2s ease,
-        box-shadow 0.2s ease,
-        transform 0.2s ease;
+        border-color 220ms ease,
+        background 220ms ease,
+        box-shadow 240ms ease,
+        transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .player-popup-stat:hover {
@@ -754,7 +756,7 @@
     }
 
     .player-popup-left {
-        min-height: 400px;
+        min-height: 340px;
 
         border-right: none;
         border-bottom: 1px solid #202b38;
@@ -762,6 +764,23 @@
 
     .player-popup-right {
         padding: 25px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .PlayerCard,
+    .PlayerCard::before,
+    .player-avatar,
+    .player-arrow,
+    .player-popup-overlay,
+    .player-popup,
+    .player-popup-close,
+    .player-popup-stat,
+    .stat-bar {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
     }
 }
 
@@ -839,7 +858,7 @@
     text-transform: uppercase;
 
     cursor: pointer;
-    transition: 0.2s ease;
+    transition: transform 220ms cubic-bezier(0.22, 1, 0.36, 1), background-color 220ms ease, box-shadow 220ms ease;
 }
 
 .player-recruit:hover {
@@ -877,7 +896,7 @@
     font-size: 14px;
     font-weight: 600;
 
-    animation: recruitNotification 0.25s ease-out;
+    animation: recruitNotification 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .recruit-notification-icon {
@@ -939,7 +958,7 @@
     font-size: 14px;
     font-weight: 600;
 
-    animation: notificationIn 0.25s ease-out forwards;
+    animation: notificationIn 320ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 
@@ -988,7 +1007,7 @@
 ========================= */
 
 .recruit-notification.hiding {
-    animation: notificationOut 0.3s ease-in forwards;
+    animation: notificationOut 260ms ease-in forwards;
 }
 
 @keyframes notificationOut {

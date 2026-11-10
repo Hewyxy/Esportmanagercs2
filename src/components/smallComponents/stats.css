@@ -1,23 +1,25 @@
 .player-popup-stats {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 12px;
+    gap: 10px;
+    align-content: start;
 }
 
 .player-popup-stat {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 14px 8px;
+    gap: 10px 8px;
 
     min-width: 0;
-    padding: 16px;
+    min-height: 88px;
+    padding: 12px 14px;
 
     background: #111821;
     border: 1px solid #253140;
     border-radius: 8px;
 
-    transition: border-color 0.2s ease, background 0.2s ease;
+    transition: border-color 140ms ease, background-color 140ms ease;
 }
 
 .player-popup-stat:hover {
@@ -52,6 +54,11 @@
     font-variant-numeric: tabular-nums;
 }
 
+.player-popup-stat .stat-bars {
+    min-width: 0;
+    align-self: end;
+}
+
 .stat-bars {
     grid-column: 1 / -1;
     display: flex;
@@ -64,7 +71,7 @@
     height: 4px;
     border-radius: 2px;
     background: #283341;
-    transition: background 0.2s ease;
+    transition: background-color 120ms ease;
 }
 
 .stat-bars.bad .stat-bar.active {
