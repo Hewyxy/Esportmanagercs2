@@ -20,21 +20,24 @@ import FirstTimeLogIn from './components/FirstTimeLogIn.jsx'
 function App() {
   return (
     <HashRouter>
-      <Navbar />
-      <FirstTimeLogIn />
-
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/ranking" element={<Ranking />} />
-        <Route path="/market" element={<Market />} />
-        <Route path="/news" element={<News />} />
-        <Route path="/roaster" element={<Roaster />} />
-        <Route path="/match" element={<Battle />}/>
-        <Route path="/test" element={<Test />}/>
-        <Route path="/tournament" element={<TournamentPage />}/>
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
+      <div className="app-shell">
+        <Navbar />
+        <div className="app-main">
+          <FirstTimeLogIn />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/ranking" element={<Ranking />} />
+            <Route path="/market" element={<Market />} />
+            <Route path="/news" element={<News />} />
+            <Route path="/roaster" element={<Roaster />} />
+            <Route path="/match" element={<Battle />}/>
+            <Route path="/test" element={<Test />}/>
+            <Route path="/tournament" element={<TournamentPage />}/>
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Footer />
+        </div>
+      </div>
     </HashRouter>
   );
 }

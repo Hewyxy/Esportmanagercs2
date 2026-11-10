@@ -1,49 +1,33 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import Profile from "./smallComponents/profile.jsx";
 
+const links = [
+    { to: "/", label: "Home", end: true },
+    { to: "/ranking", label: "Ranking" },
+    { to: "/news", label: "News" },
+    { to: "/market", label: "Transfer Market" },
+    { to: "/roaster", label: "Team" },
+];
+
 export default function Navbar() {
-    // Top navigation bar, with the profile on the right.
     return (
-        <header className="header">
-            <nav className="navbar">
-                <picture>
-                    <img src="./logo.png" alt="Logo" className="logo" />
-                </picture>
+        <aside className="sidebar">
+            <NavLink className="sidebar-brand" to="/" aria-label="CS2 Manager — главная">
+                <img src="/assets/logo.png" alt="" className="sidebar-logo" />
+                <span>CS2 MANAGER</span>
+            </NavLink>
 
-                <ul>
-                    <li>
-                        <Link className="nav-link" to="/ranking">
-                            RANKING
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link className="nav-link" to="/news">
-                            NEWS
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link className="nav-link" id="senter" to="/">
-                            HOME
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link className="nav-link" to="/market">
-                            MARKET
-                        </Link>
-                    </li>
-
-                    <li>
-                        <Link className="nav-link" to="/roaster">
-                            TEAM
-                        </Link>
-                    </li>
-                </ul>
-
-                <Profile />
+            <nav className="sidebar-nav" aria-label="Основная навигация">
+                <span className="sidebar-heading">МЕНЮ</span>
+                {links.map(({ to, label, end }) => (
+                    <NavLink key={to} to={to} end={end} title={label} aria-label={label} className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
+                        <span className="sidebar-link-marker" aria-hidden="true" />
+                        {label}
+                    </NavLink>
+                ))}
             </nav>
-        </header>
+
+            <div className="sidebar-profile"><Profile /></div>
+        </aside>
     );
 }
