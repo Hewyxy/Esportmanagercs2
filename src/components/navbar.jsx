@@ -12,13 +12,13 @@ const links = [
 export default function Navbar() {
     return (
         <aside className="sidebar">
-            <NavLink className="sidebar-brand" to="/" aria-label="CS2 Manager — главная">
+            <NavLink className="sidebar-brand" to="/" aria-label="CS2 Manager — home">
                 <img src="/assets/logo.png" alt="" className="sidebar-logo" />
                 <span>CS2 MANAGER</span>
             </NavLink>
 
-            <nav className="sidebar-nav" aria-label="Основная навигация">
-                <span className="sidebar-heading">МЕНЮ</span>
+            <nav className="sidebar-nav" aria-label="Main navigation">
+                <span className="sidebar-heading">Menu</span>
                 {links.map(({ to, label, end }) => (
                     <NavLink key={to} to={to} end={end} title={label} aria-label={label} className={({ isActive }) => `sidebar-link${isActive ? " active" : ""}`}>
                         <span className="sidebar-link-marker" aria-hidden="true" />

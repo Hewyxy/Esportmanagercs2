@@ -402,3 +402,171 @@
     outline: none;
     border-color: var(--accent);
 }
+
+/* Profile overview and team roster */
+.profile-modal {
+    width: min(720px, calc(100% - 30px));
+    max-height: calc(100dvh - 36px);
+    overflow-y: auto;
+    padding: 30px;
+    text-align: left;
+}
+
+.profile-modal-header {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 4px 38px 22px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-modal-img {
+    flex: 0 0 76px;
+    width: 76px;
+    height: 76px;
+    margin: 0;
+}
+
+.profile-modal-identity {
+    min-width: 0;
+    flex: 1;
+}
+
+.profile-modal-eyebrow,
+.profile-roster-heading > div > span {
+    color: var(--accent-hover);
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.4px;
+}
+
+.profile-modal-identity h2 {
+    margin: 4px 0 0;
+    overflow-wrap: anywhere;
+}
+
+.profile-modal-team {
+    margin: 2px 0 0;
+    font-size: 14px;
+}
+
+.profile-roster {
+    margin-top: 22px;
+}
+
+.profile-roster-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.profile-roster-heading h3 {
+    margin: 3px 0 0;
+    color: var(--text-primary);
+    font: 700 20px/1.2 "Rajdhani", sans-serif;
+}
+
+.profile-roster-heading > strong {
+    color: var(--text-secondary);
+    font: 700 14px/1 "Inter", sans-serif;
+    font-variant-numeric: tabular-nums;
+}
+
+.profile-roster-list {
+    display: grid;
+    gap: 7px;
+}
+
+.profile-roster-player {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    margin: 0;
+    padding: 8px 11px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+}
+
+.profile-roster-player > img {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    object-fit: cover;
+    object-position: top;
+    background: var(--panel);
+    border-radius: 6px;
+}
+
+.profile-roster-player-info {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+    gap: 2px;
+}
+
+.profile-roster-player-info strong {
+    overflow: hidden;
+    color: var(--text-primary);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.profile-roster-player-info small {
+    color: var(--text-secondary);
+    font-size: 11px;
+}
+
+.profile-roster-rating {
+    color: var(--accent-hover);
+    font: 800 18px/1 "Rajdhani", sans-serif;
+    font-variant-numeric: tabular-nums;
+}
+
+.profile-roster-empty {
+    margin: 0;
+    padding: 18px;
+    color: var(--text-secondary);
+    text-align: center;
+    background: var(--bg-secondary);
+    border: 1px dashed var(--border-light);
+    border-radius: 8px;
+}
+
+.profile-modal-actions {
+    display: flex;
+    gap: 9px;
+    margin-top: 18px;
+}
+
+.profile-modal-actions .profile-settings,
+.profile-modal-actions .profile-logout {
+    width: auto;
+    min-width: 130px;
+    margin: 0;
+}
+
+@media (max-width: 520px) {
+    .profile-modal {
+        padding: 22px 16px;
+    }
+
+    .profile-modal-header {
+        gap: 13px;
+    }
+
+    .profile-modal-img {
+        width: 58px;
+        height: 58px;
+        flex-basis: 58px;
+    }
+
+    .profile-modal-identity h2 {
+        font-size: 23px;
+    }
+}
