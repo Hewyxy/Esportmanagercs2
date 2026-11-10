@@ -6,6 +6,19 @@ import "./match.css";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const TEAM_PLACEHOLDER = "https://www.hltv.org/dynamic-svg/teamplaceholder";
+const HALF_LENGTH = 4; // раундов в одной половине
+const PLANT_CHANCE = 0.3; // шанс плента после каждого килла
+const DEFUSE_CHANCE = 0.65; // шанс успешного дефуза
+
+// Кто за T в этом раунде: team1 или team2
+function team1IsTerrorist(roundNumber) {
+  if (roundNumber <= HALF_LENGTH) return true;
+  if (roundNumber <= HALF_LENGTH * 2) return false;
+
+  // овертайм: смена сторон каждые 3 раунда
+  const otBlock = Math.floor((roundNumber - HALF_LENGTH * 2 - 1) / 3);
+  return otBlock % 2 === 0;
+}
 
 function PlayerAvatar({ player, name }) {
   const displayName = player?.Name ?? name ?? "?";
@@ -83,10 +96,19 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
         roundsToWin += 3;
       }
 
+      const team1IsT = team1IsTerrorist(round.number);
+
       const team1Players = [...match.team1.Players];
       const team2Players = [...match.team2.Players];
-      //round simulation loop
-      //Add side switch logic here if needed.
+
+      // это ссылки на те же массивы, shift() работает как раньше
+      const tPlayers = team1IsT ? team1Players : team2Players;
+      const ctPlayers = team1IsT ? team2Players : team1Players;
+
+      const isPistolRound =
+        round.number === 1 || round.number === HALF_LENGTH + 1;
+      const gun = isPistolRound ? "Pistol" : "AK-47";
+
       while (team1Players.length !== 0 && team2Players.length !== 0) {
         shuffle(team1Players);
         shuffle(team2Players);
@@ -95,67 +117,44 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
         const player2 = team2Players[0];
 
         const total = player1.Rating + player2.Rating;
-
         const winner = Math.floor(Math.random() * total);
 
-        //Insert bomb planting logic here if needed.
-        /*
-        
-        const bombPlanted = Math.random() < 0.5;
-        if (bombPlanted) {
+        if (winner < player1.Rating) {
+          round.events.push({
+            type: "Kill",
+            gun,
+            killer: player1.Name,
+            victim: player2.Name,
+          });
+          team2Players.shift();
+        } else {
+          round.events.push({
+            type: "Kill",
+            gun,
+            killer: player2.Name,
+            victim: player1.Name,
+          });
+          team1Players.shift();
+        }
+
+        // Plant: только если бомба ещё не стоит и обе команды живы
+        if (
+          !round.bombPlanted &&
+          tPlayers.length > 0 &&
+          ctPlayers.length > 0 &&
+          Math.random() < PLANT_CHANCE
+        ) {
+          const planter = tPlayers[Math.floor(Math.random() * tPlayers.length)];
+
+          round.bombPlanted = true;
           round.events.push({
             type: "BombPlanted",
-            killer: winner < player1.Rating ? player1.Name : player2.Name,
+            killer: planter.Name,
           });
-        }
-        */
-
-        //Insert bomb defusal logic here if needed.
-        if (round.number == 1 || round.number == (roundsToWin + 1) / 2 + 1) {
-          if (winner < player1.Rating) {
-            round.events.push({
-              type: "Kill",
-              gun: "Pistol",
-              killer: player1.Name,
-              victim: player2.Name,
-            });
-
-            team2Players.shift();
-          } else {
-            round.events.push({
-              type: "Kill",
-              gun: "Pistol",
-              killer: player2.Name,
-              victim: player1.Name,
-            });
-
-            team1Players.shift();
-          }
-        } else {
-          if (winner < player1.Rating) {
-            round.events.push({
-              type: "Kill",
-              gun: "AK-47",
-              killer: player1.Name,
-              victim: player2.Name,
-            });
-
-            team2Players.shift();
-          } else {
-            round.events.push({
-              type: "Kill",
-              gun: "AK-47",
-              killer: player2.Name,
-              victim: player1.Name,
-            });
-
-            team1Players.shift();
-          }
         }
 
         // Live update.
         const liveMap = structuredClone(map);
-
         liveMap.rounds.push(structuredClone(round));
 
         const liveMatch = {
@@ -170,8 +169,30 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
         }
       }
 
-      // Round winner.
-      if (team1Players.length > team2Players.length) {
+      // Кто выиграл раунд
+      let tWon;
+
+      if (ctPlayers.length === 0) {
+        // CT вырезаны
+        tWon = true;
+      } else if (!round.bombPlanted) {
+        // T вырезаны, бомбы нет
+        tWon = false;
+      } else {
+        // T вырезаны, но бомба стоит: CT пытаются дефузить
+        const defuser = ctPlayers[Math.floor(Math.random() * ctPlayers.length)];
+
+        if (Math.random() < DEFUSE_CHANCE) {
+          round.events.push({ type: "BombDefused", killer: defuser.Name });
+          tWon = false;
+        } else {
+          round.events.push({ type: "BombExploded" });
+          tWon = true;
+        }
+      }
+
+      // tWon === team1IsT значит победила team1
+      if (tWon === team1IsT) {
         round.winner = 1;
         map.score.team1++;
       } else {
@@ -922,7 +943,17 @@ export default function Match({
                               </span>
                             </p>
                           );
-
+                        case "BombExploded":
+                          return (
+                            <p
+                              className="match-event match-event--objective"
+                              key={eventIndex}
+                            >
+                              <span className="match-event__tag">
+                                BOMB EXPLODED
+                              </span>
+                            </p>
+                          );
                         default:
                           return null;
                       }
