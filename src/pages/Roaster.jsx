@@ -3,25 +3,35 @@ import CurrentRoaster from "../components/CurrentRoaster";
 import React, { useEffect, useState } from "react";
 
 export default function Roaster() {
-
-    // Load our team first, then use its ID to fetch the roster.
-    const [team, setTeam] = useState([]);
+    const [teams, setTeams] = useState([]);
+    const [selectedTeam, setSelectedTeam] = useState(null);
 
     useEffect(() => {
-        fetch("http://localhost:3000/api/teams/1")
-            .then(response => response.json())
-            .then(data => setTeam(data))
-            .catch(error => console.error("Error fetching team:", error));
-    }, []);
+        fetch("http://localhost:3000/api/teams")
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to fetch teams");
+                return response.json();
+            })
+            .then(data => {
+                setTeams(data);
 
-    
+                const initialTeam = data.find(team => team.Id === 1) || data[0];
+                setSelectedTeam(initialTeam);
+            })
+            .catch(error => console.error("Error fetching teams:", error));
+    }, []);
 
     return (
         <div>
-            <CurrentRoaster
-                teamId={team.Id}
-                teamName={team.Name}
-            />
-        </div>  
+            {selectedTeam && (
+                <CurrentRoaster
+                    teamId={selectedTeam.Id}
+                    teamName={selectedTeam.Name}
+                    teams={teams}
+                    onTeamChange={setSelectedTeam}
+                />
+            )}
+        </div>
     );
 }
+

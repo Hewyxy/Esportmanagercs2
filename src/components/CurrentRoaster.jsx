@@ -4,7 +4,12 @@ import "./smallComponents/stats.css";
 import Stats from "./smallComponents/stats.jsx";
 import ConfirmationModal from "./smallComponents/confirmation.jsx";
 
-export default function CurrentRoaster({ teamId, teamName }) {
+export default function CurrentRoaster({
+  teamId,
+  teamName,
+  teams = [],
+  onTeamChange,
+}) {
   const [players, setPlayers] = useState([]);
   const [teamImage, setTeamImage] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -14,6 +19,33 @@ export default function CurrentRoaster({ teamId, teamName }) {
   const [showFireConfirm, setShowFireConfirm] = useState(false);
   const [playerToFire, setPlayerToFire] = useState(null);
   const [selectedPlayer, setSelectedPlayer] = useState(null);
+  const [showTeamDropdown, setShowTeamDropdown] = useState(false);
+  const [selectedLogo, setSelectedLogo] = useState(null);
+  const [showLogoPicker, setShowLogoPicker] = useState(false);
+  const [savingLogo, setSavingLogo] = useState(false);
+
+  const logoFiles = import.meta.glob(
+    "../assets/Logos/*.{png,jpg,jpeg,webp,svg}",
+    {
+      eager: true,
+      query: "?url",
+      import: "default",
+    },
+  );
+
+  const logos = Object.entries(logoFiles).map(([path, src]) => ({
+    name: path
+      .split("/")
+      .pop()
+      .replace(/\.[^.]+$/, ""),
+    src,
+  }));
+
+  const savedTeamLogo = teams.find((team) => String(team.Id) === String(teamId))?.Logo;
+
+  useEffect(() => {
+    setSelectedLogo(null);
+  }, [teamId]);
 
   useEffect(() => {
     if (teamId == null) {
@@ -103,6 +135,34 @@ export default function CurrentRoaster({ teamId, teamName }) {
     }
   };
 
+  const saveTeamLogo = async (logo) => {
+    if (savingLogo) return;
+
+    try {
+      setSavingLogo(true);
+      const response = await fetch(
+        `http://localhost:3000/api/teams/${encodeURIComponent(teamId)}/logo`,
+        {
+          method: "PATCH",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ Logo: logo }),
+        },
+      );
+
+      if (!response.ok) throw new Error("Failed to save team logo");
+
+      const updatedTeam = await response.json();
+      setSelectedLogo(updatedTeam.Logo);
+      setShowLogoPicker(false);
+      showNotification("Team logo saved!");
+    } catch (error) {
+      console.error("Error saving team logo:", error);
+      showNotification("Failed to save team logo.");
+    } finally {
+      setSavingLogo(false);
+    }
+  };
+
   return (
     <section className="current-roster-section">
       <div className="current-roster-header">
@@ -130,13 +190,22 @@ export default function CurrentRoaster({ teamId, teamName }) {
       <div className="current-roster-container">
         <div className="current-roster-banner">
           <div className="current-roster-team-info">
-            {teamImage && (
-              <img
-                className="current-roster-team-logo"
-                src={teamImage}
-                alt={`${teamName} logo`}
-              />
-            )}
+            <div className="team-selector">
+              <button
+                type="button"
+                className="current-roster-team-button"
+                onClick={() => setShowLogoPicker(true)}
+                title="Change team logo"
+              >
+                <img
+                  className="current-roster-team-logo"
+                  src={selectedLogo || savedTeamLogo || teamImage}
+                  alt={`${teamName} logo`}
+                />
+
+                <span className="team-selector-arrow">⌄</span>
+              </button>
+            </div>
 
             <div>
               <h3>{teamName}</h3>
@@ -320,6 +389,49 @@ export default function CurrentRoaster({ teamId, teamName }) {
           )}
         </div>
       </div>
+
+      {showLogoPicker && (
+        <div
+          className="logo-picker-overlay"
+          onClick={() => setShowLogoPicker(false)}
+        >
+          <div
+            className="logo-picker-modal"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="logo-picker-header">
+              <div>
+                <span>TEAM CUSTOMIZATION</span>
+                <h2>Choose Your Logo</h2>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setShowLogoPicker(false)}
+                aria-label="Close logo picker"
+              >
+                ×
+              </button>
+            </div>
+
+            <div className="logo-picker-grid">
+              {logos.map((logo) => (
+                <button
+                  type="button"
+                  key={logo.name}
+                  className={`logo-picker-item ${
+                    (selectedLogo || savedTeamLogo) === logo.src ? "selected" : ""
+                  }`}
+                  disabled={savingLogo}
+                  onClick={() => saveTeamLogo(logo.src)}
+                >
+                  <img src={logo.src} alt={logo.name} />
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       <ConfirmationModal
         isOpen={showFireConfirm}

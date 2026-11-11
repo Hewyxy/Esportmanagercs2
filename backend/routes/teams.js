@@ -93,6 +93,35 @@ router.put("/:id", (req, res) => {
     }
 });
 
+// Update a team's logo
+router.patch("/:id/logo", (req, res) => {
+    const teamId = req.params.id;
+    const { Logo } = req.body;
+
+    if (typeof Logo !== "string" || Logo.trim() === "") {
+        return res.status(400).json({ error: "Logo is required" });
+    }
+
+    try {
+        const result = db
+            .prepare("UPDATE Teams SET Logo = ? WHERE Id = ?")
+            .run(Logo.trim(), teamId);
+
+        if (result.changes === 0) {
+            return res.status(404).json({ error: "Team not found" });
+        }
+
+        const team = db
+            .prepare("SELECT * FROM Teams WHERE Id = ?")
+            .get(teamId);
+
+        res.json(team);
+    } catch (error) {
+        console.error("SQL error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 // Update team points
 router.patch("/:id/points", (req, res) => {
 
