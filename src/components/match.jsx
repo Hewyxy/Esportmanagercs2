@@ -6,16 +6,16 @@ import "./match.css";
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const TEAM_PLACEHOLDER = "https://www.hltv.org/dynamic-svg/teamplaceholder";
-const HALF_LENGTH = 4; // раундов в одной половине
-const PLANT_CHANCE = 0.3; // шанс плента после каждого килла
-const DEFUSE_CHANCE = 0.65; // шанс успешного дефуза
+const HALF_LENGTH = 4; // Rounds in first half
+const PLANT_CHANCE = 0.3; // Chance of planting bomb after each kill
+const DEFUSE_CHANCE = 0.65; // Chance of successful defuse
 
-// Кто за T в этом раунде: team1 или team2
+// Who is T in this round: team1 or team2
 function team1IsTerrorist(roundNumber) {
   if (roundNumber <= HALF_LENGTH) return true;
   if (roundNumber <= HALF_LENGTH * 2) return false;
 
-  // овертайм: смена сторон каждые 3 раунда
+  // Overtime: side swap every 3 rounds
   const otBlock = Math.floor((roundNumber - HALF_LENGTH * 2 - 1) / 3);
   return otBlock % 2 === 0;
 }
@@ -101,7 +101,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
       const team1Players = [...match.team1.Players];
       const team2Players = [...match.team2.Players];
 
-      // это ссылки на те же массивы, shift() работает как раньше
+      // these are references to the same arrays, shift() works as before
       const tPlayers = team1IsT ? team1Players : team2Players;
       const ctPlayers = team1IsT ? team2Players : team1Players;
 
@@ -137,7 +137,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
           team1Players.shift();
         }
 
-        // Plant: только если бомба ещё не стоит и обе команды живы
+        // Plant: only if bomb is not already planted and both teams are alive
         if (
           !round.bombPlanted &&
           tPlayers.length > 0 &&
@@ -169,17 +169,17 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
         }
       }
 
-      // Кто выиграл раунд
+      // Who won the round
       let tWon;
 
       if (ctPlayers.length === 0) {
-        // CT вырезаны
+        // CT eliminated
         tWon = true;
       } else if (!round.bombPlanted) {
-        // T вырезаны, бомбы нет
+        // T eliminated, no bomb
         tWon = false;
       } else {
-        // T вырезаны, но бомба стоит: CT пытаются дефузить
+        // T eliminated, but bomb is planted: CT try to defuse
         const defuser = ctPlayers[Math.floor(Math.random() * ctPlayers.length)];
 
         if (Math.random() < DEFUSE_CHANCE) {
@@ -191,7 +191,7 @@ async function simulateMatch(team1, team2, onUpdate, showLiveFeed = true) {
         }
       }
 
-      // tWon === team1IsT значит победила team1
+      // tWon === team1IsT means team1 won
       if (tWon === team1IsT) {
         round.winner = 1;
         map.score.team1++;
